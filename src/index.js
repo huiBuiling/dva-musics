@@ -4,13 +4,15 @@ import './index.css';
 // 1. Initialize
 const app = dva({
    initialState: {
-     products: [
-        { name: 'dva', id: 1 },
-        { name: 'antd', id: 2 },
-        { name: 'react', id: 3 },
-        { name: 'vue', id: 4 },
-      ],
-     count:4
+     lists: {
+       products:[
+         { name: 'dva', id: 1 },
+         { name: 'antd', id: 2 },
+         { name: 'react', id: 3 },
+         { name: 'vue', id: 4 },
+       ],
+       count:4
+     }
    },
 });
 

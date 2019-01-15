@@ -4,17 +4,20 @@
  * @Description: reducers 操作
 */
 export default {
-  namespace: 'products',
-  state: {
-    products:[],
-    count:0
-  },
+  namespace: 'lists',
+  state: {},
   reducers: {
     'delete'(state, { payload: id }) {
-      return state.filter(item => item.id !== id);
+      return {
+        products:state.products.filter(item => item.id !== id),
+        count:state.count
+      };
     },
     'add'(state, { payload: newData }) {
-      return  [...state, newData];
+      return  {
+                  products: [...state.products, newData],
+                  count:state.count + 1
+              }
     },
   },
 };
