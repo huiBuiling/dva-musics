@@ -1,0 +1,74 @@
+@import '//at.alicdn.com/t/font_1014906_26lix38v4da.css';
+[class^=icon-] {
+  font-family: "iconfont" !important;
+  font-size: 20px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+/*com style*/
+.mr5 {
+  margin-right: 5px;
+}
+/*module style*/
+.music .m-my .am-navbar {
+  background: #D94038;
+  color: #fff;
+}
+.music .m-my .am-navbar .am-navbar-title {
+  color: #fff;
+}
+.music .m-my .m-my-cz .am-list-item {
+  min-height: 55px;
+}
+.music .m-my .m-my-cz .am-list-item i {
+  color: #D94038;
+  font-size: 1.5em;
+}
+.music .m-my .m-my-gd {
+  width: 100%;
+}
+.music .m-my .m-my-gd .m-my-gd-title {
+  width: 100%;
+  height: 35px;
+  line-height: 35px;
+  background: #EEEFF1;
+  padding: 0 10px;
+  color: #7B7C7E;
+}
+.music .m-my .m-my-gd .m-my-gd-title span {
+  margin-right: 5px;
+}
+.music .m-my .m-my-gd .m-my-gd-title span i {
+  font-size: 17px;
+}
+.music .m-my .m-my-gd .m-my-gd-item {
+  width: 100%;
+  height: 85px;
+  display: flex;
+  clear: both;
+  padding: 10px;
+}
+.music .m-my .m-my-gd .m-my-gd-item img {
+  width: 65px;
+  height: 65px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+.music .m-my .m-my-gd .m-my-gd-item div {
+  width: calc(100% - 75px);
+  border-bottom: 1px solid #E9E9E9;
+  margin-left: 10px;
+}
+.music .m-my .m-my-gd .m-my-gd-item div h3 {
+  padding: 10px 0;
+}
+.music .m-my .m-my-gd .m-my-gd-item div p {
+  color: #7B7C7E;
+}
+.music .m-footer .am-tab-bar-bar .am-tab-bar-tab-icon {
+  color: #D94038;
+}
