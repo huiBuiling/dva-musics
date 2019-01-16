@@ -1,4 +1,5 @@
 import dva from 'dva';
+import 'animate.css/animate.min.css';
 import './index.css';
 import './assets/app.less'
 

@@ -1,4 +1,4 @@
-@import '//at.alicdn.com/t/font_1014906_26lix38v4da.css';
+@import '//at.alicdn.com/t/font_1014906_b5wefekdf3.css';
 [class^=icon-] {
   font-family: "iconfont" !important;
   font-size: 20px;
@@ -13,6 +13,12 @@
 @borderColor: #E9E9E9;
 
 @fontColor:#7B7C7E;
+@fontColor:#ACADAF;
+
+@fontSize2:12px;
+@fontSize:14px;
+@fontSize6:16px;
+@fontSize20:20px;
 
 .border-radius(@radius:2px){
   border-radius: @radius;
@@ -22,22 +28,107 @@
   -o-border-radius: @radius;
 }
 
+.rotateDiv(@name:rotate,@rotate:0deg,@scale:1,@rotate2:360deg,@scale2:1){
+  @keyframes @name
+  {
+    0%{
+      transform:rotate(@rotate) scale(@scale);
+      -ms-transform:rotate(@rotate) scale(@scale);     /* IE 9 */
+      -moz-transform:rotate(@rotate) scale(@scale);     /* Firefox */
+      -webkit-transform:rotate(@rotate) scale(@scale); /* Safari ºÍ Chrome */
+    }
+    100%{
+      transform:rotate(@rotate2) scale(@scale2);
+      -ms-transform:rotate(@rotate2) scale(@scale2);     /* IE 9 */
+      -moz-transform:rotate(@rotate2) scale(@scale2);     /* Firefox */
+      -webkit-transform:rotate(@rotate2) scale(@scale2); /* Safari ºÍ Chrome */
+    }
+  }
+}
+
+/*参数分别为：动画名，持续时间，速度曲线，延迟时间（多久后开始执行动画），结束后的位置*/
+.animation(@animation-name,@animation-duration,@animation-timing-function,@animation-iteration-count,@animation-delay,@play-state){
+  -webkit-animation: @arguments;
+  -moz-animation: @arguments;
+  -ms-animation: @arguments;
+  -o-animation:  @arguments;
+  animation: @arguments;
+}
+
+
 
 .mr5{
   margin-right: 5px;
 }
 /*module style*/
 .music{
+  width: 100%;
+  height: 100%;
 
   //我的
   .m-my{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
     .am-navbar{
       background: @themColor;
       color: @color;
       .am-navbar-title{
         color: @color;
+        &>div{
+          text-align: center;
+          p:last-child{
+            font-size: @fontSize2;
+            padding-top: 5px;
+          }
+        }
       }
     }
+    //tab
+    .m-my-tabs{
+      .am-tabs {
+        .am-tabs-tab-bar-wrap {
+          .am-tabs-default-bar {
+            background-color: @themColor !important;
+            color: @color;
+          }
+          .am-tabs-default-bar-tab-active{
+            color: @color;
+          }
+          .am-tabs-default-bar-underline{
+            border: 1.5px solid @color;
+            width: 50px !important;
+            margin: 0  0 0 calc(~'33.3333% - 77px');
+            .border-radius(5px);
+            bottom: 5px;
+          }
+          .am-badge{
+            .am-badge-text,.am-badge-dot{
+              background-color: @color;
+              color: @themColor;
+            }
+          }
+        }
+
+        //con
+        .am-tabs-content-wrap {
+          .m-my-tabs-search {
+            flex: auto;
+            background: #E6E7E9;
+            .am-list {
+              .am-list-header {
+                padding: 0;
+                .am-search-input{
+                  .border-radius(30px);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
     //cz
     .m-my-cz{
       .am-list-item{
@@ -87,6 +178,74 @@
             color: @fontColor;
           }
         }
+      }
+    }
+
+    //list
+    .m-my-list{
+      .m-my-list-r{
+        i:first-child{
+          margin-right: 15px;
+        }
+      }
+    }
+
+    //play
+    .m-my-play{
+      width: 100%;
+      height: 100%;
+      background: url("images/bg.png") center center no-repeat;
+      background-size: cover;
+      -webkit-background-size: cover;
+      -o-background-size: cover;
+      .am-navbar {
+        background: transparent;
+        border-bottom: 1px solid @borderColor;
+      }
+      .m-my-play-con{
+        position: relative;
+        width: 100%;
+        height: 300px;
+        .m-my-play-con-w{
+          width: 300px;
+          height: 300px;
+          background: transparent;
+          margin: 40px auto;
+          border:1px solid @borderColor;
+          .border-radius(50%);
+          .rotateDiv(rotate,0deg,.85,360deg,1);
+          .animation(rotate,3s,linear, infinite,0s,forwards);
+          &>div{
+            width: 80%;
+            height: 80%;
+            background: transparent;
+            margin: 10% auto;
+            border:1px solid @borderColor;
+            .border-radius(50%);
+          }
+        }
+
+        .m-my-play-con-n{
+          width: 200px;
+          height: 200px;
+          background: rgba(136,145,150,.3);
+          text-align: center;
+          .border-radius(50%);
+          position: absolute;
+          top: 50px;
+          left: 60px;
+          .rotateDiv(rotateImg,0deg,1,360deg,1);
+          .animation(rotateImg,5s,linear, infinite,0s,forwards);
+          img{
+            width: 88%;
+            height: 88%;
+            margin: 6% auto;
+            .border-radius(50%);
+          }
+        }
+      }
+      .m-my-play-bot{
+
       }
     }
   }

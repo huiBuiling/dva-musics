@@ -16,37 +16,37 @@ class Footer extends Component{
 
         tabBarList:[
           {
-            title:'发现',
             key:'fx',
-            icon:'icon-menu-fx',
+            icon:'icon-menu-fx2',
             tabName:'发现',
-            seed:'menu-f',
+            seed:'menu-fx',
             content:'fx',
+            path:'/discover'
           },
           {
-            title:'我的',
             key:'wd',
             icon:'icon-menu-yy',
             tabName:'我的',
             seed:'menu-w',
             content:'music',
-            component:IndexMy
+            component:IndexMy,
+            path:'/myMusic'
           },
           {
-            title:'消息',
             key:'xx',
             icon:'icon-menu-xx',
             tabName:'消息',
             seed:'menu-x',
             content:'friend',
+            path:'/msgs'
           },
           {
-            title:'帐号',
             key:'zh',
             icon:'icon-menu-zh',
             tabName:'帐号',
             seed:'menu-z',
             content:'my',
+            path:'/admin'
           }
         ]
       }
@@ -63,39 +63,40 @@ class Footer extends Component{
   render (){
       const {tabBarList} = this.state;
       return(
-          <div className='music'>
-              <div className='m-footer'>
-                  <div style={{position: 'fixed', height: '100%', width: '100%', top: 0 }}>
-                      <TabBar
-                        unselectedTintColor="#949494"
-                        tintColor="#D94038"
-                        barTintColor="white"
-                        hidden={this.state.hidden}
-                      >
-                          {
-                              tabBarList.map(item =>{
+            <div className='m-footer'>
+                <div style={{position: 'fixed', height: '100%', width: '100%', top: 0 }}>
+                    <TabBar
+                      unselectedTintColor="#949494"
+                      tintColor="#D94038"
+                      barTintColor="white"
+                      hidden={this.state.hidden}
+                    >
+                        {
+                            tabBarList.map(item =>{
                                 const Component = item.component;
-                                  return (
-                                      <TabBar.Item
-                                          title={item.title}
-                                          key={item.title}
-                                          icon={<span><i className={item.icon} /></span>}
-                                          selectedIcon={<span><i className={item.icon} style={{color:'#D94038'}} /></span>}
-                                          selected={this.state.selectedTab === item.tabName}
-                                          // badge={1}
-                                          // dot
-                                          onPress={() => {this.setState({selectedTab: item.tabName})}}
-                                          data-seed={item.seed}
-                                      >
-                                          {item.tabName === '我的' ? <Component /> : this.renderContent(item.content)}
-                                      </TabBar.Item>
-                                  )
-                              })
-                          }
-                      </TabBar>
-                  </div>
-              </div>
-          </div>
+                                    return (
+                                        <TabBar.Item
+                                            title={item.tabName}
+                                            key={item.seed}
+                                            icon={<span><i className={item.icon} /></span>}
+                                            selectedIcon={<span><i className={item.icon} style={{color:'#D94038'}} /></span>}
+                                            selected={this.state.selectedTab === item.tabName}
+                                            // badge={1}
+                                            // dot
+                                            onPress={() => {
+                                              this.props.history.push(item.path);
+                                              this.setState({selectedTab: item.tabName});
+                                            }}
+                                            data-seed={item.seed}
+                                        >
+                                            {item.tabName === '我的' ? <Component /> : this.renderContent(item.content)}
+                                        </TabBar.Item>
+                                    )
+                            })
+                        }
+                    </TabBar>
+                </div>
+            </div>
       )
   }
 }
