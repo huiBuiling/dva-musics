@@ -1,4 +1,4 @@
-@import '//at.alicdn.com/t/font_1014906_lvb891sennc.css';
+@import '//at.alicdn.com/t/font_1014906_k2gwr3s6fq.css';
 [class^=icon-] {
   font-family: "iconfont" !important;
   font-size: 20px;
@@ -14,7 +14,8 @@
 @bgColor:#EAEEF1;
 
 @fontColor:#7B7C7E;
-@fontColor:#ACADAF;
+@fontColor2:#ACADAF;
+@fontColor3:#99999B;
 
 @fontSize2:12px;
 @fontSize:14px;
@@ -65,11 +66,17 @@
   animation: @arguments;
 }
 
-
+.fl{
+  float: left;
+}
+.fr{
+  float: right;
+}
 
 .mr5{
   margin-right: 5px;
 }
+
 /*module style*/
 .music{
   width: 100%;
@@ -204,7 +211,7 @@
     .m-my-play{
       width: 100%;
       height: 100%;
-      background: url("images/timg.jpg") center center no-repeat;
+      background: url("images/timg4.jpg") center center no-repeat;
       background-size: cover;
       -webkit-background-size: cover;
       -o-background-size: cover;
@@ -214,6 +221,7 @@
         background: transparent;
         border-bottom: 1px solid @color;
       }
+
       .m-my-play-con{
         position: relative;
         width: 100%;
@@ -264,9 +272,9 @@
           .rotateDiv(rotate2,.5,1.4,0);
           .animation(rotate2,5s,linear, infinite,2s,forwards);
           .m-my-play-con-w-b{
-            width: 70%;
-            height: 70%;
-            margin: 15% auto;
+            width: 66%;
+            height: 66%;
+            margin: 17% auto;
             .m-my-play-con-w-q{
               background: @color;
               .rotateDiv(rotateQiu2,1,1,0);
@@ -301,6 +309,13 @@
           }
         }
       }
+
+      //animation puse
+      .animation-puse{
+        animation-play-state:paused !important;
+        -webkit-animation-play-state:paused !important; /* Safari 和 Chrome */
+      }
+
       .m-my-play-bot{
         position: fixed;
         width: 100%;
@@ -382,13 +397,41 @@
 
       /*list*/
       .m-my-play-list{
+        position: fixed;
+        width: 100%;
+        bottom: 0;
+        left: 0;
+        height: 150px;
+        background: rgba(255,255,255,0.95);
+        .border-radius(20px 20px 0 0);
         .m-my-play-list-t{
-
+          line-height: 45px;
+          height: 45px;
+          margin: 0 20px;
+          border-bottom: 1px solid @borderColor;
+          span{
+            font-size: @fontSize6;
+            i{
+              color: @fontColor3;
+              vertical-align: -1px;
+              margin-right: 5px;
+            }
+            &.fr{
+              span:last-child{
+                border-left: 1px solid #ddd;
+                padding-left: 10px;
+                margin-left: 10px;
+              }
+            }
+          }
         }
         .m-my-play-list-b{
 
         }
         .m-my-play-list-close{
+          position: absolute;
+          bottom: 0;
+          left: 0;
           background: @bgColor;
           width: 100%;
           height: 35px;

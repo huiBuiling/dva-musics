@@ -1,7 +1,8 @@
 import React,{Component} from 'react';
 import { NavBar, Icon, Slider } from 'antd-mobile';
+import classnames from 'classnames'
 import admin from '../../assets/images/admin.png';
-
+import PlayMusicLists from './playMusicLists';
 /**
  * @author hui
  * @date 2019/1/16
@@ -12,11 +13,12 @@ class PlayMusic extends Component{
       super(props);
       this.state={
         percent: 50,
+        animationPuse:false
       }
   }
 
   render (){
-    const { percent } = this.state;
+    const { animationPuse } = this.state;
       return(
           <div className='m-my'>
               <div className="m-my-play">
@@ -29,19 +31,19 @@ class PlayMusic extends Component{
                   >
                     <div>
                       <p>打上花火</p>
-                      <p>DAOKO/米津玄师</p>
+                      <p onClick={()=>this.setState({animationPuse:!animationPuse})}>DAOKO/米津玄师</p>
                     </div>
                   </NavBar>
 
                   {/*animate*/}
                   <div className="m-my-play-con">
-                    <div className="m-my-play-con-w">
+                    <div className={classnames({"m-my-play-con-w":true, "animation-puse":animationPuse})}>
                       <div className="m-my-play-con-w-b">
                         <div className="m-my-play-con-w-q"></div>
                       </div>
                       <div className="m-my-play-con-w-q"></div>
                     </div>
-                    <div className="m-my-play-con-w m-my-play-con-w2">
+                    <div className={classnames({"m-my-play-con-w m-my-play-con-w2":true, "animation-puse":animationPuse})}>
                       <div className="m-my-play-con-w-b">
                         <div className="m-my-play-con-w-q"></div>
                       </div>
@@ -81,22 +83,9 @@ class PlayMusic extends Component{
                       </div>
                   </div>
 
-                  {/*list*/}
-                  <div className="m-my-play-list">
-                    <div>
-                      <div className="m-my-play-list-t">
-                        <span><i className="icon-bf-list-xh" />列表循环</span>
-                        <span><i className="icon-bf-list-sc" />收藏</span>
-                        <span><i className="icon-bf-list-del" /></span>
-                      </div>
-                      <div className="m-my-play-list-b">
+                  {/*PlayMusicLists*/}
+                  <PlayMusicLists />
 
-                      </div>
-                      <div className="m-my-play-list-close">
-                        <span>关闭</span>
-                      </div>
-                    </div>
-                  </div>
               </div>
           </div>
       )
