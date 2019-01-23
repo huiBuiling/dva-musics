@@ -1,4 +1,4 @@
-@import '//at.alicdn.com/t/font_1014906_k2gwr3s6fq.css';
+@import '//at.alicdn.com/t/font_1014906_rk4kj118rxp.css';
 [class^=icon-] {
   font-family: "iconfont" !important;
   font-size: 20px;
@@ -36,10 +36,6 @@
 }
 .music .m-my .am-navbar .am-navbar-title > div {
   text-align: center;
-}
-.music .m-my .am-navbar .am-navbar-title > div p:last-child {
-  font-size: 12px;
-  padding-top: 5px;
 }
 .music .m-my .m-my-tabs .am-tabs .am-tabs-tab-bar-wrap .am-tabs-default-bar {
   background-color: #D94038 !important;
@@ -135,7 +131,9 @@
 .music .m-my .m-my-play {
   width: 100%;
   height: 100%;
-  background: url("images/timg4.jpg") center center no-repeat;
+  background-image: url("images/bg2.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
   -webkit-background-size: cover;
   -o-background-size: cover;
@@ -514,6 +512,7 @@
   text-align: center;
   color: #fff;
   display: inline-block;
+  cursor: pointer;
 }
 .music .m-my .m-my-play .m-my-play-bot > div span i {
   font-size: 25px;
@@ -585,7 +584,7 @@
   width: 100%;
   bottom: 0;
   left: 0;
-  height: 150px;
+  height: auto;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 20px 20px 0 0;
   -webkit-border-radius: 20px 20px 0 0;
@@ -594,33 +593,87 @@
   -o-border-radius: 20px 20px 0 0;
 }
 .music .m-my .m-my-play .m-my-play-list .m-my-play-list-t {
+  width: 100%;
+  min-height: 90px;
+}
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-t {
   line-height: 45px;
   height: 45px;
   margin: 0 20px;
   border-bottom: 1px solid #E9E9E9;
 }
-.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t span {
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-t span {
   font-size: 16px;
 }
-.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t span i {
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-t span i {
   color: #99999B;
   vertical-align: -1px;
   margin-right: 5px;
 }
-.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t span.fr span:last-child {
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-t span.fr span:last-child {
   border-left: 1px solid #ddd;
   padding-left: 10px;
   margin-left: 10px;
 }
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b {
+  width: calc(100% - 40px);
+  padding: 0 20px;
+}
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul {
+  padding-inline-start: 0;
+  margin: 0;
+}
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li {
+  width: 100%;
+  height: 45px;
+  line-height: 45px;
+  list-style: none;
+  border-bottom: 1px solid #E9E9E9;
+  clear: both;
+}
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li > div {
+  float: left;
+  width: calc(100% - 40px);
+}
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li > div span {
+  font-size: 15px;
+}
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li > div span img {
+  width: 20px;
+  height: 20px;
+  vertical-align: -5px;
+  margin-right: 5px;
+}
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li > div span.singer {
+  color: #7B7C7E;
+  font-size: 12px;
+}
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li > span {
+  width: 20px;
+  float: right;
+  text-align: right;
+  margin-right: 10px;
+}
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li > span .icon-close2 {
+  font-size: 14px;
+  color: #7B7C7E;
+}
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li.active {
+  color: #D94038;
+}
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li.active span.singer {
+  color: #D94038;
+}
+.music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li:last-child {
+  border-bottom: none;
+}
 .music .m-my .m-my-play .m-my-play-list .m-my-play-list-close {
-  position: absolute;
-  bottom: 0;
-  left: 0;
   background: #EAEEF1;
   width: 100%;
   height: 35px;
   line-height: 35px;
   text-align: center;
+  clear: both;
 }
 .music .m-footer .am-tab-bar-bar .am-tab-bar-tab-icon {
   color: #D94038;

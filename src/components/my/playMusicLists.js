@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
-import { NavBar, Icon, Slider } from 'antd-mobile';
-import admin from '../../assets/images/admin.png';
+import cricle from '../../assets/images/cricle.png';
+import cricleUn from '../../assets/images/uncricle.png';
 
 /**
  * @author hui
@@ -12,32 +12,68 @@ class PlayMusicLists extends Component{
       super(props);
       this.state={
         percent: 50,
+        data:[
+          {
+            name:'Here With You',
+            singer:'Asher Book'
+          },
+          {
+            name:'光年之外',
+            singer:'G.E.M.邓紫棋'
+          },
+          {
+            name:'香蜜沉沉烬如霜',
+            singer:'南以鸣'
+          },
+          {
+            name:'光年之外',
+            singer:'G.E.M.邓紫棋'
+          }
+        ],
+        isActive:0,
       }
   }
 
   render (){
+    const { data,isActive } = this.state;
       return(
           <div className="m-my-play-list">
-            <div>
               <div className="m-my-play-list-t">
-                <span className="fl"><i className="icon-bf-list-xh" />列表循环</span>
-                <span className="fr">
-                  <span><i className="icon-bf-list-sc" />收藏</span>
-                  <span><i className="icon-bf-list-del" /></span>
-                </span>
+                <div className="m-my-play-list-t-t">
+                  <span className="fl"><i className="icon-bf-list-xh" />列表循环</span>
+                  <span className="fr">
+                    <span><i className="icon-bf-list-sc" />收藏</span>
+                    <span><i className="icon-bf-list-del" /></span>
+                  </span>
+                </div>
+                <div className="m-my-play-list-t-b">
+                  <ul>
+                    {data.map((item,index)=>{
+                        return <li key={index}
+                                   className={isActive === index ? "active":""}
+                                >
+                                   <div onClick={()=>this.setState({isActive:index})}>
+                                     <span><img src={isActive === index ? cricle : cricleUn} alt=""/>{item.name}</span>
+                                     <span className="singer"> - </span>
+                                     <span className="singer">{item.singer}</span>
+                                   </div>
+                                   <span onClick={()=>{
+                                     this.setState({
+                                       data:data.filter((itemI,indexI) => indexI != index),
+                                       isActive: isActive === index ?  -1:isActive
+                                     })}
+                                   }>
+                                     <i className="icon-close2" />
+                                   </span>
+                               </li>
+                    })}
+                  </ul>
+                </div>
               </div>
-              <div className="m-my-play-list-b">
-                <ul>
-                  <li>
-                    <span></span>
-                    <span></span>
-                  </li>
-                </ul>
-              </div>
-              <div className="m-my-play-list-close">
+
+              <div className="m-my-play-list-close" onClick={this.props.close}>
                 <span>关闭</span>
               </div>
-            </div>
           </div>
       )
   }

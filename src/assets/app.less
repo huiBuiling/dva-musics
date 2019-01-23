@@ -1,4 +1,4 @@
-@import '//at.alicdn.com/t/font_1014906_k2gwr3s6fq.css';
+@import '//at.alicdn.com/t/font_1014906_rk4kj118rxp.css';
 [class^=icon-] {
   font-family: "iconfont" !important;
   font-size: 20px;
@@ -12,6 +12,7 @@
 @color:#fff;
 @borderColor: #E9E9E9;
 @bgColor:#EAEEF1;
+@playColor:#8692bc;
 
 @fontColor:#7B7C7E;
 @fontColor2:#ACADAF;
@@ -19,6 +20,7 @@
 
 @fontSize2:12px;
 @fontSize:14px;
+@fontSize5:15px;
 @fontSize6:16px;
 @fontSize20:20px;
 
@@ -95,10 +97,6 @@
         color: @color;
         &>div{
           text-align: center;
-          p:last-child{
-            font-size: @fontSize2;
-            padding-top: 5px;
-          }
         }
       }
     }
@@ -211,7 +209,9 @@
     .m-my-play{
       width: 100%;
       height: 100%;
-      background: url("images/timg4.jpg") center center no-repeat;
+      background-image: url("images/bg2.jpg");
+      background-repeat: no-repeat;
+      background-position: center center;
       background-size: cover;
       -webkit-background-size: cover;
       -o-background-size: cover;
@@ -327,8 +327,10 @@
           span{
             width: 20%;
             text-align: center;
+            //color: @playColor;
             color: @color;
             display: inline-block;
+            cursor: pointer;
             i{
               font-size: 25px;
             }
@@ -401,42 +403,95 @@
         width: 100%;
         bottom: 0;
         left: 0;
-        height: 150px;
+        height: auto;
         background: rgba(255,255,255,0.95);
         .border-radius(20px 20px 0 0);
         .m-my-play-list-t{
-          line-height: 45px;
-          height: 45px;
-          margin: 0 20px;
-          border-bottom: 1px solid @borderColor;
-          span{
-            font-size: @fontSize6;
-            i{
-              color: @fontColor3;
-              vertical-align: -1px;
-              margin-right: 5px;
+          width: 100%;
+          min-height: 90px;
+          .m-my-play-list-t-t{
+            line-height: 45px;
+            height: 45px;
+            margin: 0 20px;
+            border-bottom: 1px solid @borderColor;
+            span{
+              font-size: @fontSize6;
+              i{
+                color: @fontColor3;
+                vertical-align: -1px;
+                margin-right: 5px;
+              }
+              &.fr{
+                span:last-child{
+                  border-left: 1px solid #ddd;
+                  padding-left: 10px;
+                  margin-left: 10px;
+                }
+              }
             }
-            &.fr{
-              span:last-child{
-                border-left: 1px solid #ddd;
-                padding-left: 10px;
-                margin-left: 10px;
+          }
+
+          .m-my-play-list-t-b{
+            width: calc(~'100% - 40px');
+            padding: 0 20px;
+            ul{
+              padding-inline-start: 0;
+              margin: 0;
+              li{
+                width: 100%;
+                height: 45px;
+                line-height: 45px;
+                list-style:none;
+                border-bottom: 1px solid @borderColor;
+                clear: both;
+                &>div{
+                  float: left;
+                  width:calc(~'100% - 40px');
+                  span{
+                    font-size: @fontSize5;
+                    img{
+                      width: 20px;
+                      height: 20px;
+                      vertical-align: -5px;
+                      margin-right: 5px;
+                    }
+                    &.singer{
+                      color: @fontColor;
+                      font-size: @fontSize2;
+                    }
+                  }
+                }
+                &>span{
+                  width: 20px;
+                  float: right;
+                  text-align: right;
+                  margin-right: 10px;
+                  .icon-close2{
+                    font-size: @fontSize;
+                    color: @fontColor;
+                  }
+                }
+                &.active{
+                  color: @themColor;
+                  span.singer{
+                    color: @themColor;
+                  }
+                }
+                &:last-child{
+                  border-bottom: none;
+                }
               }
             }
           }
         }
-        .m-my-play-list-b{
 
-        }
         .m-my-play-list-close{
-          position: absolute;
-          bottom: 0;
-          left: 0;
           background: @bgColor;
           width: 100%;
           height: 35px;
           line-height: 35px;
           text-align: center;
+          clear: both;
         }
       }
     }

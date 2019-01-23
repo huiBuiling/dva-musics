@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { NavBar, Icon, Slider } from 'antd-mobile';
+import { NavBar, Icon, Slider, ImagePicker } from 'antd-mobile';
 import classnames from 'classnames'
 import admin from '../../assets/images/admin.png';
 import PlayMusicLists from './playMusicLists';
@@ -13,78 +13,83 @@ class PlayMusic extends Component{
       super(props);
       this.state={
         percent: 50,
-        animationPuse:false
+        animationPuse:false,    //动画停止
+        playMusicLists:false,   //列表展示
+        skin:1
       }
   }
 
   render (){
-    const { animationPuse } = this.state;
+      const { animationPuse, playMusicLists, skin } = this.state;
+      let img = require(`../../assets/images/bg${skin}.jpg`);
       return(
           <div className='m-my'>
-              <div className="m-my-play">
+              <div className="m-my-play"
+                   style={{backgroundImage:`url(${img}`}}
+              >
                   {/*top*/}
                   <NavBar
-                    mode="light"
-                    icon={<Icon type="left" />}
-                    onLeftClick={() => this.props.history.push('/lists')}
-                    rightContent={<span><i className="icon-m-bfz" /></span>}
+                      mode="light"
+                      icon={<Icon type="left" />}
+                      onLeftClick={() => this.props.history.push('/lists')}
+                      rightContent={<span onClick={()=>{
+                        this.setState({skin:skin < 9 ? skin+1 : 1})
+                      }}><i className="icon-skin" /></span>}
                   >
-                    <div>
-                      <p>打上花火</p>
-                      <p onClick={()=>this.setState({animationPuse:!animationPuse})}>DAOKO/米津玄师</p>
-                    </div>
+                      <div>
+                        <p>打上花火</p>
+                      </div>
                   </NavBar>
 
                   {/*animate*/}
                   <div className="m-my-play-con">
-                    <div className={classnames({"m-my-play-con-w":true, "animation-puse":animationPuse})}>
-                      <div className="m-my-play-con-w-b">
-                        <div className="m-my-play-con-w-q"></div>
+                      <div className={classnames({"m-my-play-con-w":true, "animation-puse":animationPuse})}>
+                          <div className="m-my-play-con-w-b">
+                              <div className="m-my-play-con-w-q"></div>
+                          </div>
+                          <div className="m-my-play-con-w-q"></div>
                       </div>
-                      <div className="m-my-play-con-w-q"></div>
-                    </div>
-                    <div className={classnames({"m-my-play-con-w m-my-play-con-w2":true, "animation-puse":animationPuse})}>
-                      <div className="m-my-play-con-w-b">
-                        <div className="m-my-play-con-w-q"></div>
+                      <div className={classnames({"m-my-play-con-w m-my-play-con-w2":true, "animation-puse":animationPuse})}>
+                          <div className="m-my-play-con-w-b">
+                            <div className="m-my-play-con-w-q"></div>
+                          </div>
+                          <div className="m-my-play-con-w-q"></div>
                       </div>
-                      <div className="m-my-play-con-w-q"></div>
-                    </div>
-                    <div className="m-my-play-con-n">
-                      <img src={admin} alt=""/>
-                    </div>
-                  </div>
-
-                  {/*bot*/}
-                  <div className="m-my-play-bot">
-                      <div className="m-my-play-bot-t">
-                        <span><i className="icon-bf-live" /></span>
-                        <span><i className="icon-bf-xz" /></span>
-                        <span><i className="icon-bf-xx" /></span>
-                        <span><i className="icon-bf-more" /></span>
-                      </div>
-                      <div className="m-my-play-bot-c">
-                          <span>00:02</span>
-                          <Slider
-                            defaultValue={3}
-                            min={0}
-                            max={10}
-                            step={0.1}
-                            onChange={()=>console.log('change')}
-                            onAfterChange={()=>console.log('afterChange')}
-                          />
-                          <span>04:34</span>
-                      </div>
-                      <div className="m-my-play-bot-b">
-                        <span><i className="icon-bf-xh" /></span>
-                        <span><i className="icon-bf-l" /></span>
-                        <span><i className="icon-bf-bf" style={{fontSize:38}}/></span>
-                        <span><i className="icon-bf-r" /></span>
-                        <span><i className="icon-bf-list" /></span>
+                      <div className="m-my-play-con-n">
+                          <img src={admin} alt=""/>
                       </div>
                   </div>
+                {/*bot*/}
+                <div className="m-my-play-bot">
+                    <div className="m-my-play-bot-t">
+                      <span><i className="icon-bf-live" /></span>
+                      <span><i className="icon-bf-xz" /></span>
+                      <span><i className="icon-bf-xx" /></span>
+                      <span><i className="icon-bf-more" /></span>
+                    </div>
+                    <div className="m-my-play-bot-c">
+                        <span>00:02</span>
+                        <Slider
+                          defaultValue={3}
+                          min={0}
+                          max={10}
+                          step={0.1}
+                          onChange={()=>console.log('change')}
+                          onAfterChange={()=>console.log('afterChange')}
+                        />
+                        <span>04:34</span>
+                    </div>
+                    <div className="m-my-play-bot-b">
+                      <span><i className="icon-bf-xh" /></span>
+                      <span><i className="icon-bf-l" /></span>
+                      <span onClick={()=>this.setState({animationPuse:!animationPuse})}><i className="icon-bf-bf" style={{fontSize:38}}/></span>
+                      <span><i className="icon-bf-r" /></span>
+                      <span onClick={()=>this.setState({playMusicLists:true})}><i className="icon-bf-list" /></span>
+                    </div>
+                </div>
 
-                  {/*PlayMusicLists*/}
-                  <PlayMusicLists />
+                {/*PlayMusicLists*/}
+                {playMusicLists && <PlayMusicLists close={()=>this.setState({playMusicLists:false})}/>}
 
               </div>
           </div>
