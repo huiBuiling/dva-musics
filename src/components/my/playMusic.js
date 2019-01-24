@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import { NavBar, Icon, Slider } from 'antd-mobile';
-import classnames from 'classnames'
+import { withRouter } from 'dva/router';
+import classnames from 'classnames';
 import admin from '../../assets/images/admin.png';
 import PlayMusicLists from './playMusicLists';
 /**
@@ -8,18 +9,20 @@ import PlayMusicLists from './playMusicLists';
  * @date 2019/1/16
  * @Description: playMusic
 */
+@withRouter
 class PlayMusic extends Component{
   constructor(props) {
       super(props);
       this.state={
         percent: 50,
-        animationPuse:false,    //动画停止
+        animationPuse:true,    //动画停止
         playMusicLists:false,   //列表展示
         skin:9
       }
   }
 
   render (){
+    const self = this;
       const { animationPuse, playMusicLists, skin } = this.state;
       let img = require(`../../assets/images/playerBg/bg${skin}.jpg`);
       return(
@@ -31,7 +34,7 @@ class PlayMusic extends Component{
                   <NavBar
                       mode="light"
                       icon={<Icon type="left" />}
-                      onLeftClick={() => this.props.history.push('/lists')}
+                      onLeftClick={()=> self.props.history.go(-1)}
                       rightContent={<span onClick={()=>{
                         this.setState({skin:skin < 19 ? skin+1 : 1})
                       }}><i className="icon-skin" /></span>}
@@ -59,37 +62,38 @@ class PlayMusic extends Component{
                           <img src={admin} alt=""/>
                       </div>
                   </div>
-                {/*bot*/}
-                <div className="m-my-play-bot">
-                    <div className="m-my-play-bot-t">
-                      <span><i className="icon-bf-live" /></span>
-                      <span><i className="icon-bf-xz" /></span>
-                      <span><i className="icon-bf-xx" /></span>
-                      <span><i className="icon-bf-more" /></span>
-                    </div>
-                    <div className="m-my-play-bot-c">
-                        <span>00:02</span>
-                        <Slider
-                          defaultValue={3}
-                          min={0}
-                          max={10}
-                          step={0.1}
-                          onChange={()=>console.log('change')}
-                          onAfterChange={()=>console.log('afterChange')}
-                        />
-                        <span>04:34</span>
-                    </div>
-                    <div className="m-my-play-bot-b">
-                      <span><i className="icon-bf-xh" /></span>
-                      <span><i className="icon-bf-l" /></span>
-                      <span onClick={()=>this.setState({animationPuse:!animationPuse})}><i className={animationPuse ? "icon-bf-bf":"icon-bf-zt"} style={{fontSize:38}}/></span>
-                      <span><i className="icon-bf-r" /></span>
-                      <span onClick={()=>this.setState({playMusicLists:true})}><i className="icon-bf-list" /></span>
-                    </div>
-                </div>
 
-                {/*PlayMusicLists*/}
-                {playMusicLists && <PlayMusicLists close={()=>this.setState({playMusicLists:false})}/>}
+                  {/*bot*/}
+                  <div className="m-my-play-bot">
+                      <div className="m-my-play-bot-t">
+                          <span><i className="icon-bf-live" /></span>
+                          <span><i className="icon-bf-xz" /></span>
+                          <span><i className="icon-bf-xx" /></span>
+                          <span><i className="icon-bf-more" /></span>
+                      </div>
+                      <div className="m-my-play-bot-c">
+                          <span>00:02</span>
+                          <Slider
+                            defaultValue={3}
+                            min={0}
+                            max={10}
+                            step={0.1}
+                            onChange={()=>console.log('change')}
+                            onAfterChange={()=>console.log('afterChange')}
+                          />
+                          <span>04:34</span>
+                      </div>
+                      <div className="m-my-play-bot-b">
+                          <span><i className="icon-bf-xh" /></span>
+                          <span><i className="icon-bf-l" /></span>
+                          <span onClick={()=>this.setState({animationPuse:!animationPuse})}><i className={animationPuse ? "icon-bf-bf":"icon-bf-zt"} style={{fontSize:38}}/></span>
+                          <span><i className="icon-bf-r" /></span>
+                          <span onClick={()=>this.setState({playMusicLists:true})}><i className="icon-bf-list" /></span>
+                      </div>
+                  </div>
+
+                  {/*PlayMusicLists*/}
+                  {playMusicLists && <PlayMusicLists close={()=>this.setState({playMusicLists:false})}/>}
 
               </div>
           </div>

@@ -17,3 +17,13 @@
   https://daneden.github.io/animate.css/
   https://github.com/daneden/animate.css
   ```
+
+> isomorphic-fetch:https://github.com/matthew-andrews/isomorphic-fetch
+  ```
+  npm install --save isomorphic-fetch es6-promise
+  import es6 from 'es6-promise';
+  es6.polyfill();
+  
+  use:
+    import feach from 'isomorphic-fetch';
+  ```

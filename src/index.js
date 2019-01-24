@@ -1,7 +1,9 @@
 import dva from 'dva';
+import es6 from 'es6-promise';
 import 'animate.css/animate.min.css';
 import './index.css';
-import './assets/app.less'
+import './assets/app.less';
+es6.polyfill();
 
 // 1. Initialize
 const app = dva({
@@ -23,7 +25,8 @@ const app = dva({
 
 // 3. Model
 // app.model(require('./models/example').default);
-app.model(require('./models/products').default);
+// app.model(require('./models/products').default);
+app.model(require('./reducer/playMusic').default);
 
 // 4. Router
 app.router(require('./router').default);

@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { TabBar } from 'antd-mobile';
-import IndexMy from '../components/my/index'
+import IndexMy from '../components/my/indexMy'
 
 /**
  * @author hui

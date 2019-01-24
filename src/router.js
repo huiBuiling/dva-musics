@@ -10,7 +10,7 @@ function RouterConfig({ history }) {
     <Router history={history}>
       <Switch>
         {/*<Route path="/" exact component={IndexPage} />*/}
-        <Route path="/lists" component={Lists} />
+        <Route path="/lists:id" component={Lists} />
         <Route path="/myMusic" component={Footer} />
         <Route path="/playMusic" component={PlayMusic} />
       </Switch>
