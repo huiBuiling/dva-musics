@@ -11,7 +11,7 @@ class Footer extends Component{
   constructor(props) {
       super(props);
       this.state={
-        selectedTab: '我的',
+        selectedTab: '音乐',
         hidden: false,
 
         tabBarList:[
@@ -26,7 +26,7 @@ class Footer extends Component{
           {
             key:'wd',
             icon:'icon-menu-yy',
-            tabName:'我的',
+            tabName:'音乐',
             seed:'menu-w',
             content:'music',
             component:IndexMy,
@@ -38,7 +38,8 @@ class Footer extends Component{
             tabName:'消息',
             seed:'menu-x',
             content:'friend',
-            path:'/msgs'
+            path:'/msgs',
+            dot:'1'
           },
           {
             key:'zh',
@@ -81,15 +82,15 @@ class Footer extends Component{
                                             icon={<span><i className={item.icon} /></span>}
                                             selectedIcon={<span><i className={item.icon} style={{color:'#D94038'}} /></span>}
                                             selected={this.state.selectedTab === item.tabName}
-                                            // badge={1}
-                                            // dot
+                                            badge={item.dot ? item.dot: 0}
+                                              // dot
                                             onPress={() => {
                                               this.props.history.push(item.path);
                                               this.setState({selectedTab: item.tabName});
                                             }}
                                             data-seed={item.seed}
                                         >
-                                            {item.tabName === '我的' ? <Component /> : this.renderContent(item.content)}
+                                            {item.tabName === '音乐' ? <Component /> : this.renderContent(item.content)}
                                         </TabBar.Item>
                                     )
                             })

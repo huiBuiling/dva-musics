@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { NavBar, Icon, Slider, ImagePicker } from 'antd-mobile';
+import { NavBar, Icon, Slider } from 'antd-mobile';
 import classnames from 'classnames'
 import admin from '../../assets/images/admin.png';
 import PlayMusicLists from './playMusicLists';
@@ -15,17 +15,17 @@ class PlayMusic extends Component{
         percent: 50,
         animationPuse:false,    //动画停止
         playMusicLists:false,   //列表展示
-        skin:1
+        skin:9
       }
   }
 
   render (){
       const { animationPuse, playMusicLists, skin } = this.state;
-      let img = require(`../../assets/images/bg${skin}.jpg`);
+      let img = require(`../../assets/images/playerBg/bg${skin}.jpg`);
       return(
           <div className='m-my'>
               <div className="m-my-play"
-                   style={{backgroundImage:`url(${img}`}}
+                   style={{backgroundImage:`url(${img}`,backgroundPosition:skin > 14 ? "center left":"center"}}
               >
                   {/*top*/}
                   <NavBar
@@ -33,7 +33,7 @@ class PlayMusic extends Component{
                       icon={<Icon type="left" />}
                       onLeftClick={() => this.props.history.push('/lists')}
                       rightContent={<span onClick={()=>{
-                        this.setState({skin:skin < 9 ? skin+1 : 1})
+                        this.setState({skin:skin < 19 ? skin+1 : 1})
                       }}><i className="icon-skin" /></span>}
                   >
                       <div>
@@ -55,7 +55,7 @@ class PlayMusic extends Component{
                           </div>
                           <div className="m-my-play-con-w-q"></div>
                       </div>
-                      <div className="m-my-play-con-n">
+                      <div className={classnames({"m-my-play-con-n":true, "animation-puse":animationPuse})}>
                           <img src={admin} alt=""/>
                       </div>
                   </div>
@@ -82,7 +82,7 @@ class PlayMusic extends Component{
                     <div className="m-my-play-bot-b">
                       <span><i className="icon-bf-xh" /></span>
                       <span><i className="icon-bf-l" /></span>
-                      <span onClick={()=>this.setState({animationPuse:!animationPuse})}><i className="icon-bf-bf" style={{fontSize:38}}/></span>
+                      <span onClick={()=>this.setState({animationPuse:!animationPuse})}><i className={animationPuse ? "icon-bf-bf":"icon-bf-zt"} style={{fontSize:38}}/></span>
                       <span><i className="icon-bf-r" /></span>
                       <span onClick={()=>this.setState({playMusicLists:true})}><i className="icon-bf-list" /></span>
                     </div>

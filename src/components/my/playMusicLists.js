@@ -59,7 +59,7 @@ class PlayMusicLists extends Component{
                                    </div>
                                    <span onClick={()=>{
                                      this.setState({
-                                       data:data.filter((itemI,indexI) => indexI != index),
+                                       data:data.filter((itemI,indexI) => indexI !== index),
                                        isActive: isActive === index ?  -1:isActive
                                      })}
                                    }>
