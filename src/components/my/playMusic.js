@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { NavBar, Icon, Slider } from 'antd-mobile';
-import { withRouter } from 'dva/router';
+import { connect } from 'dva';
 import classnames from 'classnames';
 import admin from '../../assets/images/admin.png';
 import PlayMusicLists from './playMusicLists';
@@ -9,7 +9,6 @@ import PlayMusicLists from './playMusicLists';
  * @date 2019/1/16
  * @Description: playMusic
 */
-@withRouter
 class PlayMusic extends Component{
   constructor(props) {
       super(props);
@@ -25,6 +24,8 @@ class PlayMusic extends Component{
     const self = this;
       const { animationPuse, playMusicLists, skin } = this.state;
       let img = require(`../../assets/images/playerBg/bg${skin}.jpg`);
+      const {playMusicList, playMusicCurrentId, playMusicCurrentUrl} = this.props.playMusic;
+      console.log(playMusicCurrentId);
       return(
           <div className='m-my'>
               <div className="m-my-play"
@@ -100,5 +101,9 @@ class PlayMusic extends Component{
       )
   }
 }
-
-export default PlayMusic;
+const mapStateToProps = (state,dispatch)=>{
+  return {
+    playMusic:state.playMusic
+  }
+}
+export default connect(mapStateToProps)(PlayMusic);

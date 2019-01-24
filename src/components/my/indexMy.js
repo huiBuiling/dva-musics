@@ -1,9 +1,7 @@
 import React,{Component} from 'react';
 import { NavBar, Icon,List  } from 'antd-mobile';
+import { connect } from "dva";
 import { withRouter } from 'dva/router';
-import gd01 from '../../assets/images/gd01.jpg';
-import gd02 from '../../assets/images/gd02.jpg';
-import gd03 from '../../assets/images/gd03.jpg';
 import feach from 'isomorphic-fetch';
 
 /**
@@ -29,7 +27,6 @@ class IndexMy extends Component{
   componentDidMount(){
       feach(this.state.playListUrl).then(response=>{
         return response.json();
-
       }).then(data=>{
           this.setState({
               createPlaylist:data.playlist.filter(item => {return item.creator.province == 140000}),
@@ -40,19 +37,17 @@ class IndexMy extends Component{
   }
 
   getPlayMusicList = (id)=>{
-    feach(`http://localhost:3636/playlist/detail?id=${id}`).then(response=>{
-      return response.json();
-    }).then(data=>{
-      console.log(data);
-      if(data.code == 200){
-        console.log(data.playlist.tracks);
-        // this.props.history.push(`/lists:${id}`)
-        this.props.dispatch({
-          type: 'playMusic/getPlayMusicList',
-          payload: data.playlist.tracks
-        });
-      }
-    })
+      feach(`http://localhost:3636/playlist/detail?id=${id}`).then(response=>{
+          return response.json();
+      }).then(data=>{
+          if(data.code == 200){
+              this.props.dispatch({
+                type: 'playMusic/getPlayMusicList',
+                data: data.playlist.tracks
+              });
+              this.props.history.push(`/lists:${id}`)
+          }
+      })
   }
 
   render (){
@@ -133,4 +128,10 @@ class IndexMy extends Component{
   }
 }
 
-export default IndexMy;
+const mapStateToProps = (state,dispatch) =>{
+  return {
+    playMusic: state.playMusic
+  }
+};
+
+export default connect (mapStateToProps)(IndexMy);
