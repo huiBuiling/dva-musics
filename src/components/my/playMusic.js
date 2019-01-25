@@ -73,6 +73,7 @@ class PlayMusic extends Component{
   //播放|暂停音乐
   playAudio = ()=>{
     const { animationPuse,volume} = this.state;
+    console.log(animationPuse);
     const audio = this.refs.audio;
     if(audio && animationPuse){
       console.log('开始播放');
@@ -115,21 +116,35 @@ class PlayMusic extends Component{
             name:current.name
           }
         });
-        this.playAudio();
+        this.setState({
+          animationPuse:true
+        },()=> this.playAudio());
       }
     });
   }
 
   //下一首
-  next = ()=>{
-    const { playMusicList,playMusicCurrent } = this.props.playMusic;
-    let current = playMusicCurrent;
-      playMusicList.filter((item,index) => {
-      if(item.id === playMusicCurrent.id){
-        current = index;
+  checkMusic = (flag)=>{
+      const { playMusicList,playMusicCurrent } = this.props.playMusic;
+      let current = playMusicCurrent;
+        playMusicList.filter((item,index) => {
+        if(item.id === playMusicCurrent.id){
+          current = index;
+        }
+      });
+
+      //下一首
+      if(flag){
+        if(current < playMusicList.length){
+          current = current + 1;
+        }
+      }else{
+        //上一首
+        if(current != 0) {
+          current = current - 1;
+        }
       }
-    });
-    this.getCurrenturl(playMusicList[current + 1]);
+      this.getCurrenturl(playMusicList[current]);
   }
 
   render (){
@@ -225,9 +240,9 @@ class PlayMusic extends Component{
                       </div>
                       <div className="m-my-play-bot-b">
                           <span><i className="icon-bf-xh" /></span>
-                          <span><i className="icon-bf-l" /></span>
+                          <span onClick={()=>this.checkMusic(false)}><i className="icon-bf-l" /></span>
                           <span onClick={this.playAudio}><i className={animationPuse ? "icon-bf-bf":"icon-bf-zt"} style={{fontSize:38}}/></span>
-                          <span onClick={this.next}><i className="icon-bf-r" /></span>
+                          <span onClick={()=>this.checkMusic(true)}><i className="icon-bf-r" /></span>
                           <span onClick={()=>this.setState({playMusicLists:true})}><i className="icon-bf-list" /></span>
                       </div>
                   </div>
