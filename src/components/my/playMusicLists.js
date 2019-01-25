@@ -12,30 +12,13 @@ class PlayMusicLists extends Component{
       super(props);
       this.state={
         percent: 50,
-        data:[
-          {
-            name:'Here With You',
-            singer:'Asher Book'
-          },
-          {
-            name:'光年之外',
-            singer:'G.E.M.邓紫棋'
-          },
-          {
-            name:'香蜜沉沉烬如霜',
-            singer:'南以鸣'
-          },
-          {
-            name:'光年之外',
-            singer:'G.E.M.邓紫棋'
-          }
-        ],
+        dataList:props.playMusicList,
         isActive:0,
       }
   }
 
   render (){
-    const { data,isActive } = this.state;
+      const { dataList,isActive } = this.state;
       return(
           <div className="m-my-play-list">
               <div className="m-my-play-list-t">
@@ -48,18 +31,18 @@ class PlayMusicLists extends Component{
                 </div>
                 <div className="m-my-play-list-t-b">
                   <ul>
-                    {data.map((item,index)=>{
+                    {dataList.map((item,index)=>{
                         return <li key={index}
                                    className={isActive === index ? "active":""}
                                 >
                                    <div onClick={()=>this.setState({isActive:index})}>
                                      <span><img src={isActive === index ? cricle : cricleUn} alt=""/>{item.name}</span>
                                      <span className="singer"> - </span>
-                                     <span className="singer">{item.singer}</span>
+                                     <span className="singer">{item.ar[0].name}</span>
                                    </div>
                                    <span onClick={()=>{
                                      this.setState({
-                                       data:data.filter((itemI,indexI) => indexI !== index),
+                                       dataList:dataList.filter((itemI,indexI) => indexI !== index),
                                        isActive: isActive === index ?  -1:isActive
                                      })}
                                    }>

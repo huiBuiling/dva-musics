@@ -7,8 +7,7 @@ export default {
   namespace: 'playMusic',
   state: {
     playMusicList:[],
-    playMusicCurrentId:null,
-    playMusicCurrentUrl:null
+    playMusicCurrent:null
   },
   reducers: {
     'playMusicList'(state, data) {
@@ -19,8 +18,7 @@ export default {
     'playMusicCurrent'(state,data){
       return{
         ...state,
-        playMusicCurrentId:data.data.id,
-        playMusicCurrentUrl:data.data.url
+        playMusicCurrent:data.data
       }
     }
   },
@@ -33,10 +31,10 @@ export default {
       });
     },
     //當前播放音樂：id,url
-    *getPlayMusicCurrent({id, url}, { call, put }) {
+    *getPlayMusicCurrent({data}, { call, put }) {
       yield put({
         type: 'playMusicCurrent',   //这个就是调用reducers中的方法进行跟新当前命名空间state的数据
-        data:{id, url}
+        data:data
       });
     }
   },

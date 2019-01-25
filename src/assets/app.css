@@ -1,4 +1,4 @@
-@import '//at.alicdn.com/t/font_1014906_rk4kj118rxp.css';
+@import '//at.alicdn.com/t/font_1014906_zs91ukkbxcf.css';
 [class^=icon-] {
   font-family: "iconfont" !important;
   font-size: 20px;
@@ -156,6 +156,7 @@
 .music .m-my .m-my-play {
   width: 100%;
   height: 100%;
+  position: relative;
   background-image: url("images/playerBg/bg1.jpg");
   background-repeat: no-repeat;
   background-position: center left;
@@ -167,6 +168,45 @@
 .music .m-my .m-my-play .am-navbar {
   background: transparent;
   border-bottom: 1px solid #fff;
+}
+.music .m-my .m-my-play .am-slider-wrapper {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 0 10px;
+}
+.music .m-my .m-my-play .am-slider-wrapper .am-slider .am-slider-rail,
+.music .m-my .m-my-play .am-slider-wrapper .am-slider .am-slider-track {
+  background-color: #fff;
+  height: 3px;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+.music .m-my .m-my-play .am-slider-wrapper .am-slider .am-slider-handle {
+  background-color: #D94038;
+  height: 14px;
+  width: 14px;
+  border: 4px solid #EEEFF1;
+  margin-left: -7px;
+  margin-top: -5px;
+}
+.music .m-my .m-my-play .m-my-play-volume {
+  width: 100%;
+  line-height: 30px;
+  padding: 0 20px;
+  position: absolute;
+  top: 55px;
+  left: 0;
+}
+.music .m-my .m-my-play .m-my-play-volume span {
+  font-size: 20px;
+  color: #D94038;
+  vertical-align: middle;
+}
+.music .m-my .m-my-play .m-my-play-volume .am-slider-wrapper {
+  width: calc(100% - 100px);
 }
 .music .m-my .m-my-play .m-my-play-con {
   position: relative;
@@ -560,29 +600,15 @@
   text-align: left;
   width: 40px;
 }
+.music .m-my .m-my-play .m-my-play-bot .m-my-play-bot-c > span:last-child {
+  text-align: right !important;
+}
 .music .m-my .m-my-play .m-my-play-bot .m-my-play-bot-c .am-slider-wrapper {
   width: calc(100% - 100px);
-  display: inline-block;
-  vertical-align: middle;
-  padding: 0 10px;
 }
-.music .m-my .m-my-play .m-my-play-bot .m-my-play-bot-c .am-slider-wrapper .am-slider .am-slider-rail,
-.music .m-my .m-my-play .m-my-play-bot .m-my-play-bot-c .am-slider-wrapper .am-slider .am-slider-track {
-  background-color: #fff;
-  height: 3px;
-  border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-}
-.music .m-my .m-my-play .m-my-play-bot .m-my-play-bot-c .am-slider-wrapper .am-slider .am-slider-handle {
-  background-color: #D94038;
-  height: 14px;
-  width: 14px;
-  border: 4px solid #EEEFF1;
-  margin-left: -7px;
-  margin-top: -5px;
+.music .m-my .m-my-play .m-my-play-bot .m-my-play-bot-c .music-audio {
+  width: 100%;
+  height: 30px;
 }
 .music .m-my .m-my-play .m-my-play-bot .m-my-play-bot-b {
   width: calc(100% - 40px);

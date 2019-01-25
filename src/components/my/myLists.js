@@ -58,13 +58,16 @@ class MyLists extends Component {
   }
 
   //获取歌曲MP3地址
-  getCurrenturl = (id)=>{
-    fetch(`http://localhost:3636/music/url?id=${id}`).then(res=>{return res.json()}).then(data=>{
+  getCurrenturl = (item)=>{
+    fetch(`http://localhost:3636/music/url?id=${item.id}`).then(res=>{return res.json()}).then(data=>{
       if(data.code == 200){
         this.props.dispatch({
           type:'playMusic/getPlayMusicCurrent',
-          id:id,
-          url:data.data[0].url
+          data:{
+            url:data.data[0].url,
+            id:item.id,
+            name:item.name,
+          }
         });
         this.props.history.push('/playMusic');
       }
@@ -75,8 +78,7 @@ class MyLists extends Component {
     const Item = List.Item;
     const Brief = Item.Brief;
     const { searchList, val } = this.state;
-    const dataList = val === "" ? this.props.playMusic.playMusicList : searchList;
-    console.log(dataList);
+    const dataList = val === "" ? this.props.playMusicList : searchList;
     const tabs = [
       {title: <Badge text={dataList.length}>歌曲</Badge>},
       {title: <Badge dot>歌手</Badge>},
@@ -119,7 +121,7 @@ class MyLists extends Component {
                       return (
                         <Item multipleLine key={index}
                               extra={<span className="m-my-list-r"><i className="icon-list-sp"/><i className="icon-more"/></span>}
-                              onClick={() => {this.getCurrenturl(item.id);}}
+                              onClick={() => {this.getCurrenturl(item);}}
                         >
                           <span>{item.name}</span>
                           <Brief><span>9.5M</span> - <span>{val === "" ? item.ar[0].name:item.artists[0].name}</span></Brief>
@@ -174,7 +176,7 @@ class MyLists extends Component {
 
 const mapStateToProps = (state,dispatch)=>{
   return {
-    playMusic:state.playMusic
+    playMusicList:state.playMusic.playMusicList
   }
 }
 export default connect(mapStateToProps)(MyLists);

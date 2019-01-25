@@ -1,4 +1,4 @@
-@import '//at.alicdn.com/t/font_1014906_rk4kj118rxp.css';
+@import '//at.alicdn.com/t/font_1014906_zs91ukkbxcf.css';
 [class^=icon-] {
   font-family: "iconfont" !important;
   font-size: 20px;
@@ -246,6 +246,7 @@
     .m-my-play{
       width: 100%;
       height: 100%;
+      position: relative;
       background-image: url("images/playerBg/bg1.jpg");
       background-repeat: no-repeat;
       background-position: center left;
@@ -254,9 +255,52 @@
       -o-background-size: cover;
       //-webkit-filter: blur(5px); /* Chrome, Safari, Opera */
       //filter: blur(5px);
+
+      //nav
       .am-navbar {
         background: transparent;
         border-bottom: 1px solid @color;
+      }
+
+      //slider
+      .am-slider-wrapper{
+        //width: calc(~'100% - 50px');
+        display: inline-block;
+        vertical-align: middle;
+        padding: 0 10px;
+        .am-slider{
+          .am-slider-rail,.am-slider-track{
+            background-color: #fff;
+            height: 3px;
+            .border-radius(10px);
+          }
+          .am-slider-handle{
+            background-color: #D94038;
+            height: 14px;
+            width: 14px;
+            border: 4px solid #EEEFF1;
+            margin-left: -7px;
+            margin-top: -5px;
+          }
+        }
+      }
+
+      //volume
+      .m-my-play-volume{
+        width: 100%;
+        line-height: 30px;
+        padding: 0 20px;
+        position: absolute;
+        top: 55px;
+        left: 0;
+        span{
+          font-size: @fontSize20;
+          color: @themColor;
+          vertical-align: middle;
+        }
+        .am-slider-wrapper{
+          width: calc(~'100% - 100px');
+        }
       }
 
       .m-my-play-con{
@@ -389,27 +433,19 @@
             vertical-align: middle;
             text-align: left;
             width: 40px;
-          }
-          .am-slider-wrapper{
-            width: calc(~'100% - 100px');
-            display: inline-block;
-            vertical-align: middle;
-            padding: 0 10px;
-            .am-slider{
-              .am-slider-rail,.am-slider-track{
-                background-color: #fff;
-                height: 3px;
-                .border-radius(10px);
-              }
-              .am-slider-handle{
-                background-color: #D94038;
-                height: 14px;
-                width: 14px;
-                border: 4px solid #EEEFF1;
-                margin-left: -7px;
-                margin-top: -5px;
-              }
+            &:last-child{
+              text-align: right !important;
             }
+          }
+
+          .am-slider-wrapper {
+            width: calc(~'100% - 100px');
+          }
+
+          //music-audio
+          .music-audio{
+            width: 100%;
+            height: 30px;
           }
         }
         .m-my-play-bot-b{
