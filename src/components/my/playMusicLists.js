@@ -13,12 +13,13 @@ class PlayMusicLists extends Component{
       this.state={
         percent: 50,
         dataList:props.playMusicList,
-        isActive:0,
+        // isActive:0,
       }
   }
 
   render (){
-      const { dataList,isActive } = this.state;
+      const { dataList } = this.state;
+      const { currentMusic } = this.props;
       return(
           <div className="m-my-play-list">
               <div className="m-my-play-list-t">
@@ -33,19 +34,21 @@ class PlayMusicLists extends Component{
                   <ul>
                     {dataList.map((item,index)=>{
                         return <li key={index}
-                                   className={isActive === index ? "active":""}
+                                   className={currentMusic === index ? "active":""}
                                 >
-                                   <div onClick={()=>this.setState({isActive:index})}>
-                                     <span><img src={isActive === index ? cricle : cricleUn} alt=""/>{item.name}</span>
+                                   <div onClick={()=>{
+                                     this.props.checkMusic(null,item.id);
+                                     this.setState({isActive:index});
+                                   }}>
+                                     <span><img src={currentMusic === index ? cricle : cricleUn} alt=""/>{item.name}</span>
                                      <span className="singer"> - </span>
                                      <span className="singer">{item.ar[0].name}</span>
                                    </div>
                                    <span onClick={()=>{
                                      this.setState({
-                                       dataList:dataList.filter((itemI,indexI) => indexI !== index),
-                                       isActive: isActive === index ?  -1:isActive
-                                     })}
-                                   }>
+                                       dataList:dataList.filter((itemI,indexI) => indexI !== index)
+                                     })
+                                   }}>
                                      <i className="icon-close2" />
                                    </span>
                                </li>

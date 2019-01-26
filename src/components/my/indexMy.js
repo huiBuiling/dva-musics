@@ -14,7 +14,6 @@ class IndexMy extends Component{
   constructor(props) {
       super(props);
       this.state={
-
           playListUrl:'http://localhost:3636/user/playlist?uid=262606203', //歌单-接口
           createPlaylist:[],      //创建歌单-列表
           toggleCreate:true,      //创建歌单-列表-收缩
@@ -45,7 +44,8 @@ class IndexMy extends Component{
           if(data.code == 200){
               this.props.dispatch({
                 type: 'playMusic/getPlayMusicList',
-                data: data.playlist.tracks
+                data: data.playlist.tracks,
+                // id:id
               });
               this.props.history.push(`/lists:${id}`)
           }
@@ -113,7 +113,7 @@ class IndexMy extends Component{
                       </p>
                       {toggleCollect && collectPlaylist.map((item,index)=>{
                         return (
-                          <div className="m-my-gd-item" key={index} onClick={() => {this.props.history.push(`/lists${item.id}`)}}>
+                          <div className="m-my-gd-item" key={index} onClick={() =>this.getPlayMusicList(item.id)}>
                             <img src={item.coverImgUrl} alt=""/>
                             <div>
                               <h3>{item.name}</h3>

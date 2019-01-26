@@ -295,7 +295,8 @@
         left: 0;
         span{
           font-size: @fontSize20;
-          color: @themColor;
+          //color: @themColor;
+          color: @color;
           vertical-align: middle;
         }
         .am-slider-wrapper{
@@ -506,7 +507,10 @@
 
           .m-my-play-list-t-b{
             width: calc(~'100% - 40px');
+            max-height: 300px;
             padding: 0 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
             ul{
               padding-inline-start: 0;
               margin: 0;
@@ -520,6 +524,7 @@
                 &>div{
                   float: left;
                   width:calc(~'100% - 40px');
+                  .text-overflow;
                   span{
                     font-size: @fontSize5;
                     img{

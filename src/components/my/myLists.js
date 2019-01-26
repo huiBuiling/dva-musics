@@ -35,6 +35,13 @@ class MyLists extends Component {
     }
   }
 
+  componentDidMount(){
+    //刷新后至 -> myMusic
+    if(this.props.playMusicList.length == 0){
+      this.props.history.push('/myMusic');
+    }
+  }
+
   onChange = (value) => {
     this.setState({value});
   };
@@ -122,7 +129,7 @@ class MyLists extends Component {
                       return (
                         <Item multipleLine key={index}
                               extra={<span className="m-my-list-r"><i className="icon-list-sp"/><i className="icon-more"/></span>}
-                              onClick={() => {this.getCurrenturl(item);}}
+                              onClick={() => {this.getCurrenturl(item)}}
                         >
                           <span>{item.name}</span>
                           <Brief><span>9.5M</span> - <span>{val === "" ? item.ar[0].name:item.artists[0].name}</span></Brief>
@@ -139,9 +146,7 @@ class MyLists extends Component {
                       return (
                         <Item multipleLine key={index}
                               extra={<span className="m-my-list-r"><i className="icon-list-sp"/><i className="icon-more"/></span>}
-                              onClick={() => {
-                                this.props.history.push('/playMusic')
-                              }}
+                              onClick={() => {this.getCurrenturl(item)}}
                         >
                           <span>{item.name}</span>
                           <Brief><span>{item.size}</span> - <span>{item.singer}</span></Brief>

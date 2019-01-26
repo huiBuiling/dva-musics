@@ -202,7 +202,7 @@
 }
 .music .m-my .m-my-play .m-my-play-volume span {
   font-size: 20px;
-  color: #D94038;
+  color: #fff;
   vertical-align: middle;
 }
 .music .m-my .m-my-play .m-my-play-volume .am-slider-wrapper {
@@ -668,7 +668,10 @@
 }
 .music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b {
   width: calc(100% - 40px);
+  max-height: 300px;
   padding: 0 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul {
   padding-inline-start: 0;
@@ -685,6 +688,9 @@
 .music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li > div {
   float: left;
   width: calc(100% - 40px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li > div span {
   font-size: 15px;

@@ -17,25 +17,32 @@ class PlayMusic extends Component{
         playMusicLists:false,  //列表展示
         skin:9,                //皮肤
         allTime:'00:00',       //歌曲总时间
-        percentAllTime:0,     //歌曲总时长
+        percentAllTime:0,      //歌曲总时长
         currentTime:'00:00',   //歌曲进度时间
         percentCurrentTime:0,  //歌曲进度时长
         percent:0,             //进度
         volume:10,             //音量
         toggleVolume:false,    //显示音量
-        playMusicCurrent: props.playMusic.playMusicCurrent ? props.playMusic.playMusicCurrent :{
-          id:0,
-          name:"",
-          url:""
-        }
+        playMusicCurrent: props.playMusic.playMusicCurrent,          //当前播放歌曲信息
+        currentMusic:0,               //当前播放歌曲对应index
       }
   }
 
   componentDidMount(){
+    //刷新后至 -> myMusic
+    if(this.props.playMusic.playMusicList.length == 0){
+      this.props.history.push('/myMusic');
+    }else{
+      this.setState({
+        currentMusic:this.getCurrent(null)
+      });
+    }
     const audio = this.refs.audio;
     audio.addEventListener('ended', ()=>{
-        console.log('播放完毕');
-        this.checkMusic(true);
+      console.log('播放完毕');
+      if(this.props.playMusic.playMusicList.length > 0) {
+        this.checkMusic(true, null);
+      }
     }, false);
   }
 
@@ -62,13 +69,13 @@ class PlayMusic extends Component{
       }
 
       let currentTime = `${minute}:${second}`;
-      if(isSet){
-        if(flag == 1){
+      if(isSet){  //是否需更新值
+        if(flag == 1){  //总时长和总进度
           this.setState({
             allTime:currentTime,
             percentAllTime:time
           });
-        }else if(flag == 2){
+        }else if(flag == 2){  // 当前时长和进度
           this.setState({
             currentTime,
             percentCurrentTime:time
@@ -114,7 +121,7 @@ class PlayMusic extends Component{
             url:data.data[0].url,
             id:current.id,
             name:current.name,
-            imgUrl:current.picUrl
+            imgUrl:current.al.picUrl
           }
         });
         this.setState({
@@ -124,26 +131,37 @@ class PlayMusic extends Component{
     });
   }
 
-  //下一首
-  checkMusic = (flag)=>{
+  //获取当前对应歌曲
+  getCurrent =(id)=>{
       const { playMusicList,playMusicCurrent } = this.props.playMusic;
       let current = playMusicCurrent;
-        playMusicList.filter((item,index) => {
-        if(item.id === playMusicCurrent.id){
-          current = index;
-        }
+      let currentId = id ? id : playMusicCurrent.id;
+      playMusicList.filter((item,index) => {
+          if(item.id === currentId){
+              current = index;
+          }
       });
+      return current;
+  }
+
+  //点击切换 | 上一首 | 下一首
+  checkMusic = (flag,id)=>{
+      const { playMusicList } = this.props.playMusic;
+      let current = this.getCurrent(id);
 
       //判断是否可以进行操作
-      if(current < playMusicList.length || current > 0){
+      if(current < playMusicList.length && current > 0){
         //下一首
         if(flag){
             current = current + 1;
-        }else{
+        }else if(flag == false){
           //上一首
           current = current - 1;
         }
         this.getCurrenturl(playMusicList[current]);
+        this.setState({
+            currentMusic:current
+        });
       }else{
         this.setState({
           animationPuse:false
@@ -160,10 +178,22 @@ class PlayMusic extends Component{
     });
   }
 
+  //设置进度
+  setProgress = (val)=>{
+    const audio = this.refs.audio;
+    //更新audio进度
+    audio.currentTime = val / 100 * this.state.percentAllTime;
+    console.log(audio.currentTime);
+    //更新当前时间及进度
+    this.time(2,true);
+
+    // this.setState({percent:val}})
+  }
+
   render (){
       const self = this;
       let {
-        animationPuse, playMusicLists, skin,
+        animationPuse, playMusicLists, currentMusic, skin,
         toggleVolume, volume, percent,
         allTime, percentAllTime,  currentTime, percentCurrentTime,
       } = this.state;
@@ -172,7 +202,7 @@ class PlayMusic extends Component{
       const current = playMusicCurrent ? playMusicCurrent :{id:0, name:"", url:""};
       let img = require(`../../assets/images/playerBg/bg${skin}.jpg`);
       //进度
-      percent = percentCurrentTime == 0 ? percent : (percentCurrentTime / percentAllTime) * 100;
+      // percent = percentCurrentTime == 0 ? percent : (percentCurrentTime / percentAllTime) * 100;
       // console.log(percent);
 
       return(
@@ -249,23 +279,30 @@ class PlayMusic extends Component{
                             // defaultValue={percent}
                             min={0}
                             max={100}
-                            step={1}
-                            value={percent}
-                            onAfterChange={(val)=>{this.setState({percent:val})}}
+                            step={5}
+                            value={percentCurrentTime == 0 ? 0 : (percentCurrentTime / percentAllTime) * 100}
+                            onChange={this.setProgress}
                           />
                           <span>{allTime}</span>
                       </div>
                       <div className="m-my-play-bot-b">
                           <span><i className="icon-bf-xh" /></span>
-                          <span onClick={()=>this.checkMusic(false)}><i className="icon-bf-l" /></span>
+                          <span onClick={()=>this.checkMusic(false,null)}><i className="icon-bf-l" /></span>
                           <span onClick={this.playAudio}><i className={animationPuse ? "icon-bf-bf":"icon-bf-zt"} style={{fontSize:38}}/></span>
-                          <span onClick={()=>this.checkMusic(true)}><i className="icon-bf-r" /></span>
+                          <span onClick={()=>this.checkMusic(true,null)}><i className="icon-bf-r" /></span>
                           <span onClick={()=>this.setState({playMusicLists:true})}><i className="icon-bf-list" /></span>
                       </div>
                   </div>
 
                   {/*PlayMusicLists*/}
-                  {playMusicLists && <PlayMusicLists close={()=>this.setState({playMusicLists:false})} playMusicList={playMusicList}/>}
+                  {playMusicLists &&
+                      <PlayMusicLists
+                        close={()=>this.setState({playMusicLists:false})}
+                        playMusicList={playMusicList}
+                        checkMusic={this.checkMusic}
+                        currentMusic={currentMusic}
+                      />
+                  }
 
               </div>
           </div>
