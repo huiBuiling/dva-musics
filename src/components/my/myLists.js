@@ -67,6 +67,7 @@ class MyLists extends Component {
             url:data.data[0].url,
             id:item.id,
             name:item.name,
+            imgUrl:item.al.picUrl
           }
         });
         this.props.history.push('/playMusic');

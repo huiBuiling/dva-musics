@@ -20,6 +20,7 @@ class PlayMusic extends Component{
         percentAllTime:0,     //歌曲总时长
         currentTime:'00:00',   //歌曲进度时间
         percentCurrentTime:0,  //歌曲进度时长
+        percent:0,             //进度
         volume:10,             //音量
         toggleVolume:false,    //显示音量
         playMusicCurrent: props.playMusic.playMusicCurrent ? props.playMusic.playMusicCurrent :{
@@ -28,6 +29,14 @@ class PlayMusic extends Component{
           url:""
         }
       }
+  }
+
+  componentDidMount(){
+    const audio = this.refs.audio;
+    audio.addEventListener('ended', ()=>{
+        console.log('播放完毕');
+        this.checkMusic(true);
+    }, false);
   }
 
   //获取总时长和播放时间
@@ -95,15 +104,6 @@ class PlayMusic extends Component{
     }
   }
 
-  //设置音量
-  setVolume = (val)=>{
-    const audio = this.refs.audio;
-    audio.volume = (val / 100);
-    this.setState({
-      volume:val
-    });
-  }
-
   //获取歌曲MP3地址
   getCurrenturl = (current)=>{
     fetch(`http://localhost:3636/music/url?id=${current.id}`).then(res=>{return res.json()}).then(data=>{
@@ -113,7 +113,8 @@ class PlayMusic extends Component{
           data:{
             url:data.data[0].url,
             id:current.id,
-            name:current.name
+            name:current.name,
+            imgUrl:current.picUrl
           }
         });
         this.setState({
@@ -133,24 +134,37 @@ class PlayMusic extends Component{
         }
       });
 
-      //下一首
-      if(flag){
-        if(current < playMusicList.length){
-          current = current + 1;
-        }
-      }else{
-        //上一首
-        if(current != 0) {
+      //判断是否可以进行操作
+      if(current < playMusicList.length || current > 0){
+        //下一首
+        if(flag){
+            current = current + 1;
+        }else{
+          //上一首
           current = current - 1;
         }
+        this.getCurrenturl(playMusicList[current]);
+      }else{
+        this.setState({
+          animationPuse:false
+        })
       }
-      this.getCurrenturl(playMusicList[current]);
+  }
+
+  //设置音量
+  setVolume = (val)=>{
+    const audio = this.refs.audio;
+    audio.volume = (val / 100);
+    this.setState({
+      volume:val
+    });
   }
 
   render (){
       const self = this;
-      const {
-        animationPuse, playMusicLists, skin, toggleVolume, volume,
+      let {
+        animationPuse, playMusicLists, skin,
+        toggleVolume, volume, percent,
         allTime, percentAllTime,  currentTime, percentCurrentTime,
       } = this.state;
       const { playMusicList, playMusicCurrent } = this.props.playMusic;
@@ -158,7 +172,8 @@ class PlayMusic extends Component{
       const current = playMusicCurrent ? playMusicCurrent :{id:0, name:"", url:""};
       let img = require(`../../assets/images/playerBg/bg${skin}.jpg`);
       //进度
-      const percent = percentCurrentTime == 0 ? 10 : (percentCurrentTime / percentAllTime) * 100;
+      percent = percentCurrentTime == 0 ? percent : (percentCurrentTime / percentAllTime) * 100;
+      // console.log(percent);
 
       return(
           <div className='m-my'>
@@ -186,7 +201,7 @@ class PlayMusic extends Component{
                           defaultValue={volume}
                           min={0}
                           max={100}
-                          step={10}
+                          step={1}
                           onChange={this.setVolume}
                       />
                   </div>
@@ -206,7 +221,7 @@ class PlayMusic extends Component{
                           <div className="m-my-play-con-w-q"></div>
                       </div>
                       <div className={classnames({"m-my-play-con-n":true, "animation-puse":animationPuse})}>
-                          <img src={admin} alt=""/>
+                          <img src={current.imgUrl} alt=""/>
                       </div>
                   </div>
 
@@ -231,10 +246,12 @@ class PlayMusic extends Component{
                           />
                           <span>{currentTime}</span>
                           <Slider
-                            defaultValue={percent}
+                            // defaultValue={percent}
                             min={0}
                             max={100}
-                            step={10}
+                            step={1}
+                            value={percent}
+                            onAfterChange={(val)=>{this.setState({percent:val})}}
                           />
                           <span>{allTime}</span>
                       </div>

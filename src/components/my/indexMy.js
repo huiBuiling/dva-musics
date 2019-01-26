@@ -25,6 +25,7 @@ class IndexMy extends Component{
   }
 
   componentDidMount(){
+      //获取歌单
       feach(this.state.playListUrl).then(response=>{
         return response.json();
       }).then(data=>{
@@ -36,6 +37,7 @@ class IndexMy extends Component{
       })
   }
 
+  //对应歌单详情列表
   getPlayMusicList = (id)=>{
       feach(`http://localhost:3636/playlist/detail?id=${id}`).then(response=>{
           return response.json();

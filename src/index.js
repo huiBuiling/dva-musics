@@ -8,7 +8,7 @@ es6.polyfill();
 // 1. Initialize
 const app = dva({
    initialState: {
-     lists: {
+     /*lists: {
        products:[
          { name: 'dva', id: 1 },
          { name: 'antd', id: 2 },
@@ -16,7 +16,7 @@ const app = dva({
          { name: 'vue', id: 4 },
        ],
        count:4
-     }
+     }*/
    },
 });
 
