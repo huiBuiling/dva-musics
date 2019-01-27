@@ -7,7 +7,8 @@ export default {
   namespace: 'playMusic',
   state: {
     playMusicList:[],
-    playMusicCurrent:null
+    playMusicCurrent:null,
+    musicLyrics:[]
   },
   reducers: {
     'playMusicList'(state, data) {
@@ -20,6 +21,12 @@ export default {
         ...state,
         playMusicCurrent:data.data
       }
+    },
+    'musicLyrics'(state,data){
+      return {
+        ...state,
+        musicLyrics:data.data
+      }
     }
   },
   effects: { //这里是做异步处理的
@@ -31,9 +38,17 @@ export default {
       });
     },
     //當前播放音樂：id,url
-    *getPlayMusicCurrent({data}, { call, put }) {
+    *getPlayMusicCurrent({data}, { put }) {
       yield put({
-        type: 'playMusicCurrent',   //这个就是调用reducers中的方法进行跟新当前命名空间state的数据
+        type: 'playMusicCurrent',
+        data:data
+      });
+    },
+
+    //当前音乐歌词
+    *getMusicLyrics({data},{put}){
+      yield put({
+        type: 'musicLyrics',
         data:data
       });
     }

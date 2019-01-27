@@ -2,7 +2,6 @@ import React,{Component} from 'react';
 import { NavBar, Icon, Slider } from 'antd-mobile';
 import { connect } from 'dva';
 import classnames from 'classnames';
-import admin from '../../assets/images/admin.png';
 import PlayMusicLists from './playMusicLists';
 /**
  * @author hui
@@ -20,17 +19,18 @@ class PlayMusic extends Component{
         percentAllTime:0,      //歌曲总时长
         currentTime:'00:00',   //歌曲进度时间
         percentCurrentTime:0,  //歌曲进度时长
-        percent:0,             //进度
+        // percent:0,             //进度
         volume:10,             //音量
         toggleVolume:false,    //显示音量
         playMusicCurrent: props.playMusic.playMusicCurrent,          //当前播放歌曲信息
-        currentMusic:0,               //当前播放歌曲对应index
+        currentMusic:0,        //当前播放歌曲对应index
+        showLyrics:true,       //显示歌词
       }
   }
 
   componentDidMount(){
     //刷新后至 -> myMusic
-    if(this.props.playMusic.playMusicList.length == 0){
+    if(this.props.playMusic.playMusicList.length === 0){
       this.props.history.push('/myMusic');
     }else{
       this.setState({
@@ -44,6 +44,18 @@ class PlayMusic extends Component{
         this.checkMusic(true, null);
       }
     }, false);
+
+    //滚动监听
+    window.addEventListener('scroll', this.scrollLyrics);
+  }
+
+  componentWillMount=()=>{
+    // window.removeEventListener('scroll', this.scrollLyrics);
+  }
+
+  //判断歌词是否需滚动
+  scrollLyrics = ()=>{
+
   }
 
   //获取总时长和播放时间
@@ -52,9 +64,9 @@ class PlayMusic extends Component{
     if(audio) {
       //时长转换
       let time = 0, minute = 0, second = 0;
-      if (flag == '1') {
+      if (flag === '1') {
         time = audio.duration;
-      } else if (flag == '2') {
+      } else if (flag === '2') {
         time = audio.currentTime;
       }
 
@@ -70,12 +82,12 @@ class PlayMusic extends Component{
 
       let currentTime = `${minute}:${second}`;
       if(isSet){  //是否需更新值
-        if(flag == 1){  //总时长和总进度
+        if(flag === 1){  //总时长和总进度
           this.setState({
             allTime:currentTime,
             percentAllTime:time
           });
-        }else if(flag == 2){  // 当前时长和进度
+        }else if(flag === 2){  // 当前时长和进度
           this.setState({
             currentTime,
             percentCurrentTime:time
@@ -114,7 +126,7 @@ class PlayMusic extends Component{
   //获取歌曲MP3地址
   getCurrenturl = (current)=>{
     fetch(`http://localhost:3636/music/url?id=${current.id}`).then(res=>{return res.json()}).then(data=>{
-      if(data.code == 200){
+      if(data.code === 200){
         this.props.dispatch({
           type:'playMusic/getPlayMusicCurrent',
           data:{
@@ -154,7 +166,7 @@ class PlayMusic extends Component{
         //下一首
         if(flag){
             current = current + 1;
-        }else if(flag == false){
+        }else if(flag === false){
           //上一首
           current = current - 1;
         }
@@ -186,25 +198,21 @@ class PlayMusic extends Component{
     console.log(audio.currentTime);
     //更新当前时间及进度
     this.time(2,true);
-
-    // this.setState({percent:val}})
   }
 
   render (){
       const self = this;
       let {
         animationPuse, playMusicLists, currentMusic, skin,
-        toggleVolume, volume, percent,
+        showLyrics, toggleVolume, volume,
         allTime, percentAllTime,  currentTime, percentCurrentTime,
       } = this.state;
-      const { playMusicList, playMusicCurrent } = this.props.playMusic;
+      const { playMusicList, playMusicCurrent,musicLyrics } = this.props.playMusic;
 
       const current = playMusicCurrent ? playMusicCurrent :{id:0, name:"", url:""};
       let img = require(`../../assets/images/playerBg/bg${skin}.jpg`);
-      //进度
-      // percent = percentCurrentTime == 0 ? percent : (percentCurrentTime / percentAllTime) * 100;
-      // console.log(percent);
 
+      let percent = percentCurrentTime === 0 ? 0 : (percentCurrentTime / percentAllTime) * 100;
       return(
           <div className='m-my'>
               <div className="m-my-play"
@@ -237,23 +245,39 @@ class PlayMusic extends Component{
                   </div>
 
                   {/*animate*/}
-                  <div className="m-my-play-con">
-                      <div className={classnames({"m-my-play-con-w":true, "animation-puse":animationPuse})}>
-                          <div className="m-my-play-con-w-b">
+                  {showLyrics ?
+                      <div className="m-my-play-con m-my-play-con2" onClick={()=>this.setState({showLyrics:false})}>
+                            {
+                                musicLyrics.map((item,index) => {
+                                    const time = item !== "" && item.split("[")[1].split("]")[0].substring(0,5);
+                                    return <p key={index}>
+                                              <span>{time}</span> - <span>{item.split("]")[1]}</span>
+                                           </p>
+                                })
+                            }
+                      </div>
+                      :
+                      <div className="m-my-play-con" onClick={()=>this.setState({showLyrics:true})}>
+                          <div className={classnames({"m-my-play-con-w": true, "animation-puse": animationPuse})}>
+                              <div className="m-my-play-con-w-b">
+                                  <div className="m-my-play-con-w-q"></div>
+                              </div>
                               <div className="m-my-play-con-w-q"></div>
                           </div>
-                          <div className="m-my-play-con-w-q"></div>
-                      </div>
-                      <div className={classnames({"m-my-play-con-w m-my-play-con-w2":true, "animation-puse":animationPuse})}>
-                          <div className="m-my-play-con-w-b">
-                            <div className="m-my-play-con-w-q"></div>
+                          <div className={classnames({
+                            "m-my-play-con-w m-my-play-con-w2": true,
+                            "animation-puse": animationPuse
+                          })}>
+                              <div className="m-my-play-con-w-b">
+                                  <div className="m-my-play-con-w-q"></div>
+                              </div>
+                              <div className="m-my-play-con-w-q"></div>
                           </div>
-                          <div className="m-my-play-con-w-q"></div>
+                          <div className={classnames({"m-my-play-con-n": true, "animation-puse": animationPuse})}>
+                             <img src={current.imgUrl} alt=""/>
+                          </div>
                       </div>
-                      <div className={classnames({"m-my-play-con-n":true, "animation-puse":animationPuse})}>
-                          <img src={current.imgUrl} alt=""/>
-                      </div>
-                  </div>
+                  }
 
                   {/*bot*/}
                   <div className="m-my-play-bot">
@@ -276,11 +300,10 @@ class PlayMusic extends Component{
                           />
                           <span>{currentTime}</span>
                           <Slider
-                            // defaultValue={percent}
                             min={0}
                             max={100}
                             step={5}
-                            value={percentCurrentTime == 0 ? 0 : (percentCurrentTime / percentAllTime) * 100}
+                            value={percent}
                             onChange={this.setProgress}
                           />
                           <span>{allTime}</span>

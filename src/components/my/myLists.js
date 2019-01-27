@@ -37,7 +37,7 @@ class MyLists extends Component {
 
   componentDidMount(){
     //刷新后至 -> myMusic
-    if(this.props.playMusicList.length == 0){
+    if(this.props.playMusicList.length === 0){
       this.props.history.push('/myMusic');
     }
   }
@@ -55,7 +55,7 @@ class MyLists extends Component {
   //搜索音樂
   searchMusic = (val)=>{
     fetch(`http://localhost:3636/search?keywords=${val}`).then(res=>{return res.json()}).then(data=>{
-      if(data.code == 200){
+      if(data.code === 200){
         this.setState({
           searchList:data.result.songs,
           val
@@ -67,7 +67,7 @@ class MyLists extends Component {
   //获取歌曲MP3地址
   getCurrenturl = (item)=>{
     fetch(`http://localhost:3636/music/url?id=${item.id}`).then(res=>{return res.json()}).then(data=>{
-      if(data.code == 200){
+      if(data.code === 200){
         this.props.dispatch({
           type:'playMusic/getPlayMusicCurrent',
           data:{
@@ -76,6 +76,19 @@ class MyLists extends Component {
             name:item.name,
             imgUrl:item.al.picUrl
           }
+        });
+        this.getMusicLyrics(item.id);
+      }
+    });
+  }
+
+  //获取歌词
+  getMusicLyrics = (id)=>{
+    fetch(`http://localhost:3636/lyric?id=${id}`).then(res=>{return res.json()}).then(data=>{
+      if(data.code === 200){
+        this.props.dispatch({
+          type:'playMusic/getMusicLyrics',
+          data:data.lrc.lyric.split("\n")
         });
         this.props.history.push('/playMusic');
       }

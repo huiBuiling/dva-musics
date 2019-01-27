@@ -211,7 +211,8 @@
 .music .m-my .m-my-play .m-my-play-con {
   position: relative;
   width: 100%;
-  height: 300px;
+  height: calc(100% - 230px);
+  margin-top: 10px;
 }
 .music .m-my .m-my-play .m-my-play-con .m-my-play-con-w {
   width: 300px;
@@ -557,6 +558,16 @@
   -ms-border-radius: 50%;
   -o-border-radius: 50%;
 }
+.music .m-my .m-my-play .m-my-play-con2 {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.music .m-my .m-my-play .m-my-play-con2 p {
+  line-height: 35px;
+  font-size: 14px;
+  text-align: center;
+  color: #fff;
+}
 .music .m-my .m-my-play .animation-puse {
   animation-play-state: paused !important;
   -webkit-animation-play-state: paused !important;
@@ -565,7 +576,7 @@
 .music .m-my .m-my-play .m-my-play-bot {
   position: fixed;
   width: 100%;
-  bottom: 10px;
+  bottom: 0;
   left: 0;
 }
 .music .m-my .m-my-play .m-my-play-bot > div {
@@ -588,7 +599,7 @@
 .music .m-my .m-my-play .m-my-play-bot .m-my-play-bot-t {
   height: 50px;
   line-height: 50px;
-  margin: 30px 0;
+  margin: 0 0 15px;
 }
 .music .m-my .m-my-play .m-my-play-bot .m-my-play-bot-c {
   width: calc(100% - 40px);
@@ -615,7 +626,7 @@
   height: 50px;
   line-height: 50px;
   padding: 0 20px;
-  margin-top: 30px;
+  margin: 20px 0 10px 0;
 }
 .music .m-my .m-my-play .m-my-play-bot .m-my-play-bot-b span {
   width: 20%;

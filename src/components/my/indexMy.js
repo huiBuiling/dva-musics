@@ -29,8 +29,8 @@ class IndexMy extends Component{
         return response.json();
       }).then(data=>{
           this.setState({
-              createPlaylist:data.playlist.filter(item => {return item.creator.province == 140000}),
-              collectPlaylist:data.playlist.filter(item => {return item.creator.province != 140000}),
+              createPlaylist:data.playlist.filter(item => {return item.creator.province === 140000}),
+              collectPlaylist:data.playlist.filter(item => {return item.creator.province !== 140000}),
               liveId:data.playlist[0].id
           });
       })
@@ -41,7 +41,7 @@ class IndexMy extends Component{
       feach(`http://localhost:3636/playlist/detail?id=${id}`).then(response=>{
           return response.json();
       }).then(data=>{
-          if(data.code == 200){
+          if(data.code === 200){
               this.props.dispatch({
                 type: 'playMusic/getPlayMusicList',
                 data: data.playlist.tracks,
