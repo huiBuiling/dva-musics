@@ -94,6 +94,9 @@
   -ms-border-radius: 30px;
   -o-border-radius: 30px;
 }
+.music .m-my .m-my-all .m-my-tabs .am-tabs .am-tabs-content-wrap .m-my-tabs-search .am-list .am-list-body .am-list-item .am-list-line {
+  padding: 8px 15px 8px 0;
+}
 .music .m-my .m-my-all .m-my-cz .am-list-item {
   min-height: 55px;
 }
@@ -149,6 +152,9 @@
 }
 .music .m-my .m-my-all .m-my-gd .m-my-gd-item div p {
   color: #7B7C7E;
+}
+.music .m-my .m-my-all .m-my-list .m-my-list-r i {
+  font-size: 15px;
 }
 .music .m-my .m-my-all .m-my-list .m-my-list-r i:first-child {
   margin-right: 15px;

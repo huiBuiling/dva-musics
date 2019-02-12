@@ -64,9 +64,9 @@ class PlayMusic extends Component{
     if(audio) {
       //时长转换
       let time = 0, minute = 0, second = 0;
-      if (flag === '1') {
+      if (flag === 1) {
         time = audio.duration;
-      } else if (flag === '2') {
+      } else if (flag === 2) {
         time = audio.currentTime;
       }
 
@@ -212,7 +212,7 @@ class PlayMusic extends Component{
       const current = playMusicCurrent ? playMusicCurrent :{id:0, name:"", url:""};
       let img = require(`../../assets/images/playerBg/bg${skin}.jpg`);
 
-      let percent = percentCurrentTime === 0 ? 0 : (percentCurrentTime / percentAllTime) * 100;
+      let percent = percentCurrentTime == 0 ? 0 : (percentCurrentTime / percentAllTime) * 100;
       return(
           <div className='m-my'>
               <div className="m-my-play"
@@ -251,7 +251,8 @@ class PlayMusic extends Component{
                                 musicLyrics.map((item,index) => {
                                     const time = item !== "" && item.split("[")[1].split("]")[0].substring(0,5);
                                     return <p key={index}>
-                                              <span>{time}</span> - <span>{item.split("]")[1]}</span>
+                                              {/*<span>{time}</span> - */}
+                                              <span>{item.split("]")[1]}</span>
                                            </p>
                                 })
                             }
