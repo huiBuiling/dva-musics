@@ -31,7 +31,6 @@ class MyLists extends Component {
       ],
       searchList:[],    //查詢結果
       val:"",           //查詢內容
-      currentUrl:"",    //當前音樂地址
     }
   }
 
@@ -141,11 +140,13 @@ class MyLists extends Component {
                     dataList.map((item, index) => {
                       return (
                         <Item multipleLine key={index}
-                              extra={<span className="m-my-list-r"><i className="icon-list-sp"/><i className="icon-more"/></span>}
+                              extra={<span className="m-my-list-r">
+                                {item.mv !== 0 && <i className="icon-list-sp"/>}
+                                <i className="icon-more"/></span>}
                               onClick={() => {this.getCurrenturl(item)}}
                         >
                           <span>{item.name}</span>
-                          <Brief><span>9.5M</span> - <span>{val === "" ? item.ar[0].name:item.artists[0].name}</span></Brief>
+                          <Brief>{val === "" ? item.ar[0].name:item.artists[0].name}<span></span> - <span>{item.al.name}</span></Brief>
                         </Item>
                       )
                     })
