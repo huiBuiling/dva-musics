@@ -19,12 +19,12 @@ class PlayMusic extends Component{
         percentAllTime:0,      //歌曲总时长
         currentTime:'00:00',   //歌曲进度时间
         percentCurrentTime:0,  //歌曲进度时长
-        // percent:0,             //进度
+        // percent:0,          //进度
         volume:10,             //音量
         toggleVolume:false,    //显示音量
         playMusicCurrent: props.playMusic.playMusicCurrent,          //当前播放歌曲信息
         currentMusic:0,        //当前播放歌曲对应index
-        showLyrics:true,       //显示歌词
+        showLyrics:false,       //显示歌词
       }
   }
 
@@ -127,6 +127,7 @@ class PlayMusic extends Component{
   getCurrenturl = (current)=>{
     fetch(`http://localhost:3636/music/url?id=${current.id}`).then(res=>{return res.json()}).then(data=>{
       if(data.code === 200){
+        console.log('huihi');
         this.props.dispatch({
           type:'playMusic/getPlayMusicCurrent',
           data:{
@@ -162,7 +163,7 @@ class PlayMusic extends Component{
       let current = this.getCurrent(id);
 
       //判断是否可以进行操作
-      if(current < playMusicList.length && current > 0){
+      if(current < playMusicList.length && current > -1){
         //下一首
         if(flag){
             current = current + 1;
