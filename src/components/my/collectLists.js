@@ -1,7 +1,6 @@
 import React,{Component} from 'react';
-import { Tabs, Badge, NavBar, Icon,List  } from 'antd-mobile';
+import { Tabs, Badge, NavBar, Icon,List,SearchBar  } from 'antd-mobile';
 import { connect } from 'dva';
-import fetch from 'dva/fetch';
 import request from '../../utils/request';
 
 /**
@@ -13,69 +12,66 @@ class CollectLists extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      singerList: [],    //歌手列表
-      mvList:[]          //mv列表
+      singerList: [],        //歌手列表
+      mvList:[],             //mv列表
+      searchSingerList:[],   //搜索 - 歌手列表
+      searchMvList:[],   //搜索 - 歌手列表
+      searchSingerVal:[],   //搜索 - 歌手列表
+      searchMvVal:[],   //搜索 - 歌手列表
     }
   }
 
-  componentDidMount(){
+  componentWillMount(){
     //获取歌手列表
-    /*request('http://localhost:3636/artist/sublist').then(data=>{
-      if(data.code === 200){
+    request('artist/sublist').then(data =>{
+      if(data.data.code === 200){
         this.setState({
-          singerList:data
+          singerList:data.data
         });
       }
-    })*/
+    })
 
     //mv列表
-    /*request('http://localhost:3636/mv/sublist').then(data=>{
+   /* request('mv/sublist').then(data =>{
       debugger
-      if(data.code === 200){
+      if(data.data.code === 200){
         this.setState({
-          mvList:data
+          mvList:data.data
         });
       }
     })*/
   }
 
-  //获取歌曲MP3地址
-  getCurrenturl = (item)=>{
-    fetch(`http://localhost:3636/music/url?id=${item.id}`).then(res=>{return res.json()}).then(data=>{
-      if(data.code === 200){
-        this.props.dispatch({
-          type:'playMusic/getPlayMusicCurrent',
-          data:{
-            url:data.data[0].url,
-            id:item.id,
-            name:item.name,
-            imgUrl:item.al.picUrl
-          }
-        });
-        this.getMusicLyrics(item.id);
+  //搜索歌手
+  searchSinger = (val)=>{
+    request(`search?keywords=${val}`).then(data=>{
+      if(data.data.code === 200){
+        this.setState({
+          searchSingerList:data.data.result.songs,
+          searchSingerVal:val
+        })
       }
-    });
-  }
+    })
+  };
 
-  //获取歌词
-  getMusicLyrics = (id)=>{
-    fetch(`http://localhost:3636/lyric?id=${id}`).then(res=>{return res.json()}).then(data=>{
-      if(data.code === 200){
-        this.props.dispatch({
-          type:'playMusic/getMusicLyrics',
-          data:data.lrc.lyric.split("\n")
-        });
-        this.props.history.push('/playMusic');
+  //搜索mv
+  searchMv = (val)=>{
+    request(`search?keywords=${val}`).then(data=>{
+      if(data.data.code === 200){
+        this.setState({
+          searchMvList:data.data.result.songs,
+          searchMvVal:val
+        })
       }
-    });
-  }
+    })
+  };
 
   render() {
     const Item = List.Item;
     const Brief = Item.Brief;
     const tabs = [
-      {title: <Badge dot>歌手</Badge>},
-      {title: <Badge dot>MV</Badge>},
+      {title: '歌手'},
+      {title: 'MV'}
     ]
     return (
       <div className='m-my'>
@@ -93,17 +89,22 @@ class CollectLists extends Component {
           {/*tab*/}
           <div className="m-my-tabs m-my-tabs-collect">
             <Tabs tabs={tabs} initialPage={0}>
-              <div>
-                <List className="m-my-list">
+              <div className="m-my-tabs-search">
+                <List className="m-my-list" renderHeader={
+                  <SearchBar
+                    placeholder="搜索歌手"
+                    maxLength={8}
+                    onChange={this.searchSinger}
+                    onClear={()=>this.setState({searchSingerList:[],searchSingerVal:""})}
+                  />}>
                   {/*{
-                    this.state.listData.map((item, index) => {
+                    this.state.singerList.map((item, index) => {
                       return (
                         <Item multipleLine key={index}
                               extra={<span className="m-my-list-r"><i className="icon-list-sp"/><i className="icon-more"/></span>}
-                              onClick={() => {this.getCurrenturl(item)}}
+                              // onClick={() => {this.getCurrenturl(item)}}
                         >
-                          <span>{item.name}</span>
-                          <Brief><span>{item.size}</span> - <span>{item.singer}</span></Brief>
+                          <img src={item.picUrl}/><span>{item.name}({item.trans})</span>
                         </Item>
                       )
                     })
@@ -111,17 +112,22 @@ class CollectLists extends Component {
                   1111111111111111111111
                 </List>
               </div>
-              <div className="">
-                <List className="m-my-list">
+              <div className="m-my-tabs-search">
+                <List className="m-my-list" renderHeader={
+                  <SearchBar
+                    placeholder="搜索视频"
+                    maxLength={8}
+                    onChange={this.searchMv}
+                    onClear={()=>this.setState({searchMvList:[],searchMvVal:""})}
+                  />}>
                   {/*{
                     this.state.listData.map((item, index) => {
                       return (
                         <Item multipleLine key={index}
                               extra={<span className="m-my-list-r"><i className="icon-list-sp"/><i className="icon-more"/></span>}
-                              onClick={() => {this.getCurrenturl(item)}}
+                              // onClick={() => {this.getCurrenturl(item)}}
                         >
-                          <span>{item.name}</span>
-                          <Brief><span>{item.size}</span> - <span>{item.singer}</span></Brief>
+                          <span>{item.name}({item.trans})</span>
                         </Item>
                       )
                     })

@@ -18,7 +18,7 @@ class RecordLists extends Component {
   }
 
   componentDidMount(){
-    fetch('http://localhost:3636/user/record?uid=262606203&type=1').then(res=>{return res.json()}).then(data=>{
+    fetch('user/record?uid=262606203&type=1').then(res=>{return res.json()}).then(data=>{
       if(data.code === 200){
         this.setState({
           recordList:data.weekData
@@ -29,7 +29,7 @@ class RecordLists extends Component {
 
   //获取歌曲MP3地址
   getCurrenturl = (item)=>{
-    fetch(`http://localhost:3636/music/url?id=${item.id}`).then(res=>{return res.json()}).then(data=>{
+    fetch(`music/url?id=${item.id}`).then(res=>{return res.json()}).then(data=>{
       if(data.code === 200){
         this.props.dispatch({
           type:'playMusic/getPlayMusicCurrent',
@@ -47,7 +47,7 @@ class RecordLists extends Component {
 
   //获取歌词
   getMusicLyrics = (id)=>{
-    fetch(`http://localhost:3636/lyric?id=${id}`).then(res=>{return res.json()}).then(data=>{
+    fetch(`lyric?id=${id}`).then(res=>{return res.json()}).then(data=>{
       if(data.code === 200){
         this.props.dispatch({
           type:'playMusic/getMusicLyrics',

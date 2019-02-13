@@ -13,7 +13,7 @@ class IndexMy extends Component{
   constructor(props) {
     super(props);
     this.state={
-      playListUrl:'http://localhost:3636/user/playlist?uid=262606203', //歌单-接口
+      playListUrl:'user/playlist?uid=262606203', //歌单-接口
       createPlaylist:[],      //创建歌单-列表
       toggleCreate:true,      //创建歌单-列表-收缩
       collectPlaylist:[],     //收藏歌单-列表
@@ -41,7 +41,7 @@ class IndexMy extends Component{
 
   //对应歌单详情列表
   getPlayMusicList = (id)=>{
-    request(`http://localhost:3636/playlist/detail?id=${id}`).then(data=>{
+    request(`playlist/detail?id=${id}`).then(data=>{
       if(data.data.code === 200){
         this.props.dispatch({
           type: 'playMusic/getPlayMusicList',

@@ -52,7 +52,7 @@ class MyLists extends Component {
 
   //搜索音樂
   searchMusic = (val)=>{
-    request(`http://localhost:3636/search?keywords=${val}`).then(data=>{
+    request(`search?keywords=${val}`).then(data=>{
       if(data.data.code === 200){
         this.setState({
           searchList:data.data.result.songs,
@@ -64,7 +64,7 @@ class MyLists extends Component {
 
   //获取歌曲MP3地址
   getCurrenturl = (item)=>{
-    request(`http://localhost:3636/music/url?id=${item.id}`).then(data=>{
+    request(`music/url?id=${item.id}`).then(data=>{
       if(data.data.code === 200){
         this.props.dispatch({
           type:'playMusic/getPlayMusicCurrent',
@@ -82,7 +82,7 @@ class MyLists extends Component {
 
   //获取歌词
   getMusicLyrics = (id)=>{
-    request(`http://localhost:3636/lyric?id=${id}`).then(data=>{
+    request(`lyric?id=${id}`).then(data=>{
       if(data.data.code === 200){
         this.props.dispatch({
           type:'playMusic/getMusicLyrics',

@@ -126,7 +126,7 @@ class PlayMusic extends Component{
 
   //获取歌曲MP3地址
   getCurrenturl = (current)=>{
-    request(`http://localhost:3636/music/url?id=${current.id}`).then(data=>{
+    request(`music/url?id=${current.id}`).then(data=>{
       if(data.data.code === 200){
         this.props.dispatch({
           type:'playMusic/getPlayMusicCurrent',
