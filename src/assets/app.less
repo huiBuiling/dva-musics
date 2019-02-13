@@ -147,7 +147,6 @@
             .am-tabs-default-bar-underline{
               border: 1.5px solid @color;
               width: 50px !important;
-              margin: 0  0 0 calc(~'33.3333% - 77px');
               .border-radius(5px);
               bottom: 5px;
             }
@@ -164,6 +163,9 @@
             .m-my-tabs-search {
               flex: auto;
               background: #E6E7E9;
+              .am-tabs-default-bar-underline{
+                margin: 0  0 0 calc(~'33.3333% - 77px');
+              }
               .am-list {
                 .am-list-header {
                   padding: 0;
@@ -594,6 +596,15 @@
           clear: both;
         }
       }
+    }
+  }
+
+  //collect
+  .m-my-tabs-collect {
+    flex: auto;
+    background: #E6E7E9;
+    .am-tabs-default-bar-underline {
+      margin: 0 0 0 calc(~'25% - 25px');
     }
   }
 
