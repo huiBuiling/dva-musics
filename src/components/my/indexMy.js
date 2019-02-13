@@ -2,8 +2,7 @@ import React,{Component} from 'react';
 import { NavBar, Icon,List  } from 'antd-mobile';
 import { connect } from "dva";
 import { withRouter } from 'dva/router';
-import feach from 'isomorphic-fetch';
-
+import request from '../../utils/request';
 /**
  * @author hui
  * @date 2019/1/15
@@ -25,26 +24,28 @@ class IndexMy extends Component{
 
   componentDidMount(){
     //获取歌单
-    feach(this.state.playListUrl).then(response=>{
-      return response.json();
-    }).then(data=>{
-      this.setState({
-        createPlaylist:data.playlist.filter(item => {return item.creator.province === 140000}),
-        collectPlaylist:data.playlist.filter(item => {return item.creator.province !== 140000}),
-        liveId:data.playlist[0].id
-      });
+    request(this.state.playListUrl).then(data=>{
+      if(data.data.code === 200) {
+        this.setState({
+          createPlaylist: data.data.playlist.filter(item => {
+            return item.creator.province === 140000
+          }),
+          collectPlaylist: data.data.playlist.filter(item => {
+            return item.creator.province !== 140000
+          }),
+          liveId: data.data.playlist[0].id
+        });
+      }
     })
   }
 
   //对应歌单详情列表
   getPlayMusicList = (id)=>{
-    feach(`http://localhost:3636/playlist/detail?id=${id}`).then(response=>{
-      return response.json();
-    }).then(data=>{
-      if(data.code === 200){
+    request(`http://localhost:3636/playlist/detail?id=${id}`).then(data=>{
+      if(data.data.code === 200){
         this.props.dispatch({
           type: 'playMusic/getPlayMusicList',
-          data: data.playlist.tracks,
+          data: data.data.playlist.tracks,
           // id:id
         });
         this.props.history.push(`/lists:${id}`)
@@ -82,7 +83,7 @@ class IndexMy extends Component{
             >最近播放</Item>
             <Item
               thumb={<span><i className="icon-m-sc"/></span>}
-              onClick={() => {}}
+              onClick={() => {this.props.history.push('/collectLists')}}
               arrow="horizontal"
             >我的收藏</Item>
             {/*<Item
