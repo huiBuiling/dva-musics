@@ -1,6 +1,4 @@
-## 音乐播放器
-
-> dva -- antd-mobile
+## 音乐播放器（dva -- antd-mobile）
 
 > 功能：
     
