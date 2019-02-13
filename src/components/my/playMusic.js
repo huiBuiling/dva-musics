@@ -3,6 +3,7 @@ import { NavBar, Icon, Slider } from 'antd-mobile';
 import { connect } from 'dva';
 import classnames from 'classnames';
 import PlayMusicLists from './playMusicLists';
+import request from '../../utils/request';
 /**
  * @author hui
  * @date 2019/1/16
@@ -125,13 +126,12 @@ class PlayMusic extends Component{
 
   //获取歌曲MP3地址
   getCurrenturl = (current)=>{
-    fetch(`http://localhost:3636/music/url?id=${current.id}`).then(res=>{return res.json()}).then(data=>{
-      if(data.code === 200){
-        console.log('huihi');
+    request(`http://localhost:3636/music/url?id=${current.id}`).then(data=>{
+      if(data.data.code === 200){
         this.props.dispatch({
           type:'playMusic/getPlayMusicCurrent',
           data:{
-            url:data.data[0].url,
+            url:data.data.data[0].url,
             id:current.id,
             name:current.name,
             imgUrl:current.al.picUrl

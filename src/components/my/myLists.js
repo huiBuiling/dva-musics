@@ -1,8 +1,7 @@
 import React,{Component} from 'react';
 import { Tabs, Badge, NavBar, Icon,List,SearchBar  } from 'antd-mobile';
 import { connect } from 'dva';
-import fetch from 'dva/fetch';
-
+import request from '../../utils/request';
 /**
  * @author hui
  * @date 2019/1/16
@@ -53,10 +52,10 @@ class MyLists extends Component {
 
   //搜索音樂
   searchMusic = (val)=>{
-    fetch(`http://localhost:3636/search?keywords=${val}`).then(res=>{return res.json()}).then(data=>{
-      if(data.code === 200){
+    request(`http://localhost:3636/search?keywords=${val}`).then(data=>{
+      if(data.data.code === 200){
         this.setState({
-          searchList:data.result.songs,
+          searchList:data.data.result.songs,
           val
         })
       }
@@ -65,12 +64,12 @@ class MyLists extends Component {
 
   //获取歌曲MP3地址
   getCurrenturl = (item)=>{
-    fetch(`http://localhost:3636/music/url?id=${item.id}`).then(res=>{return res.json()}).then(data=>{
-      if(data.code === 200){
+    request(`http://localhost:3636/music/url?id=${item.id}`).then(data=>{
+      if(data.data.code === 200){
         this.props.dispatch({
           type:'playMusic/getPlayMusicCurrent',
           data:{
-            url:data.data[0].url,
+            url:data.data.data[0].url,
             id:item.id,
             name:item.name,
             imgUrl:item.al.picUrl
@@ -83,11 +82,11 @@ class MyLists extends Component {
 
   //获取歌词
   getMusicLyrics = (id)=>{
-    fetch(`http://localhost:3636/lyric?id=${id}`).then(res=>{return res.json()}).then(data=>{
-      if(data.code === 200){
+    request(`http://localhost:3636/lyric?id=${id}`).then(data=>{
+      if(data.data.code === 200){
         this.props.dispatch({
           type:'playMusic/getMusicLyrics',
-          data:data.lrc.lyric.split("\n")
+          data:data.data.lrc.lyric.split("\n")
         });
         this.props.history.push('/playMusic');
       }
