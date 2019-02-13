@@ -13,30 +13,51 @@ class IndexMy extends Component{
   constructor(props) {
     super(props);
     this.state={
-      playListUrl:'user/playlist?uid=262606203', //歌单-接口
       createPlaylist:[],      //创建歌单-列表
       toggleCreate:true,      //创建歌单-列表-收缩
       collectPlaylist:[],     //收藏歌单-列表
-      toggleCollect:false,     //收藏歌单-列表-收缩
+      toggleCollect:false,    //收藏歌单-列表-收缩
       liveId:null,            //歌单-喜欢id
     }
   }
 
   componentDidMount(){
     //获取歌单
-    request(this.state.playListUrl).then(data=>{
+    request(`user/playlist?uid=${this.props.users.userMsg.id}`).then(data=>{
       if(data.data.code === 200) {
+        let createPlaylist = data.data.playlist.filter(item => {
+          return item.creator.province === 140000
+        });
+
+        //获取喜欢音乐列表
+        request(`playlist/detail?id=${createPlaylist[0].id}`).then(data=>{
+          if(data.data.code === 200){
+            this.props.dispatch({
+              type:'users/getUserLiveIDList',
+              data:data.data.playlist.tracks
+            });
+          }
+        });
+
         this.setState({
-          createPlaylist: data.data.playlist.filter(item => {
-            return item.creator.province === 140000
-          }),
-          collectPlaylist: data.data.playlist.filter(item => {
+          createPlaylist,
+          collectPlaylist:data.data.playlist.filter(item => {
             return item.creator.province !== 140000
           }),
           liveId: data.data.playlist[0].id
         });
       }
     })
+
+    //登录，获取用户id
+    /*request(this.state.playListUrl).then(data=>{
+      if(data.data.code === 200) {
+        this.props.dispatch({
+          type:'users/getUserMsg',
+          data:data.data.playlist.tracks
+        });
+      }
+    })*/
   }
 
   //对应歌单详情列表
@@ -45,8 +66,7 @@ class IndexMy extends Component{
       if(data.data.code === 200){
         this.props.dispatch({
           type: 'playMusic/getPlayMusicList',
-          data: data.data.playlist.tracks,
-          // id:id
+          data: data.data.playlist.tracks
         });
         this.props.history.push(`/lists:${id}`)
       }
@@ -138,7 +158,8 @@ class IndexMy extends Component{
 
 const mapStateToProps = (state,dispatch) =>{
   return {
-    playMusic: state.playMusic
+    playMusic: state.playMusic,
+    users:state.users
   }
 };
 

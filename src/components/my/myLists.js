@@ -64,6 +64,9 @@ class MyLists extends Component {
 
   //获取歌曲MP3地址
   getCurrenturl = (item)=>{
+    let live = this.props.liveList.filter(itemL => {
+      return itemL.id == item.id;
+    }).length > 0 ? true:false;
     request(`music/url?id=${item.id}`).then(data=>{
       if(data.data.code === 200){
         this.props.dispatch({
@@ -72,7 +75,8 @@ class MyLists extends Component {
             url:data.data.data[0].url,
             id:item.id,
             name:item.name,
-            imgUrl:item.al.picUrl
+            imgUrl:item.al.picUrl,
+            live: live
           }
         });
         this.getMusicLyrics(item.id);
@@ -195,7 +199,8 @@ class MyLists extends Component {
 
 const mapStateToProps = (state,dispatch)=>{
   return {
-    playMusicList:state.playMusic.playMusicList
+    playMusicList:state.playMusic.playMusicList,
+    liveList:state.users.liveList
   }
 }
 export default connect(mapStateToProps)(MyLists);

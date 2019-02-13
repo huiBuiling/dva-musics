@@ -1,7 +1,7 @@
 /**
  * @author hui
  * @date 2019/1/24
- * @Description: playMusic
+ * @Description: playMusicList歌曲列表 | playMusicCurrent当前歌曲id and url | musicLyrics当前歌曲歌词
 */
 export default {
   namespace: 'playMusic',

@@ -32,7 +32,7 @@
 }
 .music .m-my .am-navbar {
   width: 100%;
-  background: #D94038;
+  background: #ea4d45;
   color: #fff;
 }
 .music .m-my .am-navbar .am-navbar-title {
@@ -58,7 +58,7 @@
   z-index: 100;
 }
 .music .m-my .m-my-all .m-my-tabs .am-tabs .am-tabs-tab-bar-wrap .am-tabs-default-bar {
-  background-color: #D94038 !important;
+  background-color: #ea4d45 !important;
   color: #fff;
 }
 .music .m-my .m-my-all .m-my-tabs .am-tabs .am-tabs-tab-bar-wrap .am-tabs-default-bar-tab-active {
@@ -67,7 +67,6 @@
 .music .m-my .m-my-all .m-my-tabs .am-tabs .am-tabs-tab-bar-wrap .am-tabs-default-bar-underline {
   border: 1.5px solid #fff;
   width: 50px !important;
-  margin: 0 0 0 calc(33.3333% - 77px);
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -78,11 +77,14 @@
 .music .m-my .m-my-all .m-my-tabs .am-tabs .am-tabs-tab-bar-wrap .am-badge .am-badge-text,
 .music .m-my .m-my-all .m-my-tabs .am-tabs .am-tabs-tab-bar-wrap .am-badge .am-badge-dot {
   background-color: #fff;
-  color: #D94038;
+  color: #ea4d45;
 }
 .music .m-my .m-my-all .m-my-tabs .am-tabs .am-tabs-content-wrap .m-my-tabs-search {
   flex: auto;
   background: #E6E7E9;
+}
+.music .m-my .m-my-all .m-my-tabs .am-tabs .am-tabs-content-wrap .m-my-tabs-search .am-tabs-default-bar-underline {
+  margin: 0 0 0 calc(33.3333% - 77px);
 }
 .music .m-my .m-my-all .m-my-tabs .am-tabs .am-tabs-content-wrap .m-my-tabs-search .am-list .am-list-header {
   padding: 0;
@@ -101,7 +103,7 @@
   min-height: 55px;
 }
 .music .m-my .m-my-all .m-my-cz .am-list-item i {
-  color: #D94038;
+  color: #ea4d45;
   font-size: 1.5em;
 }
 .music .m-my .m-my-all .m-my-gd {
@@ -600,7 +602,7 @@
   font-size: 25px;
 }
 .music .m-my .m-my-play .m-my-play-bot > div span i.icon-bf-live {
-  color: #D94038;
+  color: #ea4d45;
 }
 .music .m-my .m-my-play .m-my-play-bot .m-my-play-bot-t {
   height: 50px;
@@ -733,10 +735,10 @@
   color: #7B7C7E;
 }
 .music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li.active {
-  color: #D94038;
+  color: #ea4d45;
 }
 .music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li.active span.singer {
-  color: #D94038;
+  color: #ea4d45;
 }
 .music .m-my .m-my-play .m-my-play-list .m-my-play-list-t .m-my-play-list-t-b ul li:last-child {
   border-bottom: none;
@@ -749,6 +751,13 @@
   text-align: center;
   clear: both;
 }
+.music .m-my-tabs-collect {
+  flex: auto;
+  background: #E6E7E9;
+}
+.music .m-my-tabs-collect .am-tabs-default-bar-underline {
+  margin: 0 0 0 calc(25% - 25px);
+}
 .music .m-footer .am-tab-bar-bar .am-tab-bar-tab-icon {
-  color: #D94038;
+  color: #ea4d45;
 }

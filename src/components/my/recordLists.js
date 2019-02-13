@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { NavBar, Icon,List  } from 'antd-mobile';
 import { connect } from 'dva';
-import fetch from 'dva/fetch';
+import request from '../../utils/request';
 
 /**
  * @author hui
@@ -18,44 +18,13 @@ class RecordLists extends Component {
   }
 
   componentDidMount(){
-    fetch('user/record?uid=262606203&type=1').then(res=>{return res.json()}).then(data=>{
-      if(data.code === 200){
+    request(`user/record?uid=${this.props.userId}&type=1`).then(data=>{
+      if(data.data.code === 200){
         this.setState({
-          recordList:data.weekData
+          recordList:data.data.weekData
         });
       }
     })
-  }
-
-  //获取歌曲MP3地址
-  getCurrenturl = (item)=>{
-    fetch(`music/url?id=${item.id}`).then(res=>{return res.json()}).then(data=>{
-      if(data.code === 200){
-        this.props.dispatch({
-          type:'playMusic/getPlayMusicCurrent',
-          data:{
-            url:data.data[0].url,
-            id:item.id,
-            name:item.name,
-            imgUrl:item.al.picUrl
-          }
-        });
-        this.getMusicLyrics(item.id);
-      }
-    });
-  }
-
-  //获取歌词
-  getMusicLyrics = (id)=>{
-    fetch(`lyric?id=${id}`).then(res=>{return res.json()}).then(data=>{
-      if(data.code === 200){
-        this.props.dispatch({
-          type:'playMusic/getMusicLyrics',
-          data:data.lrc.lyric.split("\n")
-        });
-        this.props.history.push('/playMusic');
-      }
-    });
   }
 
   render() {
@@ -104,7 +73,8 @@ class RecordLists extends Component {
 
 const mapStateToProps = (state,dispatch)=>{
   return {
-    playMusicList:state.playMusic.playMusicList
+    playMusicList:state.playMusic.playMusicList,
+    userId:state.users.userMsg.id
   }
 }
 export default connect(mapStateToProps)(RecordLists);

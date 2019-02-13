@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { NavBar, Icon, Slider } from 'antd-mobile';
+import { NavBar, Icon, Slider,Toast } from 'antd-mobile';
 import { connect } from 'dva';
 import classnames from 'classnames';
 import PlayMusicLists from './playMusicLists';
@@ -35,7 +35,7 @@ class PlayMusic extends Component{
       this.props.history.push('/myMusic');
     }else{
       this.setState({
-        currentMusic:this.getCurrent(null)
+        currentMusic:this.getCurrent(null),
       });
     }
     const audio = this.refs.audio;
@@ -201,6 +201,25 @@ class PlayMusic extends Component{
     this.time(2,true);
   }
 
+  //喜欢
+  setLike = ()=>{
+    // val true:like, false:unlike
+    let { id,live } = this.props.playMusic.playMusicCurrent;
+    request(`like?id=${id}&like=${!live}`).then(data =>{
+      console.log(data);
+      if(data.data.code === 301){
+        Toast.info(data.data.msg, 1);
+      }
+      if(data.data.code === 200){
+          if(!live){
+            Toast.success('已添加到我的喜欢!', 1);
+          }else{
+            Toast.info('已取消喜欢', 1);
+          }
+      }
+    })
+  }
+
   render (){
       const self = this;
       let {
@@ -284,7 +303,7 @@ class PlayMusic extends Component{
                   {/*bot*/}
                   <div className="m-my-play-bot">
                       <div className="m-my-play-bot-t">
-                          <span><i className="icon-bf-live" /></span>
+                          <span onClick={this.setLike}><i className={current.live ? "icon-bf-live":"icon-bf-unlive"} /></span>
                           <span><i className="icon-bf-xz" /></span>
                           <span><i className="icon-bf-xx" /></span>
                           <span><i className="icon-bf-more" /></span>
