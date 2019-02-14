@@ -205,6 +205,7 @@ class PlayMusic extends Component{
   setLike = ()=>{
     // val true:like, false:unlike
     let { id,live } = this.props.playMusic.playMusicCurrent;
+
     request(`like?id=${id}&like=${!live}`).then(data =>{
       console.log(data);
       if(data.data.code === 301){

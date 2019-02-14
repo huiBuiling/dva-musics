@@ -16,11 +16,13 @@ export default {
   reducers: {
     'userMsg'(state, data) {
       return {
+        ...state,
         users:data.data
       };
     },
     'userLiveIDList'(state, data){
       return{
+        ...state,
         liveList:data.data
       }
     }
