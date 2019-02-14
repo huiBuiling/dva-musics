@@ -20,9 +20,10 @@ function checkStatus(response) {
  * @param  {string} url       The URL we want to request
  * @param  {object} [options] The options we want to pass to "fetch"
  * @return {object}           An object containing either "data" or "err"
+ * options fetch 带cookie跨域访问 {credentials: "include"}
  */
 export default function request(url, options) {
-  return fetch(`http://localhost:3636/${url}`, options)
+  return fetch(`http://localhost:3636/${url}`, {credentials: "include"})
     .then(checkStatus)
     .then(parseJSON)
     .then(data => ({ data }))

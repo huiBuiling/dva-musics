@@ -27,3 +27,5 @@
   ```
   
 > MP3文件计算公式：编码率(kbps)×歌曲全长(秒)/8=文件大小(kB)
+
+> 跨域：fetch 带cookie跨域访问 {credentials: "include"}
