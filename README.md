@@ -25,7 +25,9 @@
   use:
     import feach from 'isomorphic-fetch';
   ```
-  
+
+>访问：http://localhost:8000/#/discover
+
 > MP3文件计算公式：编码率(kbps)×歌曲全长(秒)/8=文件大小(kB)
 
 > 跨域：fetch 带cookie跨域访问 {credentials: "include"}

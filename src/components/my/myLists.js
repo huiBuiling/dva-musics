@@ -121,7 +121,7 @@ class MyLists extends Component {
           >我的音乐</NavBar>
 
           {/*tab*/}
-          <div className="m-my-tabs">
+          <div className="m-my-tabs m-my-tabs-list">
             <Tabs tabs={tabs}
                   initialPage={0}
                   onChange={(tab, index) => {

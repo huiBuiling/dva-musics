@@ -1,4 +1,4 @@
-@import '//at.alicdn.com/t/font_1014906_zs91ukkbxcf.css';
+@import '//at.alicdn.com/t/font_1014906_69o49pjz2v5.css';
 [class^=icon-] {
   font-family: "iconfont" !important;
   font-size: 20px;
@@ -8,7 +8,8 @@
 }
 
 /*com style*/
-@themColor: #ea4d45;
+@themColor: #DC423A;
+@themColor2:#F0716F;
 //D94038
 //ea4d45
 @color:#fff;
@@ -41,6 +42,15 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+//多行文字省略
+.text-overflow2(@num:2){
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: @num;
+  -webkit-box-orient: vertical;
 }
 
 //动画
@@ -100,23 +110,56 @@
   width: 100%;
   height: 100%;
 
+  //nav
+  .am-navbar{
+    width: 100%;
+    background: @themColor;
+    color: @color;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    .am-navbar-title{
+      color: @color;
+      &>div{
+        text-align: center;
+      }
+    }
+  }
+
+  //tab
+  .am-tabs {
+    .am-tabs-tab-bar-wrap {
+      .am-tabs-default-bar {
+        background-color: @themColor !important;
+        color: @color;
+      }
+      .am-tabs-default-bar-tab-active {
+        color: @color;
+      }
+      .am-tabs-default-bar-underline {
+        border: 1.5px solid @color;
+        width: 50px !important;
+        .border-radius(5px);
+        bottom: 5px;
+        margin: 0 0 0 calc(~'25% - 25px');
+      }
+      .am-badge {
+        .am-badge-text, .am-badge-dot {
+          background-color: @color;
+          color: @themColor;
+        }
+      }
+    }
+    //con
+    .am-tabs-content-wrap {}
+  }
+
   //我的
   .m-my{
     width: 100%;
     height: 100%;
     overflow-x: hidden;
-    //nav
-    .am-navbar{
-      width: 100%;
-      background: @themColor;
-      color: @color;
-      .am-navbar-title{
-        color: @color;
-        &>div{
-          text-align: center;
-        }
-      }
-    }
 
     //con
     .m-my-all {
@@ -125,49 +168,19 @@
       overflow-y: auto;
       margin-top: 45px;
 
-      //nav
-      .am-navbar{
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 99;
+      //tab
+      .m-my-tabs-list{
+        .am-tabs-default-bar-underline{
+          margin: 0  0 0 calc(~'33.3333% - 77px');
+        }
       }
 
-      //tab
       .m-my-tabs{
         margin-top: -1px;
         z-index: 100;
-        .am-tabs {
-          .am-tabs-tab-bar-wrap {
-            .am-tabs-default-bar {
-              background-color: @themColor !important;
-              color: @color;
-            }
-            .am-tabs-default-bar-tab-active{
-              color: @color;
-            }
-            .am-tabs-default-bar-underline{
-              border: 1.5px solid @color;
-              width: 50px !important;
-              .border-radius(5px);
-              bottom: 5px;
-            }
-            .am-badge{
-              .am-badge-text,.am-badge-dot{
-                background-color: @color;
-                color: @themColor;
-              }
-            }
-          }
-
-          //con
-          .am-tabs-content-wrap {
-            .m-my-tabs-search {
+        .m-my-tabs-search {
               flex: auto;
               background: #E6E7E9;
-              .am-tabs-default-bar-underline{
-                margin: 0  0 0 calc(~'33.3333% - 77px');
-              }
               .am-list {
                 .am-list-header {
                   padding: 0;
@@ -184,8 +197,6 @@
                 }
               }
             }
-          }
-        }
       }
 
       //cz
@@ -601,12 +612,127 @@
     }
   }
 
-  //collect
+  //我的 - 收藏
   .m-my-tabs-collect {
     flex: auto;
     background: #E6E7E9;
-    .am-tabs-default-bar-underline {
-      margin: 0 0 0 calc(~'25% - 25px');
+  }
+
+  //发现
+  .m-dis{
+    margin-top: 40px;
+    .am-navbar{
+      .am-navbar-title {
+        height: 45px;
+        position: absolute;
+        left: 50px;
+        width: calc(~'100% - 100px');
+        .am-search{
+          background: @themColor;
+          width: 100%;
+          padding: 2px 0;
+          .am-search-input{
+            .border-radius(30px);
+            background: rgba(223,100,92,.5);
+            input[type="search"]{
+              color: @color;
+            }
+          }
+        }
+      }
+    }
+
+    .m-dis-t {
+      margin-top: -1px;
+
+      .m-dis-tab{
+        .m-dis-carousel{
+          background: @themColor;
+          width: 100%;
+          height: 120px;
+        }
+        .slider{
+           width: calc(~'100% - 20px') !important;
+           height: 130px !important;
+           margin: -100px auto 0;
+           .slider-frame{
+             .border-radius(10px);
+             height: 100% !important;
+           }
+         }
+
+        .m-dis-icon{
+          margin-top: 20px;
+          display: flex;
+          &>div{
+            flex: 1;
+            text-align: center;
+            div{
+              background: @themColor;
+              color: @color;
+              width: 40px;
+              height: 40px;
+              line-height: 40px;
+              .border-radius(50%);
+              text-align: center;
+              margin: 0 auto 10px;
+            }
+          }
+        }
+      }
+
+      //个性推荐
+      .m-dis-recommend{
+        .m-dis-re-list{
+          margin-top: 20px;
+          padding: 0 10px;
+          ul{
+            padding-inline-start: 0;
+            -moz-column-count: 3;
+            -webkit-column-count: 3;
+            column-count: 3;
+            -moz-column-gap: 1em;
+            -webkit-column-gap: 1em;
+            column-gap: 1em;
+            li{
+              list-style: none;
+              margin: 0 0 1em 0;
+              -moz-page-break-inside: avoid;
+              -webkit-column-break-inside: avoid;
+              break-inside: avoid;
+              div{
+                position: relative;
+                img{
+                  width: 100%;
+                  height: 100%;
+                  .border-radius(3px);
+                }
+                span{
+                  position: absolute;
+                  top: 5px;
+                  right: 5px;
+                  color: @color;
+                }
+              }
+              p{
+                margin-top: 5px;
+                .text-overflow();
+                &.name{
+                  color: @fontColor;
+                  font-size: @fontSize2;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      //主播电台
+      .m-dis-radio{
+        .m-dis-ra-list{
+          margin-top: 20px;
+        }
+      }
     }
   }
 
