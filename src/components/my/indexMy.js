@@ -83,7 +83,7 @@ class IndexMy extends Component {
                     {/*top*/}
                     <NavBar
                         mode="light"
-                        icon={<Icon type="left"/>}
+                        icon={<i style={{fontSize:23}} className="icon-dis-yun2"/>}
                         onLeftClick={() => console.log('onLeftClick')}
                         rightContent={<span onClick={() => {
                             this.props.history.push('playMusic')

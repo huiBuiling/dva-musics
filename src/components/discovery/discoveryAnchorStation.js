@@ -14,12 +14,11 @@ class DiscoveryAnchorStation extends Component {
             imgHeight: 126,
 
             carouselList:[],     //banner列表
-            radioList:[],        //主播电台列表
+            radioList:[],        //付费精选电台列表
         }
     }
 
     componentDidMount() {
-
         //获取轮播banner
         request('banner').then(data =>{
             if(data.data.code === 200){
@@ -29,19 +28,19 @@ class DiscoveryAnchorStation extends Component {
             }
         })
 
-        //获取推荐电台
-        request('dj/recommend').then(data =>{
+        //获取电台 - 付费精选
+        request('dj/paygift?limit=10&offset=20').then(data =>{
             if(data.data.code === 200){
-                let radioList = data.data.djRadios.length > 3 ? data.data.djRadios.slice(0,3) :data.data.djRadios
+                let radioList = data.data.data.length > 3 ? data.data.djRadios.slice(0,3) :data.data.djRadios
                 this.setState({
-                    radioList
+                    radioList:data.data.data.list
                 });
             }
         })
     }
 
     render() {
-        const { carouselList, radioList } = this.state;
+        const { radioList,carouselList } = this.state;
 
         return (
             <div className="m-dis-tab m-dis-radio">
@@ -75,33 +74,36 @@ class DiscoveryAnchorStation extends Component {
                 {/*图标操作*/}
                 <div className="m-dis-icon">
                     <div>
-                        <div><span><i className="icon-dis-dt"/></span></div>
-                        <p><span>私人FM</span></p>
-                    </div>
-                    <div>
-                        <div><span><i className="icon-dis-mrtj"/></span></div>
-                        <p><span>每日推荐</span></p>
-                    </div>
-                    <div>
-                        <div><span><i className="icon-dis-gd"/></span></div>
-                        <p><span>歌单</span></p>
+                        <div><span><i className="icon-radio-fl"/></span></div>
+                        <p><span>电台分类</span></p>
                     </div>
                     <div>
                         <div><span><i className="icon-dis-phb"/></span></div>
-                        <p><span>排行榜</span></p>
+                        <p><span>电台排行</span></p>
+                    </div>
+                    <div>
+                        <div><span><i className="icon-radio-dt"/></span></div>
+                        <p><span>DI.FM</span></p>
+                    </div>
+                    <div>
+                        <div><span><i className="icon-radio-xb2"/></span></div>
+                        <p><span>小冰电台</span></p>
                     </div>
                 </div>
 
                 {/*列表*/}
-                <div className="m-dis-ra-list m-dis-re-list">
-                    <h3>主播电台 ></h3>
+                <div className="m-dis-ra-list">
+                    <h3>今日优选</h3>
                     <ul>
                         {radioList.map((item,index) =>{
                             return <li key={index}>
-                                <div><img src={item.picUrl} alt=""/></div>
-                                <p>{item.name}</p>
-                                <p className="name">{item.rcmdtext}</p>
-                            </li>
+                                        <img src={item.picUrl} alt=""/>
+                                        <div>
+                                            <p className="title">{item.name}</p>
+                                            <p>节目：{item.programCount}</p>
+                                            <p>{item.rcmdText}</p>
+                                        </div>
+                                    </li>
                         })}
                     </ul>
                 </div>

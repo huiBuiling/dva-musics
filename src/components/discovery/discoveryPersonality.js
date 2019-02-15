@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Carousel} from 'antd-mobile';
 import { withRouter } from 'dva/router';
 import request from "../../utils/request";
+import PersonalityDynamic from './discoveryPersonalityDynamic';
 
 /**
  * @author hui
@@ -200,6 +201,9 @@ class DiscoveryPersonality extends Component {
                         })}
                     </ul>
                 </div>
+
+                {/*动态*/}
+                <PersonalityDynamic />
             </div>
         )
     }

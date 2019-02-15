@@ -34,7 +34,7 @@ class IndexDiscovery extends Component {
                 {/*top*/}
                 <NavBar
                     mode="light"
-                    icon={<Icon type="left"/>}
+                    icon={<i style={{fontSize:23}} className="icon-dis-ly"/>}
                     onLeftClick={() => console.log('onLeftClick')}
                     rightContent={<span onClick={() => {
                         this.props.history.push('playMusic')

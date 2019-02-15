@@ -1,4 +1,4 @@
-@import '//at.alicdn.com/t/font_1014906_69o49pjz2v5.css';
+@import '//at.alicdn.com/t/font_1014906_1dhh9x4kyvg.css';
 [class^=icon-] {
   font-family: "iconfont" !important;
   font-size: 20px;
@@ -909,8 +909,142 @@
   color: #7B7C7E;
   font-size: 12px;
 }
+.music .m-dis .m-dis-t .m-dis-dynamic {
+  width: 100%;
+  height: auto;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item {
+  width: 100%;
+  min-height: 100px;
+  background: #fff;
+  margin-bottom: 10px;
+  overflow: hidden;
+  padding: 10px;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item > img {
+  width: 40px;
+  height: 40px;
+  float: left;
+  margin-right: 10px;
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all {
+  min-height: 50px;
+  float: left;
+  width: calc(100% - 60px);
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all p {
+  line-height: 20px;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all p:last-child {
+  font-size: 12px;
+  color: #7B7C7E;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all p.msg {
+  font-size: 12px;
+  color: #7B7C7E;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-c {
+  margin-top: 10px;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-c img {
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  min-height: 170px;
+  max-height: 238px;
+  min-height: 150px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  margin-right: 10px;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-m {
+  background: #F5F5F5;
+  padding: 5px;
+  height: 60px;
+  margin-top: 10px;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-m > img {
+  width: 40px;
+  height: 40px;
+  float: left;
+  margin: 5px;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-m > div {
+  background: #F5F5F5;
+  padding: 5px;
+  float: left;
+  width: calc(100% - 60px);
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-m > div p {
+  width: calc(100% - 60px);
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-m > div p:last-child {
+  font-size: 12px;
+  color: #7B7C7E;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-m > div p.msg {
+  font-size: 12px;
+  color: #7B7C7E;
+}
 .music .m-dis .m-dis-t .m-dis-radio .m-dis-ra-list {
+  padding: 0 10px;
   margin-top: 20px;
+}
+.music .m-dis .m-dis-t .m-dis-radio .m-dis-ra-list ul {
+  padding-inline-start: 0;
+}
+.music .m-dis .m-dis-t .m-dis-radio .m-dis-ra-list ul li {
+  list-style: none;
+  clear: both;
+  margin-bottom: 10px;
+  height: 90px;
+}
+.music .m-dis .m-dis-t .m-dis-radio .m-dis-ra-list ul li img {
+  width: 80px;
+  height: 80px;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  float: left;
+  margin-right: 10px;
+}
+.music .m-dis .m-dis-t .m-dis-radio .m-dis-ra-list ul li div {
+  float: left;
+  width: calc(100% - 90px);
+  height: 80px;
+  border-bottom: 1px solid #E9E9E9;
+}
+.music .m-dis .m-dis-t .m-dis-radio .m-dis-ra-list ul li div p {
+  margin-top: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #7B7C7E;
+  font-size: 12px;
+  line-height: 20px;
+}
+.music .m-dis .m-dis-t .m-dis-radio .m-dis-ra-list ul li div p.title {
+  color: #1a1a1a;
+  font-size: 16px;
 }
 .music .m-dis .m-dis-day {
   width: 100%;
