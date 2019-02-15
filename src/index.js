@@ -1,7 +1,7 @@
 import dva from 'dva';
 import es6 from 'es6-promise';
 import 'animate.css/animate.min.css';
-import './index.css';
+import './assets/index.css';
 import './assets/app.less';
 es6.polyfill();
 

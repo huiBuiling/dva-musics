@@ -109,7 +109,7 @@ class MyLists extends Component {
     ]
     return (
       <div className='m-my'>
-        <div className="m-my-all">
+        <div className="m-my-all" style={{overflow:'hidden'}}>
           {/*top*/}
           <NavBar
             mode="light"

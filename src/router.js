@@ -7,6 +7,8 @@ import PlayMusic from './components/my/playMusic';         //我的 - 播放音�
 import RecordLists from './components/my/recordLists'      //我的 - 最近播放列表
 import CollectLists from './components/my/collectLists'    //我的 - 收藏列表
 
+import DayRecommend from './components/discovery/discoveryPersonality/dayRecommend'   //发现 - 每日推荐
+
 
 function RouterConfig({history}) {
     return (
@@ -16,6 +18,7 @@ function RouterConfig({history}) {
 
                 {/*发现*/}
                 {/*<Route path="/discover" component={Footer} />*/}
+                <Route path="/dayRecommend" component={DayRecommend} />
 
                 {/*音乐*/}
                 {/*<Route path="/myMusic" component={Footer} />*/}
