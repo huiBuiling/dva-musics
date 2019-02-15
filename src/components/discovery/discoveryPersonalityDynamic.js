@@ -36,10 +36,9 @@ class PersonalityDynamic extends Component {
                 {/*列表*/}
                 {
                     dynaminList.map((item, index) =>{
-                        console.log(item.json);
                         const json = JSON.parse(item.json);
-                        //video
-                        let val = json.song && json.song.artists.length === 1 ? '' : '/';
+                        let val = json.song && json.song.artists.length === 1 && json.song.artists.length > 0 ? '' : '/';
+
                         return <div className="m-dis-dynamic-item" key={index}>
                                     <img src={item.user.avatarUrl} alt=""/>
                                     <div className="m-dis-dynamic-item-all">
@@ -57,7 +56,7 @@ class PersonalityDynamic extends Component {
                                                     <p>
                                                         {json.song.artists.map((itemA, indexA) => {
                                                             return <span
-                                                                key={indexA}>{indexA == 0 ? '' : val}{indexA.name}</span>
+                                                                key={indexA}>{indexA == 0 ? '' : val}{itemA.name}</span>
                                                         })}
                                                     </p>
                                                 </div>

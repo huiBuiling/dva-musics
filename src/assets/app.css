@@ -947,6 +947,7 @@
 .music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all p.msg {
   font-size: 12px;
   color: #7B7C7E;
+  margin-bottom: 10px;
 }
 .music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-c {
   margin-top: 10px;

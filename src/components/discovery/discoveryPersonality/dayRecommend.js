@@ -44,8 +44,8 @@ class DayRecommend extends Component{
             <div className="m-dis-day">
                 {
                     this.state.recommendList.map((item,index) =>{
-                        console.log(item.artists.length)
-                        let val = item.artists.length === 1 ? '' : '/';
+                        // console.log(item.artists.length)
+                        let val = item.artists.length === 1 && item.artists.length > 0? '' : '/';
                         return <div key={index} className="m-dis-day-item">
                             <img src={item.album.picUrl} alt=""/>
                             <div>
