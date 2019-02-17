@@ -39,25 +39,22 @@ class PlayMusic extends Component{
       });
     }
     const audio = this.refs.audio;
-    audio.addEventListener('ended', ()=>{
-      console.log('播放完毕');
-      if(this.props.playMusic.playMusicList.length > 0) {
-        this.checkMusic(true, null);
-      }
-    }, false);
+    audio.addEventListener('ended', this.isEnd, false);
 
     //滚动监听
-    window.addEventListener('scroll', this.scrollLyrics);
+    // window.addEventListener('scroll', this.scrollLyrics);
   }
 
-  componentWillMount=()=>{
-    // window.removeEventListener('scroll', this.scrollLyrics);
+  //判断歌曲是否播放完畢
+  isEnd = ()=>{
+    console.log('播放完毕');
+    if(this.props.playMusic.playMusicList.length > 0) {
+      this.checkMusic(true, null);
+    }
   }
 
   //判断歌词是否需滚动
-  scrollLyrics = ()=>{
-
-  }
+  scrollLyrics = ()=>{}
 
   //获取总时长和播放时间
   time = (flag,isSet)=>{

@@ -44,7 +44,7 @@ class DiscoveryPersonality extends Component {
             }
         })*/
 
-        //获取每日歌单推荐
+        /*//获取每日歌单推荐
         request('recommend/resource').then(data =>{
             if(data.data.code === 200){
                 let recommendList = data.data.recommend.length > 3 ? data.data.recommend.slice(0,3) :data.data.recommend;
@@ -82,7 +82,7 @@ class DiscoveryPersonality extends Component {
                     mvList
                 });
             }
-        })
+        })*/
     }
 
     //跳转每日推荐
@@ -118,7 +118,7 @@ class DiscoveryPersonality extends Component {
                             <img
                                 src={item.picUrl}
                                 alt=""
-                                style={{width: '100%', verticalAlign: 'top'}}
+                                style={{width: '100%',height:'100%', verticalAlign: 'top'}}
                                 onLoad={() => {
                                     window.dispatchEvent(new Event('resize'));
                                     this.setState({imgHeight: 'auto'});
@@ -149,7 +149,7 @@ class DiscoveryPersonality extends Component {
                 </div>
 
                 {/*列表*/}
-                <div className="m-dis-re-list">
+                {/*<div className="m-dis-re-list">
                     <h3>推荐歌单 ></h3>
                     <ul>
                         {recommendList.map((item,index) =>{
@@ -177,14 +177,14 @@ class DiscoveryPersonality extends Component {
                     </ul>
 
                     <h3>推荐MV ></h3>
-                    <ul>
+                    <ul style={{height: 137,marginBottom: 0}}>
                         {mvList.map((item,index) =>{
                             return <li key={index}>
                                 <div>
                                     <img src={item.picUrl} alt=""/>
                                 </div>
                                 <p>{item.name}</p>
-                                {/*<p>{item.artists[0].name} / {item.artists[1].name}</p>*/}
+                                <p>{item.artists[0].name} / {item.artists[1].name}</p>
                                 <p className="name">{item.artistName}</p>
                             </li>
                         })}
@@ -200,7 +200,7 @@ class DiscoveryPersonality extends Component {
                             </li>
                         })}
                     </ul>
-                </div>
+                </div>*/}
 
                 {/*动态*/}
                 <PersonalityDynamic />

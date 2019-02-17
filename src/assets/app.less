@@ -698,7 +698,7 @@
     .m-dis-t {
       margin-top: 45px;
       width: 100%;
-      height: calc(~'100% - 45px');
+      height: 100%;
 
       .m-dis-tab {
         .m-dis-carousel {
@@ -708,7 +708,7 @@
         }
         .slider {
           width: calc(~'100% - 20px') !important;
-          height: 170px !important;
+          //height: 170px !important;
           margin: -130px auto 0;
           .slider-frame {
             .border-radius(10px);
@@ -816,6 +816,17 @@
                 margin-bottom: 10px;
               }
             }
+            .m-dis-dynamic-item-all-vtitle{
+              height: 40px;
+              p{
+                line-height: 40px;
+                font-size: @fontSize;
+                color: @comFontColor;
+              }
+            }
+            .m-dis-dynamic-item-all-mv{
+              margin-top: 10px;
+            }
             .m-dis-dynamic-item-all-c{
               margin-top: 10px;
               img {
@@ -829,16 +840,34 @@
                 margin-right: 10px;
               }
             }
+            .m-dis-dynamic-item-all-c2{
+              margin-top: 10px;
+              img {
+                width: calc(~'33% - 5px');
+                height: calc(~'33% - 5px');
+                .border-radius(5px);
+                margin-right: 5px;
+              }
+            }
+
+            //song
             .m-dis-dynamic-item-all-m{
               background: #F5F5F5;
               padding: 5px;
               height: 60px;
               margin-top: 10px;
+              position: relative;
+              .play{
+                position: absolute;
+                color: #fff;
+                left: 20px;
+                top: 20px;
+              }
               & > img {
-                width: 40px;
-                height: 40px;
+                width: 45px;
+                height: 45px;
                 float: left;
-                margin: 5px;
+                margin: 4px;
                 .border-radius(5px);
               }
               &>div {
@@ -859,6 +888,31 @@
                     color: @fontColor;
                   }
                 }
+              }
+            }
+
+            //video
+            .m-dis-dynamic-item-all-mv{
+              position: relative;
+              .play{
+                position: absolute;
+                color: #fff;
+                left: calc(~'50% - 20px');
+                top: calc(~'50% - 20px');
+                i{
+                  font-size: 40px;
+                }
+              }
+              img{
+                width: auto;
+                height: auto;
+                max-width: 100%;
+                max-height: 100%;
+              }
+
+              video{
+                width: 100%;
+                height: auto;
               }
             }
           }

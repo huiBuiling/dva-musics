@@ -61,7 +61,7 @@ class DiscoveryAnchorStation extends Component {
                             <img
                                 src={item.picUrl}
                                 alt=""
-                                style={{width: '100%', verticalAlign: 'top'}}
+                                style={{width: '100%',height:'100%', verticalAlign: 'top'}}
                                 onLoad={() => {
                                     window.dispatchEvent(new Event('resize'));
                                     this.setState({imgHeight: 'auto'});
