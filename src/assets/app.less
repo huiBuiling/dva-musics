@@ -1,4 +1,4 @@
-@import '//at.alicdn.com/t/font_1014906_1dhh9x4kyvg.css';
+@import '//at.alicdn.com/t/font_1014906_pxdinia4s0s.css';
 [class^=icon-] {
   font-family: "iconfont" !important;
   font-size: 20px;
@@ -909,11 +909,36 @@
           }
         }
         .m-dis-dynamic-item-all-title{
+          position: relative;
           p{
             span{
               font-size: @fontSize2;
               color: @fontColor;
             }
+          }
+          .m-dis-dynamic-item-atten{
+            position: absolute;
+            right: 0;
+            top: 0;
+            display: block;
+            width: 70px;
+            height: 30px;
+            line-height: 30px;
+            background: @themColor2;
+            color: @color;
+            text-align: center;
+            border-radius: 5px;
+            span{
+              i{
+                font-size: 15px;
+                margin-right: 3px;
+              }
+            }
+          }
+          .m-atten-y{
+            background: @color;
+            color: @themColor2;
+            border: 1px solid @themColor2;
           }
         }
         .m-dis-dynamic-item-all-c{

@@ -39,11 +39,11 @@ class Footer extends Component {
                 {
                     key: 'xx',
                     icon: 'icon-menu-xx',
-                    tabName: '消息',
+                    tabName: '动态',
                     seed: 'menu-x',
                     content: 'friend',
                     component: IndexDynamic,
-                    path: '/msgs',
+                    path: '/dynamic',
                     dot: '1'
                 },
                 {
@@ -74,8 +74,8 @@ class Footer extends Component {
             tabName = '发现';
         } else if (pathname === "/myMusic") {
             tabName = '音乐';
-        } else if (pathname === "/msgs") {
-            tabName = '消息';
+        } else if (pathname === "/dynamic") {
+            tabName = '动态';
         } else if (pathname === "/admin") {
             tabName = '帐号';
         }

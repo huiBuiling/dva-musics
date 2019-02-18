@@ -93,7 +93,7 @@ class PersonalityDynamic extends Component {
 
                 {/*列表*/}
                     {
-                        dynaminList.map((item, index) =>{
+                        dynaminList.slice(0,6).map((item, index) =>{
                             const json = JSON.parse(item.json);
                             let val = json.song && json.song.artists.length === 1 && json.song.artists.length > 0 ? '' : '/';
 

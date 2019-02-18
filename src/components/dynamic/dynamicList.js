@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Button } from 'antd-mobile';
 import request from "../../utils/request";
 
 /**
@@ -89,6 +90,25 @@ class DynamicList extends Component {
         return year+'-'+month+'-'+day + ' ' + h + ':' + m;
     }
 
+    //关注
+    setAtten = (id, followed)=>{
+      const follow = followed ? 2 : 1;
+      console.log(follow)
+      request(`follow?id=${id}&t=${follow}`).then(data => {
+        /*if (data.data.code === 201) {
+          alert('已添加关注');
+        }
+        if (data.data.code === 200) {
+          alert('已添加关注');
+        }*/
+        if (!followed) {
+          alert('已添加关注');
+        }else{
+          alert('已取消关注');
+        }
+      });
+    }
+
     render() {
         const { dynaminList,currentIndex,currentUrl,currentVideoUrl } = this.state;
 
@@ -104,17 +124,25 @@ class DynamicList extends Component {
 
                 {/*列表*/}
                     {
-                        dynaminList.map((item, index) =>{
+                        dynaminList.splice(0,8).map((item, index) =>{
                             const json = JSON.parse(item.json);
                             let val = json.song && json.song.artists.length === 1 && json.song.artists.length > 0 ? '' : '/';
-
+                            if (json.video){
+                              // console.log(item.rcmdInfo)
+                            }
                             return <div className="m-dis-dynamic-item" key={index}>
                                         <img src={item.user.avatarUrl} alt=""/>
                                         <div className="m-dis-dynamic-item-all">
                                             <div className="m-dis-dynamic-item-all-title">
+                                                <span
+                                                    className={item.user.followed ? "m-dis-dynamic-item-atten m-atten-y" :"m-dis-dynamic-item-atten"}
+                                                    onClick={()=>this.setAtten(item.user.userId, item.user.followed)}>
+                                                    {item.user.followed ? '已关注' : <span><i className="icon-d-yh-add"/>关注</span>}
+                                                </span>
                                                 <p>{item.user.nickname}</p>
-                                                <p className="msg"><span>{json.video ? item.rcmdInfo.userReason : this.getTime(item.showTime)}</span></p>
+                                                <p className="msg"><span>{json.video && item.rcmdInfo !== null ? item.rcmdInfo.userReason : this.getTime(item.showTime)}</span></p>
                                             </div>
+
                                             <p>{json.msg}</p>
 
                                             {/*song*/}
