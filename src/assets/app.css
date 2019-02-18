@@ -819,7 +819,7 @@
 .music .m-dis .m-dis-t {
   margin-top: 45px;
   width: 100%;
-  height: calc(100% - 45px);
+  height: 100%;
 }
 .music .m-dis .m-dis-t .m-dis-tab .m-dis-carousel {
   background: #DC423A;
@@ -828,7 +828,6 @@
 }
 .music .m-dis .m-dis-t .m-dis-tab .slider {
   width: calc(100% - 20px) !important;
-  height: 170px !important;
   margin: -130px auto 0;
 }
 .music .m-dis .m-dis-t .m-dis-tab .slider .slider-frame {
@@ -949,6 +948,17 @@
   color: #7B7C7E;
   margin-bottom: 10px;
 }
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-vtitle {
+  height: 30px;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-vtitle p {
+  line-height: 30px;
+  font-size: 14px;
+  color: #1a1a1a;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-mv {
+  margin-top: 10px;
+}
 .music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-c {
   margin-top: 10px;
 }
@@ -966,17 +976,37 @@
   -o-border-radius: 5px;
   margin-right: 10px;
 }
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-c2 {
+  margin-top: 10px;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-c2 img {
+  width: calc(33% - 5px);
+  height: calc(33% - 5px);
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  margin-right: 5px;
+}
 .music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-m {
   background: #F5F5F5;
   padding: 5px;
   height: 60px;
   margin-top: 10px;
+  position: relative;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-m .play {
+  position: absolute;
+  color: #fff;
+  left: 20px;
+  top: 20px;
 }
 .music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-m > img {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
   float: left;
-  margin: 5px;
+  margin: 4px;
   border-radius: 5px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -1003,6 +1033,33 @@
 .music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-m > div p.msg {
   font-size: 12px;
   color: #7B7C7E;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-mv {
+  position: relative;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-mv .play {
+  position: absolute;
+  color: #fff;
+  left: calc(50% - 20px);
+  top: calc(50% - 20px);
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-mv .play i {
+  font-size: 40px;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-mv img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+.music .m-dis .m-dis-t .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-mv video {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
 }
 .music .m-dis .m-dis-t .m-dis-radio .m-dis-ra-list {
   padding: 0 10px;

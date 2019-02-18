@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {NavBar, Icon, SearchBar, Tabs, Carousel} from 'antd-mobile'
+import { Carousel } from 'antd-mobile'
 import request from "../../utils/request";
 
 /**

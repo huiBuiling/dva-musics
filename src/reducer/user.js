@@ -1,5 +1,3 @@
-import request from '../utils/request';
-
 /**
  * @author hui
  * @date 2019/2/13

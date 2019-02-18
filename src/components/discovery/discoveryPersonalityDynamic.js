@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { Carousel} from 'antd-mobile';
 import { withRouter } from 'dva/router';
 import request from "../../utils/request";
 
@@ -16,7 +15,7 @@ class PersonalityDynamic extends Component {
             dynaminList:[],           //动态列表
             currentIndex:-1,          //當前歌曲
             currentUrl:null,          //当前音乐地址
-            // currentVideoUrl:null,     //当前视频地址
+            currentVideoUrl:null,     //当前视频地址
             // isPlay:false,          //是否播放
         }
     }
@@ -30,17 +29,6 @@ class PersonalityDynamic extends Component {
                 });
             }
         })
-
-        // const audio = this.refs.audio;
-        // audio.addEventListener('ended', this.isEnd, false);
-    }
-
-    //判断歌曲是否播放完畢
-    isEnd = ()=>{
-      console.log('播放完毕');
-      if(this.props.playMusic.playMusicList.length > 0) {
-        this.checkMusic(true, null);
-      }
     }
 
     //播放|暂停音乐
@@ -66,16 +54,25 @@ class PersonalityDynamic extends Component {
     }
 
     //获取视频MP4地址
-    getVideoUrl = (id)=>{
-      request(`video/url?id=${id}`).then(data=>{
-        if(data.data.code === 200){
-          return data.data.urls[0].url;
-        }
-      });
+    getVideoUrl = (v, id, index)=>{
+        const video = document.getElementById(v);
+
+        request(`video/url?id=${id}`).then(data => {
+            if (data.data.code === 200) {
+                this.setState({
+                    currentVideoUrl:data.data.urls[0].url,
+                    currentIndex:index
+                },()=>{
+                    video.load();   ////重新加载src指定的资源
+                    video.play();
+                });
+            }
+        });
     }
 
     render() {
-        const { dynaminList,currentIndex,currentUrl } = this.state;
+        const { dynaminList,currentIndex,currentUrl,currentVideoUrl } = this.state;
+
 
         return (
             <div className="m-dis-dynamic">
@@ -92,10 +89,6 @@ class PersonalityDynamic extends Component {
                             const json = JSON.parse(item.json);
                             let val = json.song && json.song.artists.length === 1 && json.song.artists.length > 0 ? '' : '/';
 
-                            let currentVideoUrl = null;
-                            if(json.video) {
-                              currentVideoUrl = this.getVideoUrl(json.video.videoId);
-                            }
                             return <div className="m-dis-dynamic-item" key={index}>
                                         <img src={item.user.avatarUrl} alt=""/>
                                         <div className="m-dis-dynamic-item-all">
@@ -123,7 +116,7 @@ class PersonalityDynamic extends Component {
                                                         <p>
                                                             {json.song.artists.map((itemA, indexA) => {
                                                                 return <span
-                                                                    key={indexA}>{indexA == 0 ? '' : val}{itemA.name}</span>
+                                                                    key={indexA}>{indexA === 0 ? '' : val}{itemA.name}</span>
                                                             })}
                                                         </p>
                                                     </div>
@@ -133,13 +126,14 @@ class PersonalityDynamic extends Component {
                                             {/*video*/}
                                             {json.video &&
                                                 <div className="m-dis-dynamic-item-all-mv">
-                                                    {/*videoId json.video.creator.backgroundUrl  coverUrl*/}
-                                                    {/*<img src={json.video.coverUrl} />
-                                                    <span className="play" onClick={()=>this.playVideo(index,json.video.videoId)}><i className={currentIndex == index ? "icon-bf-zt":"icon-bf-bf"}/></span>
-                                                     */}
-                                                    <video ref="video" width="420" controls preload="none">
+                                                    <video id={`video${index}`} width="420" controls={currentIndex === index ? true:false} preload="none">
+                                                        <span>{currentVideoUrl}</span>
                                                         <source src={currentVideoUrl} type="video/mp4" />
                                                     </video>
+                                                    <div style={{position:'absolute',left:0,top:0,display:currentIndex === index ? 'none':'block'}}>
+                                                        <img src={json.video.coverUrl} />
+                                                        <span className="play" onClick={()=>this.getVideoUrl(`video${index}`,json.video.videoId,index)}><i className={currentIndex === index ? "icon-bf-zt":"icon-bf-bf"}/></span>
+                                                    </div>
                                                 </div>
                                             }
 
