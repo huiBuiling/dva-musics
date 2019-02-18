@@ -3,6 +3,7 @@ import {TabBar} from 'antd-mobile';
 import {Route} from 'dva/router';
 import IndexMy from '../components/my/indexMy';
 import IndexDiscovery from '../components/discovery/indexDiscovery'
+import IndexDynamic from '../components/dynamic/indexDynamic'
 
 /**
  * @author hui
@@ -41,7 +42,7 @@ class Footer extends Component {
                     tabName: '消息',
                     seed: 'menu-x',
                     content: 'friend',
-                    component: IndexDiscovery,
+                    component: IndexDynamic,
                     path: '/msgs',
                     dot: '1'
                 },
@@ -88,7 +89,7 @@ class Footer extends Component {
         const {tabBarList, selectedTab, hidden} = this.state;
         return (
             <div className='m-footer'>
-                <div style={{position: 'fixed', height: '100%', width: '100%', top: 0}}>
+                <div style={{position: 'fixed', height: '100%', width: '100%', left:0,top: 0}}>
                     <TabBar
                         unselectedTintColor="#949494"
                         tintColor="#D94038"

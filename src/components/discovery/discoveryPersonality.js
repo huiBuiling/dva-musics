@@ -44,7 +44,7 @@ class DiscoveryPersonality extends Component {
             }
         })*/
 
-        /*//获取每日歌单推荐
+        //获取每日歌单推荐
         request('recommend/resource').then(data =>{
             if(data.data.code === 200){
                 let recommendList = data.data.recommend.length > 3 ? data.data.recommend.slice(0,3) :data.data.recommend;
@@ -75,7 +75,7 @@ class DiscoveryPersonality extends Component {
         })
 
         //获取推荐MV
-        request('personalized/mv').then(data =>{
+        /*request('personalized/mv').then(data =>{
             if(data.data.code === 200){
                 let mvList = data.data.result.length > 3 ? data.data.result.slice(0,3) :data.data.result
                 this.setState({
@@ -149,7 +149,7 @@ class DiscoveryPersonality extends Component {
                 </div>
 
                 {/*列表*/}
-                {/*<div className="m-dis-re-list">
+                <div className="m-dis-re-list">
                     <h3>推荐歌单 ></h3>
                     <ul>
                         {recommendList.map((item,index) =>{
@@ -176,7 +176,7 @@ class DiscoveryPersonality extends Component {
                         })}
                     </ul>
 
-                    <h3>推荐MV ></h3>
+                    {/*<h3>推荐MV ></h3>
                     <ul style={{height: 137,marginBottom: 0}}>
                         {mvList.map((item,index) =>{
                             return <li key={index}>
@@ -188,7 +188,7 @@ class DiscoveryPersonality extends Component {
                                 <p className="name">{item.artistName}</p>
                             </li>
                         })}
-                    </ul>
+                    </ul>*/}
 
                     <h3>主播电台 ></h3>
                     <ul>
@@ -200,7 +200,7 @@ class DiscoveryPersonality extends Component {
                             </li>
                         })}
                     </ul>
-                </div>*/}
+                </div>
 
                 {/*动态*/}
                 <PersonalityDynamic />

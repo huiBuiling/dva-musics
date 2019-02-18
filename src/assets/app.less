@@ -28,6 +28,9 @@
 @fontSize6:16px;
 @fontSize20:20px;
 
+@maxW:740px;
+@maxDW:600px;
+
 //圆角
 .border-radius(@radius:2px){
   border-radius: @radius;
@@ -109,6 +112,8 @@
 .music{
   width: 100%;
   height: 100%;
+  max-width: @maxW;
+  margin: 0 auto;
 
   //nav
   .am-navbar{
@@ -162,8 +167,9 @@
   .m-my{
     width: 100%;
     height: 100%;
-    overflow-x: hidden;
-
+    overflow: hidden;
+    max-width: @maxW;
+    margin: 0 auto;
     //con
     .m-my-all {
       width: 100%;
@@ -178,7 +184,7 @@
           margin: 0 0 0 calc(~'@{val} - 25px');
         }
         .am-list-body{
-          overflow-y: auto;
+          //overflow-y: auto;
           height: 100%;
         }
       }
@@ -650,12 +656,10 @@
 
   //发现
   .m-dis{
-    //margin-top: 45px;
     width: 100%;
     height: 100%;
-    //height: calc(~'100% - 45px');
-    //overflow: hidden;
-
+    max-width: @maxW;
+    margin: 0 auto;
     .am-tabs{
       .am-tabs-tab-bar-wrap{
         width: 100%;
@@ -670,6 +674,12 @@
         margin-top: 40px;
         //overflow-x: hidden;
         //overflow-y: scroll;
+        & > .am-tabs-pane-wrap{
+          width: 100%;
+          height: calc(~'100% - 45px');
+          overflow-x: hidden;
+          overflow-y: auto;
+        }
       }
     }
 
@@ -699,7 +709,6 @@
       margin-top: 45px;
       width: 100%;
       height: 100%;
-
       .m-dis-tab {
         .m-dis-carousel {
           background: @themColor;
@@ -776,144 +785,6 @@
                   color: @fontColor;
                   font-size: @fontSize2;
                 }
-              }
-            }
-          }
-        }
-      }
-
-      //动态
-      .m-dis-dynamic{
-        width: 100%;
-        height: auto;
-        .m-dis-dynamic-item{
-          width: 100%;
-          min-height: 100px;
-          background: @color;
-          margin-bottom: 10px;
-          overflow: hidden;
-          padding: 10px;
-          & > img {
-            width: 40px;
-            height: 40px;
-            float: left;
-            margin-right: 10px;
-            .border-radius(50%);
-          }
-          .m-dis-dynamic-item-all {
-            min-height: 50px;
-            float: left;
-            width: calc(~'100% - 60px');
-            p {
-              line-height: 20px;
-              &:last-child {
-                font-size: @fontSize2;
-                color: @fontColor;
-              }
-              &.msg{
-                font-size: @fontSize2;
-                color: @fontColor;
-                margin-bottom: 10px;
-              }
-            }
-            .m-dis-dynamic-item-all-vtitle{
-              height: 30px;
-              p{
-                line-height: 30px;
-                font-size: @fontSize;
-                color: @comFontColor;
-              }
-            }
-            .m-dis-dynamic-item-all-mv{
-              margin-top: 10px;
-            }
-            .m-dis-dynamic-item-all-c{
-              margin-top: 10px;
-              img {
-                width: auto;
-                height: 100%;
-                max-width: 100%;
-                min-height: 170px;
-                max-height: 238px;
-                min-height: 150px;
-                .border-radius(5px);
-                margin-right: 10px;
-              }
-            }
-            .m-dis-dynamic-item-all-c2{
-              margin-top: 10px;
-              img {
-                width: calc(~'33% - 5px');
-                height: calc(~'33% - 5px');
-                .border-radius(5px);
-                margin-right: 5px;
-              }
-            }
-
-            //song
-            .m-dis-dynamic-item-all-m{
-              background: #F5F5F5;
-              padding: 5px;
-              height: 60px;
-              margin-top: 10px;
-              position: relative;
-              .play{
-                position: absolute;
-                color: #fff;
-                left: 20px;
-                top: 20px;
-              }
-              & > img {
-                width: 45px;
-                height: 45px;
-                float: left;
-                margin: 4px;
-                .border-radius(5px);
-              }
-              &>div {
-                background: #F5F5F5;
-                padding: 5px;
-                float: left;
-                width: calc(~'100% - 60px');
-                p {
-                  width: calc(~'100% - 60px');
-                  line-height: 20px;
-                  .text-overflow();
-                  &:last-child {
-                    font-size: @fontSize2;
-                    color: @fontColor;
-                  }
-                  &.msg {
-                    font-size: @fontSize2;
-                    color: @fontColor;
-                  }
-                }
-              }
-            }
-
-            //video
-            .m-dis-dynamic-item-all-mv{
-              position: relative;
-              .play{
-                position: absolute;
-                color: #fff;
-                left: calc(~'50% - 20px');
-                top: calc(~'50% - 20px');
-                i{
-                  font-size: 40px;
-                }
-              }
-              img{
-                width: auto;
-                height: auto;
-                max-width: 100%;
-                max-height: 100%;
-              }
-
-              video{
-                width: 100%;
-                height: auto;
-                .border-radius(5px);
               }
             }
           }
@@ -999,6 +870,165 @@
     }
   }
 
+  //动态
+  .m-dis-dynamic{
+    width: 100%;
+    height: auto;
+    .m-dis-dynamic-item{
+      width: 100%;
+      min-height: 100px;
+      background: @color;
+      margin-bottom: 10px;
+      overflow: hidden;
+      padding: 10px;
+      & > img {
+        width: 40px;
+        height: 40px;
+        float: left;
+        margin-right: 10px;
+        .border-radius(50%);
+      }
+      .m-dis-dynamic-item-all {
+        min-height: 50px;
+        float: left;
+        width: calc(~'100% - 60px');
+        p {
+          line-height: 20px;
+          &.msg{
+            font-size: @fontSize2;
+            color: @fontColor;
+            margin-bottom: 5px;
+          }
+        }
+        .m-dis-dynamic-item-all-vtitle{
+          height: 30px;
+          p{
+            line-height: 30px;
+            font-size: @fontSize;
+            color: @comFontColor;
+          }
+        }
+        .m-dis-dynamic-item-all-title{
+          p{
+            span{
+              font-size: @fontSize2;
+              color: @fontColor;
+            }
+          }
+        }
+        .m-dis-dynamic-item-all-c{
+          margin-top: 10px;
+          img {
+            width: auto;
+            height: 100%;
+            max-width: @maxW;
+            min-height: 170px;
+            max-height: 238px;
+            min-height: 150px;
+            .border-radius(5px);
+            margin-right: 10px;
+          }
+        }
+        .m-dis-dynamic-item-all-c2{
+          margin-top: 10px;
+          img {
+            width: calc(~'33% - 5px');
+            height: calc(~'33% - 5px');
+            .border-radius(5px);
+            margin-right: 5px;
+          }
+        }
+
+        //song
+        .m-dis-dynamic-item-all-m{
+          background: #F5F5F5;
+          padding: 5px;
+          height: 60px;
+          margin-top: 5px;
+          position: relative;
+          .play{
+            position: absolute;
+            color: #fff;
+            left: 20px;
+            top: 20px;
+          }
+          & > img {
+            width: 45px;
+            height: 45px;
+            float: left;
+            margin: 4px;
+            .border-radius(5px);
+          }
+          &>div {
+            background: #F5F5F5;
+            padding: 5px;
+            float: left;
+            width: calc(~'100% - 60px');
+            p {
+              width: calc(~'100% - 60px');
+              line-height: 20px;
+              .text-overflow();
+              &:last-child {
+                font-size: @fontSize2;
+                color: @fontColor;
+              }
+              &.msg {
+                font-size: @fontSize2;
+                color: @fontColor;
+              }
+            }
+          }
+        }
+
+        //video
+        .m-dis-dynamic-item-all-mv{
+          width: 100%;
+          height: auto;
+          max-width: 100%;
+          max-height: 100%;
+          margin-top: 10px;
+          position: relative;
+          .m-dis-dynamic-item-all-mv-img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            .play {
+              position: absolute;
+              color: #fff;
+              left: calc(~'50% - 20px');
+              top: calc(~'50% - 20px');
+              i {
+                font-size: 40px;
+              }
+            }
+            img {
+              width: 100%;
+              height: 100%;
+              max-width: 100%;
+              max-height: 100%;
+            }
+          }
+          video{
+            //width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: 100%;
+            min-height: 190px;
+            .border-radius(5px);
+          }
+        }
+
+        //opera
+        .m-dis-dynamic-item-opera{
+
+        }
+      }
+    }
+  }
+
   //footer
   .m-footer{
     .am-tab-bar-bar{
@@ -1006,5 +1036,19 @@
         color: @themColor;
       }
     }
+    .am-tabs-content-wrap{
+      & > .am-tabs-pane-wrap{
+        overflow: hidden;
+      }
+    }
+  }
+}
+
+
+//big screen
+@media screen and (min-width:@maxW) {
+  .music{
+    max-width: @maxW;
+    margin: 0 auto;
   }
 }

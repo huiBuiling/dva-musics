@@ -17,11 +17,9 @@ function RouterConfig({history}) {
                 {/*<Route path="/" exact component={IndexPage} />*/}
 
                 {/*发现*/}
-                {/*<Route path="/discover" component={Footer} />*/}
                 <Route path="/dayRecommend" component={DayRecommend} />
 
                 {/*音乐*/}
-                {/*<Route path="/myMusic" component={Footer} />*/}
                 <Route path="/recordLists" component={RecordLists}/>
                 <Route path="/collectLists" component={CollectLists}/>
                 <Route path="/lists:id" component={Lists}/>

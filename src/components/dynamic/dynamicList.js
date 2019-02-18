@@ -3,10 +3,10 @@ import request from "../../utils/request";
 
 /**
  * @author hui
- * @date 2019/2/15
- * @Description: 发现 - 个性推荐 - 动态
+ * @date 2019/2/18
+ * @Description: 朋友圈 - 列表
  */
-class PersonalityDynamic extends Component {
+class DynamicList extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -78,12 +78,23 @@ class PersonalityDynamic extends Component {
         });
     }
 
+    //时间转换
+    getTime = (val)=>{
+        const date = new Date(val);
+        const year = date.getFullYear();
+        const month = date.getMonth()+1;
+        const day = date.getDate();
+        const h = date.getHours();
+        const m = date.getMinutes();
+        return year+'-'+month+'-'+day + ' ' + h + ':' + m;
+    }
+
     render() {
         const { dynaminList,currentIndex,currentUrl,currentVideoUrl } = this.state;
 
 
         return (
-            <div className="m-dis-dynamic">
+            <div className="m-dis-dynamic" style={{height: 'calc(100% - 45px)', overflowY: 'auto'}}>
                 <audio
                   // controls   //显示原始样式
                   src={currentUrl}
@@ -100,17 +111,10 @@ class PersonalityDynamic extends Component {
                             return <div className="m-dis-dynamic-item" key={index}>
                                         <img src={item.user.avatarUrl} alt=""/>
                                         <div className="m-dis-dynamic-item-all">
-                                            {
-                                                json.video ?
-                                                    <div className="m-dis-dynamic-item-all-vtitle">
-                                                        <p>{item.user.nickname}</p>
-                                                    </div>
-                                                    :
-                                                    <div>
-                                                        <p>{item.user.nickname}</p>
-                                                        <p className="msg"><span>{item.info.commentThread.resourceTitle}</span></p>
-                                                    </div>
-                                            }
+                                            <div className="m-dis-dynamic-item-all-title">
+                                                <p>{item.user.nickname}</p>
+                                                <p className="msg"><span>{json.video ? item.rcmdInfo.userReason : this.getTime(item.showTime)}</span></p>
+                                            </div>
                                             <p>{json.msg}</p>
 
                                             {/*song*/}
@@ -163,6 +167,10 @@ class PersonalityDynamic extends Component {
                                                     return <img key={indexP} src={itemP.originUrl} alt="" />
                                                 })}
                                             </div>
+
+                                            <div className='m-dis-dynamic-item-opera'>
+
+                                            </div>
                                         </div>
                                     </div>
                         })
@@ -172,4 +180,4 @@ class PersonalityDynamic extends Component {
     }
 }
 
-export default PersonalityDynamic;
+export default DynamicList;
