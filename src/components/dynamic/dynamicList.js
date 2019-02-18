@@ -109,6 +109,45 @@ class DynamicList extends Component {
       });
     }
 
+    /**
+     * 点赞
+     * 1: mv
+     * 4: 电台
+     * 5: 视频
+     * */
+    setLike = (id,followed,type)=>{
+        request(`resource/like?t=${followed}&type=${type}&id=${id}`).then(data => {
+          console.log(data.data)
+        });
+    }
+
+    /**
+     * 转发
+     * */
+    setShare = ()=>{}
+
+    /**
+     * 评论
+     * param(必选参数)
+     * t:1 发送 | 0 删除
+     * tpye:
+       * 0: 歌曲
+       * 1: mv
+       * 2: 歌单
+       * 3: 专辑
+       * 4: 电台
+       * 5: 视频
+     * id:对应资源 id
+     * content :要发送的内容
+     * comment?t=1&type=1&id=5436712&content=test (往广岛之恋 mv 发送评论: test)
+     * comment?t=0&type=1&id=5436712&commentId=1535550516319` (在广岛之恋 mv 删除评论)
+     * */
+    setComment = (id,followed,type)=>{
+      request(`comment?t=${followed}&type=${type}&id=${id}`).then(data => {
+        console.log(data.data)
+      });
+    }
+
     render() {
         const { dynaminList,currentIndex,currentUrl,currentVideoUrl } = this.state;
 
@@ -197,7 +236,9 @@ class DynamicList extends Component {
                                             </div>
 
                                             <div className='m-dis-dynamic-item-opera'>
-
+                                              <span onClick={()=>this.setLike()}><i className="icon-d-yh-zan"/>点赞({item.info.likedCount})</span>
+                                              <span onClick={this.setShare}><i className="icon-d-yh-zf"/>转发({item.info.shareCount})</span>
+                                              <span onClick={()=>this.setComment()}><i className="icon-d-yh-pl2"/>评论({item.info.commentCount})</span>
                                             </div>
                                         </div>
                                     </div>
