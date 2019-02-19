@@ -11,9 +11,9 @@ class DynamicDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            currentUrl:null,          //当前音乐|视频地址
             isPlay:false,             //是否播放
             urlDetail:null,           //资源获取失败提示
+            comments:[],              //评论
         }
     }
 
@@ -26,6 +26,27 @@ class DynamicDetail extends Component {
                 urlDetail:`${msg}资源获取失败！！！`
             });
         }
+
+        //获取评论
+        this.getDetail();
+    }
+
+    getDetail = ()=>{
+        const json = JSON.parse(this.props.dyDetail.json);
+        let url = null;
+        if(json.video){
+            url = `comment/video?id=${json.video.videoId}`;
+        }else if(json.song){
+            url = `comment/music?id=${json.song.id}`;
+        }
+        request(url).then(data =>{
+            if(data.data.code === 200){
+                this.setState({
+                    comments:data.data.comments
+                });
+                console.log(data.data.comments);
+            }
+        })
     }
 
     /**
@@ -67,6 +88,7 @@ class DynamicDetail extends Component {
 
     render() {
         const { dyDetail,dyDetailUrl } = this.props;
+        const { comments,isPlay } = this.state;
         const json = JSON.parse(dyDetail.json);
         let val = json.song && json.song.artists.length === 1 && json.song.artists.length > 0 ? '' : '/';
 
@@ -105,7 +127,7 @@ class DynamicDetail extends Component {
                                 <audio src={dyDetailUrl} ref='audio' preload="true" />
                                 <img src={json.song.album.picUrl} alt=""/>
                                 <span className="m-play" onClick={this.playAudio}>
-                                    <i className={this.state.isPlay ? "icon-bf-zt":"icon-bf-bf"}/>
+                                    <i className={isPlay ? "icon-bf-zt":"icon-bf-bf"}/>
                                 </span>
                                 <div>
                                     <p>{json.song.name}</p>
@@ -167,6 +189,25 @@ class DynamicDetail extends Component {
                           <span onClick={()=>this.setComment()}><i className="icon-d-yh-pl2"/>评论({dyDetail.info.commentCount})</span>
                         </div>
                     </div>
+                </div>
+
+                <h3 className="m-dis-comments-title">评论</h3>
+                <div className="m-dis-comments">
+
+                    {
+                        comments.map((item,index) =>{
+                            return <div className="m-dis-comments-item" key={index}>
+                                        <img src={item.user.avatarUrl} alt=""/>
+                                        <div className="m-dis-comments-item-r">
+                                            <p>{item.user.nickname}</p>
+                                            <p className="m-dis-time">{this.props.getTime(item.time)}</p>
+                                            <p className="m-dis-comments-c">
+                                                {item.content}
+                                            </p>
+                                        </div>
+                                    </div>
+                        })
+                    }
                 </div>
             </div>
         )

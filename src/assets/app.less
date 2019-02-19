@@ -1117,6 +1117,44 @@
     background: @color;
     z-index: 999;
     top: 45px;
+
+    //评论
+    .m-dis-comments-title{
+      background: @borderColor;
+      height: 30px;
+      line-height: 30px;
+      padding: 0 15px;
+    }
+    .m-dis-comments{
+      width: 100%;
+      height: auto;
+      padding: 10px 15px;
+      .m-dis-comments-item{
+        img{
+          width: 30px;
+          height: 30px;
+          .border-radius(50%);
+          float: left;
+          margin-right: 10px;
+        }
+        .m-dis-comments-item-r{
+          width: calc(~'100% - 40px');
+          float: left;
+          .m-dis-time{
+            font-size: @fontSize2;
+            color: @fontColor;
+            margin-top: 3px;
+          }
+          .m-dis-comments-c{
+            clear: both;
+            border-bottom: 1px solid @borderColor;
+            margin: 10px 0;
+            padding-bottom: 5px;
+          }
+        }
+      }
+
+    }
   }
 
   //footer
