@@ -1,4 +1,4 @@
-@import '//at.alicdn.com/t/font_1014906_1dhh9x4kyvg.css';
+@import '//at.alicdn.com/t/font_1014906_wk0bjuvlxv.css';
 [class^=icon-] {
   font-family: "iconfont" !important;
   font-size: 20px;
@@ -1046,9 +1046,34 @@
   font-size: 14px;
   color: #1a1a1a;
 }
+.music .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-title {
+  position: relative;
+}
 .music .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-title p span {
   font-size: 12px;
   color: #7B7C7E;
+}
+.music .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-title .m-dis-dynamic-item-atten {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: block;
+  width: 70px;
+  height: 30px;
+  line-height: 30px;
+  background: #F0716F;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+}
+.music .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-title .m-dis-dynamic-item-atten span i {
+  font-size: 16px;
+  margin-right: 3px;
+}
+.music .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-title .m-atten-y {
+  background: #fff;
+  color: #F0716F;
+  border: 1px solid #F0716F;
 }
 .music .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-all-c {
   margin-top: 10px;
@@ -1166,6 +1191,19 @@
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
+}
+.music .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-opera {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  text-align: right;
+}
+.music .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-opera span {
+  margin-left: 15px;
+}
+.music .m-dis-dynamic .m-dis-dynamic-item .m-dis-dynamic-item-all .m-dis-dynamic-item-opera span i {
+  color: #d8d7d7;
+  margin-right: 5px;
 }
 .music .m-footer .am-tab-bar-bar .am-tab-bar-tab-icon {
   color: #DC423A;

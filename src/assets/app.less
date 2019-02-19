@@ -1,4 +1,4 @@
-@import '//at.alicdn.com/t/font_1014906_wk0bjuvlxv.css';
+@import '//at.alicdn.com/t/font_1014906_0ovzcxwot6o.css';
 [class^=icon-] {
   font-family: "iconfont" !important;
   font-size: 20px;
@@ -956,12 +956,30 @@
         }
         .m-dis-dynamic-item-all-c2{
           margin-top: 10px;
-          img {
-            width: calc(~'33% - 5px');
-            height: calc(~'33% - 5px');
-            .border-radius(5px);
-            margin-right: 5px;
+          ul{
+            @vals: 100% / 3;
+            li{
+              width: calc(~'@{vals} - 4px');
+              height: calc(~'@{vals} - 4px');
+              //max-width: 105px;
+              //max-height: 105px;
+              float: left;
+              img {
+                width: 100%;
+                height: 100%;
+                //.border-radius(5px);
+              }
+
+              &:nth-child(n + 1){
+                margin: 0 2px 4px;
+              }
+
+              &:nth-child(3n + 1){
+                clear: both;
+              }
+            }
           }
+
         }
 
         //song
@@ -971,7 +989,21 @@
           height: 60px;
           margin-top: 5px;
           position: relative;
-          .play{
+          &.m-dis-dynamic-item-pl{
+            height: auto;
+            min-height: 60px;
+            padding-top: 20px;
+            margin-top: 20px;
+            background: @color;
+            border: 1px solid #ddd;
+            .m-pl{
+              position: absolute;
+              color: #de534b;
+              left: 15px;
+              top: -10px;
+            }
+          }
+          .m-play{
             position: absolute;
             color: #fff;
             left: 20px;
@@ -1020,7 +1052,7 @@
             height: 100%;
             max-width: 100%;
             max-height: 100%;
-            .play {
+            .m-play {
               position: absolute;
               color: #fff;
               left: calc(~'50% - 20px');
@@ -1048,21 +1080,43 @@
 
         //opera
         .m-dis-dynamic-item-opera{
+          clear: both;
           width: 100%;
           height: 30px;
           line-height: 30px;
           //border-top: 1px solid @borderColor;
           text-align: right;
+          margin-top: 15px;
           span{
             margin-left: 15px;
+            font-size: @fontSize2;
             i{
-              color: #d8d7d7;
+              color: sandybrown;
+              //color: cornflowerblue;
+              //color: lightskyblue;
               margin-right: 5px;
+              font-size: @fontSize;
+            }
+            &.m-dis-dynamic-item-opera-zf{
+              border:1px solid @borderColor;
+              border-width: 0 1px 0 1px;
+              padding: 0 10px;
             }
           }
         }
       }
     }
+  }
+
+  //某条动态对应详情
+  .m-dis-dynamic-d{
+    overflow-y: auto;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: @color;
+    z-index: 999;
+    top: 45px;
   }
 
   //footer
