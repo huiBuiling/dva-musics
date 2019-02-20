@@ -38,7 +38,7 @@ class DynamicList extends Component {
 
     //获取对应用户动态
     getUserDynamic = ()=>{
-        request('user/event?uid=108952364').then(data =>{
+        request('user/event?uid=262606203').then(data =>{
             if(data.data.code === 200){
                 this.setState({
                     dynaminList:data.data.events
@@ -248,12 +248,10 @@ class DynamicList extends Component {
 
                                             {/*song 歌曲*/}
                                             {json.song &&
-                                            <div className="m-dis-dynamic-item-all-m">
+                                            <div className="m-dis-dynamic-item-all-m" onClick={() => this.playAudio(index, json.song.id)}>
                                                 {/*id*/}
                                                 <img src={json.song.album.picUrl} alt=""/>
-                                                <span className="m-play"
-                                                      onClick={() => this.playAudio(index, json.song.id)}><i
-                                                    className={currentIndex == index ? "icon-bf-zt" : "icon-bf-bf"}/></span>
+                                                <span className="m-play"><i className={currentIndex == index ? "icon-bf-zt" : "icon-bf-bf"}/></span>
                                                 <div>
                                                     <p>{json.song.name}</p>
                                                     <p>

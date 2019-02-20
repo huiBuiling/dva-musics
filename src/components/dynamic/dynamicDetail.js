@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { NavBar,Icon,Toast } from 'antd-mobile';
+import { NavBar,Icon,Toast,InputItem } from 'antd-mobile';
 import request from "../../utils/request";
 
 /**
@@ -14,6 +14,9 @@ class DynamicDetail extends Component {
             isPlay:false,             //是否播放
             urlDetail:null,           //资源获取失败提示
             comments:[],              //评论
+            itemId:null,              //id
+            itemType:-1,              //type
+            val:'',                   //输入值
         }
     }
 
@@ -33,16 +36,21 @@ class DynamicDetail extends Component {
 
     getDetail = ()=>{
         const json = JSON.parse(this.props.dyDetail.json);
-        let url = null;
+        let url = null, itemId = null, itemType = -1;
         if(json.video){
-            url = `comment/video?id=${json.video.videoId}`;
+            itemId = json.video.videoId;
+            itemType = 0;
+            url = `comment/video?id=${itemId}`;
         }else if(json.song){
-            url = `comment/music?id=${json.song.id}`;
+            itemId = json.song.id;
+            itemType = 5;
+            url = `comment/music?id=${itemId}`;
         }
         request(url).then(data =>{
             if(data.data.code === 200){
                 this.setState({
-                    comments:data.data.comments
+                    comments:data.data.comments,
+                    itemId, itemType
                 });
                 console.log(data.data.comments);
             }
@@ -65,10 +73,12 @@ class DynamicDetail extends Component {
      * comment?t=1&type=1&id=5436712&content=test (往广岛之恋 mv 发送评论: test)
      * comment?t=0&type=1&id=5436712&commentId=1535550516319` (在广岛之恋 mv 删除评论)
      * */
-    setComment = (id,followed,type)=>{
-      request(`comment?t=${followed}&type=${type}&id=${id}`).then(data => {
-        console.log(data.data)
-      });
+    setComment = (followed)=>{
+        const { itemId, itemType, val } = this.state;
+        if(val == '') return null;
+        request(`comment?t=${followed}&type=${itemType}&id=${itemId}&content=${val}`).then(data => {
+          console.log(data.data)
+        });
     }
 
     //播放歌曲
@@ -84,6 +94,13 @@ class DynamicDetail extends Component {
                 audio.pause();
             }
         }
+    }
+
+    //评论值
+    onChange = (val)=>{
+        this.setState({
+            val
+        });
     }
 
     render() {
@@ -122,11 +139,11 @@ class DynamicDetail extends Component {
 
                         {/*song 歌曲*/}
                         {json.song &&
-                            <div className="m-dis-dynamic-item-all-m">
+                            <div className="m-dis-dynamic-item-all-m" onClick={this.playAudio}>
                                 {/*id*/}
                                 <audio src={dyDetailUrl} ref='audio' preload="true" />
                                 <img src={json.song.album.picUrl} alt=""/>
-                                <span className="m-play" onClick={this.playAudio}>
+                                <span className="m-play">
                                     <i className={isPlay ? "icon-bf-zt":"icon-bf-bf"}/>
                                 </span>
                                 <div>
@@ -182,12 +199,6 @@ class DynamicDetail extends Component {
                                 })}
                             </ul>
                         </div>
-
-                        <div className='m-dis-dynamic-item-opera'>
-                          <span onClick={()=>this.setLike()}><i className="icon-d-yh-zan"/>点赞({dyDetail.info.likedCount})</span>
-                          <span className="m-dis-dynamic-item-opera-zf"><i className="icon-d-yh-zf"/>转发({dyDetail.info.shareCount})</span>
-                          <span onClick={()=>this.setComment()}><i className="icon-d-yh-pl2"/>评论({dyDetail.info.commentCount})</span>
-                        </div>
                     </div>
                 </div>
 
@@ -208,6 +219,16 @@ class DynamicDetail extends Component {
                                     </div>
                         })
                     }
+                </div>
+
+                <div className="m-dis-comments-opera">
+                    <InputItem
+                        className="m-dis-comments-opera-input"
+                        placeholder="请输入评论内容"
+                        onChange={this.onChange}
+                    />
+                    <span onClick={()=>this.setComment(1)}><i className="icon-d-yh-send2" /></span>
+                    <span><i className="icon-d-yh-zan3" /><span className="m-dis-count">{dyDetail.info.likedCount}</span></span>
                 </div>
             </div>
         )
