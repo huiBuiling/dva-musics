@@ -74,7 +74,7 @@ class DynamicList extends Component {
         audio.volume = 0.5;
 
         //获取歌曲MP3地址
-        request(`music/url?id=${id}`).then(data=>{
+        request(`song/url?id=${id}`).then(data=>{
           if(data.data.code === 200){
             this.setState({
               currentUrl:data.data.data[0].url,
@@ -157,7 +157,7 @@ class DynamicList extends Component {
 
     //跳转详情
     getDynamicDetail = (id, item, type)=>{
-        let urls = type === 1 ? `music/url?id=${id}` : `video/url?id=${id}`;
+        let urls = type === 1 ? `song/url?id=${id}` : `video/url?id=${id}`;
         if((type === 1 || type === 2) && id !== null){
             request(urls).then(data => {
                 if (data.data.code === 200) {

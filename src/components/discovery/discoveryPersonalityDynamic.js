@@ -47,7 +47,7 @@ class PersonalityDynamic extends Component {
         audio.volume = 0.5;
 
         //获取歌曲MP3地址
-        request(`music/url?id=${id}`).then(data=>{
+        request(`song/url?id=${id}`).then(data=>{
           if(data.data.code === 200){
             this.setState({
               currentUrl:data.data.data[0].url,
@@ -118,7 +118,7 @@ class PersonalityDynamic extends Component {
                                                 <div className="m-dis-dynamic-item-all-m">
                                                     {/*id*/}
                                                     <img src={json.song.album.picUrl} alt=""/>
-                                                    <span className="play" onClick={()=>this.playAudio(index, json.song.id)}><i className={currentIndex == index ? "icon-bf-zt":"icon-bf-bf"}/></span>
+                                                    <span className="m-play" onClick={()=>this.playAudio(index, json.song.id)}><i className={currentIndex == index ? "icon-bf-zt":"icon-bf-bf"}/></span>
                                                     <div>
                                                         <p>{json.song.name}</p>
                                                         <p>
@@ -140,7 +140,7 @@ class PersonalityDynamic extends Component {
                                                     </video>
                                                     <div className="m-dis-dynamic-item-all-mv-img" style={{width: `${json.video.width}`,display:currentIndex === index ? 'none':'block'}}>
                                                         <img src={json.video.coverUrl} />
-                                                        <span className="play" onClick={()=>this.getVideoUrl(`video${index}`,json.video.videoId,index)}><i className={currentIndex === index ? "icon-bf-zt":"icon-bf-bf"}/></span>
+                                                        <span className="m-play" onClick={()=>this.getVideoUrl(`video${index}`,json.video.videoId,index)}><i className={currentIndex === index ? "icon-bf-zt":"icon-bf-bf"}/></span>
                                                     </div>
                                                 </div>
                                             }
@@ -149,7 +149,7 @@ class PersonalityDynamic extends Component {
                                             {json.program &&
                                               <div className="m-dis-dynamic-item-all-m">
                                                 <img src={json.program.radio.picUrl} />
-                                                {/*<span className="play" onClick={()=>this.getCurrenturl(json.video.videoId)}><i className={currentIndex == index ? "icon-bf-zt":"icon-bf-bf"}/></span>*/}
+                                                {/*<span className="m-play" onClick={()=>this.getCurrenturl(json.video.videoId)}><i className={currentIndex == index ? "icon-bf-zt":"icon-bf-bf"}/></span>*/}
                                                 <div>
                                                   <p>{json.program.radio.desc}</p>
                                                   <p><span>{json.program.radio.category}</span>{json.program.radio.name}</p>
@@ -159,9 +159,11 @@ class PersonalityDynamic extends Component {
 
                                             {/*img*/}
                                             <div className={item.pics.length > 3 ? "m-dis-dynamic-item-all-c2" : "m-dis-dynamic-item-all-c"}>
-                                                {item.pics.map((itemP, indexP) =>{
-                                                    return <img key={indexP} src={itemP.originUrl} alt="" />
-                                                })}
+                                                <ul>
+                                                    {item.pics.map((itemP, indexP) =>{
+                                                        return <li key={indexP} ><img src={itemP.originUrl} alt="" /></li>
+                                                    })}
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>

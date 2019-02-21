@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Tabs, Badge, NavBar, Icon,List,SearchBar  } from 'antd-mobile';
+import { Tabs, Badge, NavBar, Icon,List,SearchBar,Toast } from 'antd-mobile';
 import { connect } from 'dva';
 import request from '../../utils/request';
 /**
@@ -67,7 +67,7 @@ class MyLists extends Component {
     let live = this.props.liveList.filter(itemL => {
       return itemL.id == item.id;
     }).length > 0 ? true:false;
-    request(`music/url?id=${item.id}`).then(data=>{
+    request(`song/url?id=${item.id}`).then(data=>{
       if(data.data.code === 200){
         this.props.dispatch({
           type:'playMusic/getPlayMusicCurrent',
