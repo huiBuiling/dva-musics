@@ -61,7 +61,7 @@ class DiscoveryAnchorStation extends Component {
                             }}
                         >
                             <img
-                                src={item.picUrl}
+                                src={item.imageUrl}
                                 alt=""
                                 style={{width: '100%',height:'100%', verticalAlign: 'top'}}
                                 onLoad={() => {

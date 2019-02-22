@@ -2,6 +2,7 @@ import React,{ Component } from 'react';
 import { NavBar,SearchBar,Icon,Toast } from 'antd-mobile';
 import { withRouter } from 'dva/router';
 import request from "../../../utils/request";
+import bgImg from '../../../assets/images/dayRemmend.jpg';
 
 /**
  * @author hui
@@ -17,7 +18,7 @@ class DayRecommend extends Component{
       }
   }
 
-  componentDidMount() {
+  componentWillMount() {
       //获取每日歌曲推荐
       request('recommend/songs').then(data =>{
           if(data.data.code === 200){
@@ -31,6 +32,7 @@ class DayRecommend extends Component{
   }
 
   render(){
+      const { recommendList } = this.state;
     return (
         <div className="m-dis">
             {/*top*/}
@@ -44,8 +46,13 @@ class DayRecommend extends Component{
             ><SearchBar placeholder="Search" maxLength={8}/></NavBar>
 
             <div className="m-dis-day">
+                <div className="m-dis-day-top">
+                    {/*recommendList.length > 0 ? recommendList[0].picUrl :*/}
+                    <img src={bgImg} alt=""/>
+                    <span><i className="icon-d-day-t" />{recommendList.length}</span>
+                </div>
                 {
-                    this.state.recommendList.map((item,index) =>{
+                    recommendList.map((item,index) =>{
                         // console.log(item.artists.length)
                         let val = item.artists.length === 1 && item.artists.length > 0? '' : '/';
                         return <div key={index} className="m-dis-day-item">
