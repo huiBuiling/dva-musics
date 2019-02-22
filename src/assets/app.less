@@ -1,4 +1,4 @@
-@import '//at.alicdn.com/t/font_1014906_wo1lxz0lfm.css';
+@import '//at.alicdn.com/t/font_1014906_xw5klips5mh.css';
 [class^=icon-] {
   font-family: "iconfont" !important;
   font-size: 20px;
@@ -880,6 +880,45 @@
   .m-dis-dynamic{
     width: 100%;
     height: auto;
+    //关注的用户
+    .m-dis-dynamic-follows{
+      padding:0 10px 10px;
+      overflow: hidden;
+      h4{
+        line-height: 40px;
+      }
+      &>div{
+        width: 50px;
+        margin: 0 auto;
+        text-align: center;
+        float: left;
+        margin-right: 10px;
+        img{
+          width: 40px;
+          height: 40px;
+          .border-radius(50%);
+        }
+        p{
+          font-size: @fontSize2;
+          color: @fontColor;
+          .text-overflow();
+        }
+        .m-dis-all{
+          display: block;
+          font-size: 30px;
+          width: 40px;
+          height: 40px;
+          line-height: 30px;
+          text-align: center;
+          border-radius: 50%;
+          color: cadetblue;
+          border: 1px solid cadetblue;
+          margin: 0 auto 3px;
+        }
+      }
+    }
+    
+    //动态列表
     .m-dis-dynamic-item{
       width: 100%;
       min-height: 100px;
@@ -1172,6 +1211,8 @@
       height: auto;
       padding: 10px 15px;
       .m-dis-comments-item{
+        width: 100%;
+        clear: both;
         img{
           width: 30px;
           height: 30px;
@@ -1180,7 +1221,7 @@
           margin-right: 10px;
         }
         .m-dis-comments-item-r{
-          width: calc(~'100% - 40px');
+          width: calc(~'100% - 80px');
           float: left;
           .m-dis-time{
             font-size: @fontSize2;
@@ -1192,6 +1233,18 @@
             border-bottom: 1px solid @borderColor;
             margin: 10px 0;
             padding-bottom: 5px;
+          }
+        }
+        .m-dis-comments-item-zan{
+          position: relative;
+          float: right;
+          width: 40px;
+          text-align: right;
+          color: @fontColor;
+          i{
+            position: absolute;
+            right: 8px;
+            top: 0;
           }
         }
       }

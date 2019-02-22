@@ -17,13 +17,14 @@ class DynamicDetail extends Component {
             itemId:null,              //id
             itemType:-1,              //type
             val:'',                   //输入值
+            liked:[],              //喜欢
         }
     }
 
     componentDidMount() {
         const { dyDetailUrl } = this.props;
-        if(dyDetailUrl == 0 || dyDetailUrl == 1){
-            let msg = dyDetailUrl == 0 ? '歌曲':'视频';
+        if(dyDetailUrl === 0 || dyDetailUrl === 1){
+            let msg = dyDetailUrl === 0 ? '歌曲':'视频';
             Toast.fail(`${msg}资源获取失败！！！`);
             this.setState({
                 urlDetail:`${msg}资源获取失败！！！`
@@ -34,27 +35,34 @@ class DynamicDetail extends Component {
         this.getDetail();
     }
 
+    /**
+     * 获取评论(音乐|视频)
+     * id:对应资源 id
+     * */
     getDetail = ()=>{
         const json = JSON.parse(this.props.dyDetail.json);
-        let url = null, itemId = null, itemType = -1;
-        if(json.video){
-            itemId = json.video.videoId;
-            itemType = 0;
-            url = `comment/video?id=${itemId}`;
-        }else if(json.song){
-            itemId = json.song.id;
-            itemType = 5;
-            url = `comment/music?id=${itemId}`;
-        }
-        request(url).then(data =>{
-            if(data.data.code === 200){
-                this.setState({
-                    comments:data.data.comments,
-                    itemId, itemType
-                });
-                console.log(data.data.comments);
+        if(json.video || json.song){
+            let url = null, itemId = null, itemType = -1;
+            if(json.video){
+                itemId = json.video.videoId;
+                itemType = 5;
+                url = `comment/video?id=${itemId}`;
+            }else if(json.song){
+                itemId = json.song.id;
+                itemType = 0;
+                url = `comment/music?id=${itemId}`;
             }
-        })
+            request(url).then(data =>{
+                if(data.data.code === 200){
+                    this.setState({
+                        comments:data.data.comments,
+                        itemId, itemType
+                    });
+                }
+            }).catch(err =>{
+                Toast.fail('发生错误');
+            })
+        }
     }
 
     /**
@@ -73,18 +81,73 @@ class DynamicDetail extends Component {
      * comment?t=1&type=1&id=5436712&content=test (往广岛之恋 mv 发送评论: test)
      * comment?t=0&type=1&id=5436712&commentId=1535550516319` (在广岛之恋 mv 删除评论)
      * */
-    setComment = (followed)=>{
+    setComment = (followed,commentId)=>{
         const { itemId, itemType, val } = this.state;
-        if(val == '') return null;
-        request(`comment?t=${followed}&type=${itemType}&id=${itemId}&content=${val}`).then(data => {
-          console.log(data.data)
+        if(followed === 0 && commentId !== null){
+            //删除评论
+            request(`comment?t=${followed}&type=${itemType}&id=${itemId}&commentId=${commentId}`).then(data => {
+                if (data.data.code === 200) {
+                    Toast.success('删除评论成功！！！');
+                }
+            }).catch(err =>{
+                Toast.fail('发生错误');
+            });
+        }else if(followed === 1){
+            //发表评论
+            if (val === '') return null;
+            request(`comment?t=${followed}&type=${itemType}&id=${itemId}&content=${val}`).then(data => {
+                if (data.data.code === 200) {
+                    this.setState({
+                        val: ''
+                    }, () => Toast.success('评论成功！！！'));
+                }
+            }).catch(err =>{
+                Toast.fail('发生错误');
+            });
+        }
+    }
+
+    /**
+     * 点赞评论
+     * param(必选参数)
+     * id:对应资源 id
+     * cid : 评论 id   （commentId）
+     * t:1 点赞 | 0 取消点赞 （!liked）
+     * tpye:
+         * 0: 歌曲
+         * 1: mv
+         * 2: 歌单
+         * 3: 专辑
+         * 4: 电台
+         * 5: 视频
+     * comment/like?id=29178366&cid=12840183&t=1&type=0
+     * */
+    likedComment = (isLike,commentId,index)=>{
+        let { itemId, itemType,liked } = this.state;
+        const like = isLike ? 0 : 1;
+        request(`comment/like?id=${itemId}&cid=${commentId}&t=${like}&type=${itemType}`).then(data => {
+            if (data.data.code === 200) {
+                if(like === 0){
+                    liked = liked.filter(item => item !== index);
+                    Toast.success('取消点赞成功！！！');
+                }else{
+                    Toast.success('点赞成功！！！');
+                    liked.push(index);
+                }
+                this.setState({
+                    liked
+                });
+
+            }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         });
     }
 
     //播放歌曲
     playAudio = ()=>{
         const { urlDetail, isPlay} = this.state;
-        if(urlDetail == null){
+        if(urlDetail === null){
             Toast.fail(urlDetail);
         }else{
             const audio = this.refs.audio;
@@ -105,9 +168,9 @@ class DynamicDetail extends Component {
 
     render() {
         const { dyDetail,dyDetailUrl } = this.props;
-        const { comments,isPlay } = this.state;
+        const { comments,isPlay,val,liked } = this.state;
         const json = JSON.parse(dyDetail.json);
-        let val = json.song && json.song.artists.length === 1 && json.song.artists.length > 0 ? '' : '/';
+        let artists = json.song && json.song.artists.length === 1 && json.song.artists.length > 0 ? '' : '/';
 
         return (
             <div className="m-dis-dynamic m-dis-dynamic-d">
@@ -151,7 +214,7 @@ class DynamicDetail extends Component {
                                     <p>
                                         {json.song.artists.map((itemA, indexA) => {
                                             return <span
-                                                key={indexA}>{indexA === 0 ? '' : val}{itemA.name}</span>
+                                                key={indexA}>{indexA === 0 ? '' : artists}{itemA.name}</span>
                                         })}
                                     </p>
                                 </div>
@@ -170,7 +233,7 @@ class DynamicDetail extends Component {
                         {/*program 电台*/}
                         {json.program &&
                           <div className="m-dis-dynamic-item-all-m">
-                            <img src={json.program.radio.picUrl} />
+                            <img src={json.program.radio.picUrl} alt=""/>
                             {/*<span className="m-play" onClick={()=>this.getCurrenturl(json.video.videoId)}><i className={currentIndex == index ? "icon-bf-zt":"icon-bf-bf"}/></span>*/}
                             <div>
                               <p>{json.program.radio.desc}</p>
@@ -204,30 +267,36 @@ class DynamicDetail extends Component {
 
                 <h3 className="m-dis-comments-title">评论</h3>
                 <div className="m-dis-comments">
-
-                    {
-                        comments.map((item,index) =>{
-                            return <div className="m-dis-comments-item" key={index}>
-                                        <img src={item.user.avatarUrl} alt=""/>
-                                        <div className="m-dis-comments-item-r">
-                                            <p>{item.user.nickname}</p>
-                                            <p className="m-dis-time">{this.props.getTime(item.time)}</p>
-                                            <p className="m-dis-comments-c">
-                                                {item.content}
-                                            </p>
-                                        </div>
+                    {comments.map((item,index) =>{
+                        const likes = liked.filter(item => item === index).length;
+                        if(likes > 0){
+                            console.log(item.liked);
+                        }
+                        return <div className="m-dis-comments-item" key={index}>
+                                    <img src={item.user.avatarUrl} alt=""/>
+                                    <div className="m-dis-comments-item-r">
+                                        <p>{item.user.nickname}</p>
+                                        <p className="m-dis-time">{this.props.getTime(item.time)}</p>
+                                        <p className="m-dis-comments-c" onClick={()=>this.setComment(0,item.commentId)}>
+                                            {item.content}
+                                        </p>
                                     </div>
-                        })
-                    }
+                                    <div className="m-dis-comments-item-zan">
+                                        <span onClick={()=>this.likedComment(item.liked,item.commentId,index)}><i style={{color:(likes || item.liked)&& 'sandybrown'}} className="icon-d-yh-zan3" />{item.likedCount === 0 ? '':item.likedCount}</span>
+                                    </div>
+                                </div>
+                    })}
                 </div>
 
                 <div className="m-dis-comments-opera">
                     <InputItem
+                        clear
+                        value={val}
                         className="m-dis-comments-opera-input"
                         placeholder="请输入评论内容"
                         onChange={this.onChange}
                     />
-                    <span onClick={()=>this.setComment(1)}><i className="icon-d-yh-send2" /></span>
+                    <span onClick={()=>this.setComment(1,null)}><i className="icon-d-yh-send2" /></span>
                     <span><i className="icon-d-yh-zan3" /><span className="m-dis-count">{dyDetail.info.likedCount}</span></span>
                 </div>
             </div>
