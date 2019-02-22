@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { Tabs, Badge, NavBar, Icon,List,SearchBar  } from 'antd-mobile';
+import { Tabs, Toast, NavBar, Icon,List,SearchBar  } from 'antd-mobile';
 import { connect } from 'dva';
 import request from '../../utils/request';
 
@@ -21,7 +21,7 @@ class CollectLists extends Component {
     }
   }
 
-  componentWillMount(){
+  componentDidMount(){
     //获取歌手列表
     request('artist/sublist').then(data =>{
       if(data.data.code === 200){
@@ -29,6 +29,8 @@ class CollectLists extends Component {
           singerList:data.data
         });
       }
+    }).catch(err =>{
+        Toast.fail('发生错误');
     })
 
     //mv列表
@@ -39,7 +41,9 @@ class CollectLists extends Component {
           mvList:data.data
         });
       }
-    })*/
+    }).catch(err =>{
+            Toast.fail('发生错误');
+        })*/
   }
 
   //搜索歌手
@@ -51,6 +55,8 @@ class CollectLists extends Component {
           searchSingerVal:val
         })
       }
+    }).catch(err =>{
+        Toast.fail('发生错误');
     })
   };
 
@@ -63,6 +69,8 @@ class CollectLists extends Component {
           searchMvVal:val
         })
       }
+    }).catch(err =>{
+        Toast.fail('发生错误');
     })
   };
 

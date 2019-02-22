@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {NavBar, Icon, List} from 'antd-mobile';
+import {NavBar, Toast, List} from 'antd-mobile';
 import {connect} from "dva";
 import {withRouter} from 'dva/router';
 import request from '../../utils/request';
@@ -38,6 +38,8 @@ class IndexMy extends Component {
                             data: data.data.playlist.tracks
                         });
                     }
+                }).catch(err =>{
+                    Toast.fail('发生错误');
                 });
 
                 this.setState({
@@ -58,6 +60,8 @@ class IndexMy extends Component {
               data:data.data.playlist.tracks
             });
           }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         })*/
     }
 
@@ -71,6 +75,8 @@ class IndexMy extends Component {
                 });
                 this.props.history.push(`/lists:${id}`)
             }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         })
     }
 
@@ -84,7 +90,7 @@ class IndexMy extends Component {
                     <NavBar
                         mode="light"
                         icon={<i style={{fontSize:23}} className="icon-dis-yun2"/>}
-                        onLeftClick={() => console.log('onLeftClick')}
+                        // onLeftClick={() => console.log('onLeftClick')}
                         rightContent={<span onClick={() => {
                             this.props.history.push('playMusic')
                         }}><i className="icon-m-bfz"/></span>}

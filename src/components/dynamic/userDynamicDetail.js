@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Toast } from 'antd-mobile';
 import request from "../../utils/request";
 
 /**
@@ -29,6 +30,8 @@ class UserDynamicDetail extends Component {
                     dynaminList:data.data.events
                 });
             }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         })
     }
 
@@ -50,7 +53,9 @@ class UserDynamicDetail extends Component {
      * */
     setComment = (id,followed,type)=>{
       request(`comment?t=${followed}&type=${type}&id=${id}`).then(data => {
-        console.log(data.data)
+        // console.log(data.data)
+      }).catch(err =>{
+          Toast.fail('发生错误');
       });
     }
 
@@ -95,7 +100,7 @@ class UserDynamicDetail extends Component {
                                                 <div className="m-dis-dynamic-item-all-m">
                                                     {/*id*/}
                                                     <img src={json.song.album.picUrl} alt=""/>
-                                                    <span className="m-play" onClick={()=>this.playAudio(index, json.song.id)}><i className={currentIndex == index ? "icon-bf-zt":"icon-bf-bf"}/></span>
+                                                    <span className="m-play" onClick={()=>this.playAudio(index, json.song.id)}><i className={currentIndex === index ? "icon-bf-zt":"icon-bf-bf"}/></span>
                                                     <div>
                                                         <p>{json.song.name}</p>
                                                         <p>
@@ -116,7 +121,7 @@ class UserDynamicDetail extends Component {
                                                         <source src={currentVideoUrl} type="video/mp4" />
                                                     </video>
                                                     <div className="m-dis-dynamic-item-all-mv-img" style={{width: `${json.video.width}`,display:currentIndex === index ? 'none':'block'}}>
-                                                        <img src={json.video.coverUrl} />
+                                                        <img src={json.video.coverUrl} alt="" />
                                                         <span className="m-play" onClick={()=>this.getVideoUrl(`video${index}`,json.video.videoId,index)}><i className={currentIndex === index ? "icon-bf-zt":"icon-bf-bf"}/></span>
                                                     </div>
                                                 </div>

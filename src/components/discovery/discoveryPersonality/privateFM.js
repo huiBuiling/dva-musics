@@ -1,5 +1,5 @@
 import React,{ Component } from 'react';
-import { NavBar,SearchBar,Icon } from 'antd-mobile';
+import { NavBar,SearchBar,Icon,Toast } from 'antd-mobile';
 import request from "../../../utils/request";
 
 /**
@@ -23,6 +23,8 @@ class privateFM extends Component{
                   recommendList:data.data.recommend
               });
           }
+      }).catch(err =>{
+          Toast.fail('发生错误');
       });
   }
 
@@ -33,7 +35,7 @@ class privateFM extends Component{
             <NavBar
                 mode="light"
                 icon={<Icon type="left"/>}
-                onLeftClick={() => console.log('onLeftClick')}
+                // onLeftClick={() => console.log('onLeftClick')}
                 rightContent={<span onClick={() => {
                     this.props.history.push('playMusic')
                 }}><i className="icon-m-bfz"/></span>}

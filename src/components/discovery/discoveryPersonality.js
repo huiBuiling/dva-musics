@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Carousel} from 'antd-mobile';
+import { Carousel,Toast } from 'antd-mobile';
 import { withRouter } from 'dva/router';
 import request from "../../utils/request";
 import PersonalityDynamic from './discoveryPersonalityDynamic';
@@ -33,6 +33,8 @@ class DiscoveryPersonality extends Component {
                     carouselList:data.data.banners
                 });
             }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         })
 
         //获取独家放送
@@ -52,6 +54,8 @@ class DiscoveryPersonality extends Component {
                     recommendList
                 });
             }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         })
 
         //获取推荐新音乐
@@ -62,6 +66,8 @@ class DiscoveryPersonality extends Component {
                     musicList
                 });
             }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         })
 
         //获取推荐电台
@@ -72,6 +78,8 @@ class DiscoveryPersonality extends Component {
                     radioList
                 });
             }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         })
 
         //获取推荐MV
@@ -82,6 +90,8 @@ class DiscoveryPersonality extends Component {
                     mvList
                 });
             }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         })*/
     }
 
@@ -92,7 +102,7 @@ class DiscoveryPersonality extends Component {
     }
 
     render() {
-        const { carouselList, recommendList, musicList, mvList, radioList } = this.state;
+        const { carouselList, recommendList, musicList, radioList } = this.state;
 
         return (
             <div className="m-dis-tab m-dis-recommend">

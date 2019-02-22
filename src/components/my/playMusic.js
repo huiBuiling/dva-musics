@@ -99,7 +99,7 @@ class PlayMusic extends Component{
   //播放|暂停音乐
   playAudio = ()=>{
     const { animationPuse,volume} = this.state;
-    console.log(animationPuse);
+    // console.log(animationPuse);
     const audio = this.refs.audio;
     if(audio && animationPuse){
       console.log('开始播放');
@@ -138,6 +138,8 @@ class PlayMusic extends Component{
           animationPuse:true
         },()=> this.playAudio());
       }
+    }).catch(err =>{
+        Toast.fail('发生错误');
     });
   }
 
@@ -193,7 +195,7 @@ class PlayMusic extends Component{
     const audio = this.refs.audio;
     //更新audio进度
     audio.currentTime = val / 100 * this.state.percentAllTime;
-    console.log(audio.currentTime);
+    // console.log(audio.currentTime);
     //更新当前时间及进度
     this.time(2,true);
   }
@@ -204,7 +206,7 @@ class PlayMusic extends Component{
     let { id,live } = this.props.playMusic.playMusicCurrent;
 
     request(`like?id=${id}&like=${!live}`).then(data =>{
-      console.log(data);
+      // console.log(data);
       if(data.data.code === 301){
         Toast.info(data.data.msg, 1);
       }
@@ -215,6 +217,8 @@ class PlayMusic extends Component{
             Toast.info('已取消喜欢', 1);
           }
       }
+    }).catch(err =>{
+        Toast.fail('发生错误');
     })
   }
 
@@ -313,7 +317,7 @@ class PlayMusic extends Component{
                             ref='audio'
                             preload="true"
                             className="music-audio"
-                            onVolumeChange={()=>console.log('改变')}
+                            // onVolumeChange={()=>console.log('改变')}
                             onCanPlay={() => this.time(1, true)}
                             onTimeUpdate={() => this.time(2, true)}
                           />

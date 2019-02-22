@@ -33,3 +33,5 @@
 > 跨域：fetch 带cookie跨域访问 {credentials: "include"}
 
 > 新版本：获取歌曲url：song/url?id=xxxxx
+
+> 发现调取某些接口成功后可能数据稍有延迟

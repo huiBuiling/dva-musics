@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Toast } from 'antd-mobile';
+import {connect} from 'dva';
 import request from "../../utils/request";
 import DynamicDetail from './dynamicDetail';
 
@@ -18,43 +19,73 @@ class DynamicList extends Component {
             currentVideoUrl:null,     //当前视频地址
             showDetail:false,         //显示对应详情
             dyDetailUrl:null,         //详情地址
+            follows:[],               //用户关注列表
         }
     }
 
     componentDidMount() {
-        this.getUserDynamic();
+        this.getAllDynamic();
+        this.getUserAtten(this.props.userId);
 
         const audio = this.refs.audio;
         audio.addEventListener('ended', this.isEnd, false);
     }
 
-    getUser = ()=>{
+    //获取用户详情
+    getUserDetail = ()=>{
         request('user/detail?uid=108952364').then(data =>{
             if(data.data.code === 200){
-                console.log(data.data);
+                // console.log(data.data);
             }
+        }).catch(err =>{
+            Toast.fail('发生错误');
+        })
+    }
+
+    //获取用户关注列表
+    getUserAtten = (userId)=>{
+        request(`user/follows?uid=${userId}`).then(data =>{
+            if(data.data.code === 200){
+                this.setState({
+                    follows:data.data.follow
+                });
+            }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         })
     }
 
     //获取对应用户动态
-    getUserDynamic = ()=>{
-        request('user/event?uid=262606203').then(data =>{
+    getUserDynamic = (id)=>{
+        Toast.loading('Loading...', 30, () => {
+            console.log('Load complete !!!');
+        });
+        request(`user/event?uid=${id}`).then(data =>{
             if(data.data.code === 200){
                 this.setState({
                     dynaminList:data.data.events
                 });
+                Toast.hide();
             }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         })
     }
 
     //获取全部动态
     getAllDynamic = ()=>{
+        Toast.loading('Loading...', 30, () => {
+            console.log('Load complete !!!');
+        });
         request('event').then(data =>{
             if(data.data.code === 200){
                 this.setState({
                     dynaminList:data.data.event
                 });
+                Toast.hide();
             }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         })
     }
 
@@ -122,7 +153,6 @@ class DynamicList extends Component {
     //关注
     setAtten = (id, followed)=>{
       const follow = followed ? 2 : 1;
-      console.log(follow)
       request(`follow?id=${id}&t=${follow}`).then(data => {
         /*if (data.data.code === 201) {
           alert('已添加关注');
@@ -135,6 +165,8 @@ class DynamicList extends Component {
         }else{
           alert('已取消关注');
         }
+      }).catch(err =>{
+          Toast.fail('发生错误');
       });
     }
 
@@ -146,7 +178,9 @@ class DynamicList extends Component {
      * */
     setLike = (id,followed,type)=>{
         request(`resource/like?t=${followed}&type=${type}&id=${id}`).then(data => {
-          console.log(data.data)
+          // console.log(data.data)
+        }).catch(err =>{
+            Toast.fail('发生错误');
         });
     }
 
@@ -191,8 +225,9 @@ class DynamicList extends Component {
     }
 
     render() {
-        const { dynaminList,currentIndex,currentUrl,currentVideoUrl,showDetail,
-            dyDetail,dyDetailUrl } = this.state;
+        const { dynaminList,follows,
+            currentIndex,currentUrl,currentVideoUrl,
+            showDetail,dyDetail,dyDetailUrl } = this.state;
 
         return (
             <div className="m-dis-dynamic" style={{height: 'calc(100% - 45px)', overflowY: 'auto'}}>
@@ -209,6 +244,26 @@ class DynamicList extends Component {
 
                 {/*列表*/}
                 <div style={{display:showDetail ? 'none':'block'}}>
+                    <div className="m-dis-dynamic-follows">
+                        <h4>已关注的用户：</h4>
+                        <div onClick={this.getAllDynamic}>
+                            <span className="m-dis-all"><i className="icon-d-yh-qb" /></span>
+                            <p>全部</p>
+                        </div>
+                        <div onClick={()=>this.getUserDynamic(this.props.userId)}>
+                            <img src="http://p1.music.126.net/OyqiZAP0Vchg-GSihjdg6g==/2946691180779246.jpg" alt=""/>
+                            <p>慧慧</p>
+                        </div>
+                        {
+                            follows.map((item,index) =>{
+                                return <div key={index} onClick={()=>this.getUserDynamic(item.userId)}>
+                                            <img src={item.avatarUrl} alt=""/>
+                                            <p>{item.nickname}</p>
+                                        </div>
+                            })
+                        }
+                    </div>
+
                     <audio
                         // controls   //显示原始样式
                         src={currentUrl}
@@ -251,7 +306,7 @@ class DynamicList extends Component {
                                             <div className="m-dis-dynamic-item-all-m" onClick={() => this.playAudio(index, json.song.id)}>
                                                 {/*id*/}
                                                 <img src={json.song.album.picUrl} alt=""/>
-                                                <span className="m-play"><i className={currentIndex == index ? "icon-bf-zt" : "icon-bf-bf"}/></span>
+                                                <span className="m-play"><i className={currentIndex === index ? "icon-bf-zt" : "icon-bf-bf"}/></span>
                                                 <div>
                                                     <p>{json.song.name}</p>
                                                     <p>
@@ -275,7 +330,7 @@ class DynamicList extends Component {
                                                     width: `${json.video.width}`,
                                                     display: currentIndex === index ? 'none' : 'block'
                                                 }}>
-                                                    <img src={json.video.coverUrl}/>
+                                                    <img src={json.video.coverUrl} alt=""/>
                                                     <span className="m-play"
                                                           onClick={() => this.getVideoUrl(`video${index}`, json.video.videoId, index)}><i
                                                         className={currentIndex === index ? "icon-bf-zt" : "icon-bf-bf"}/></span>
@@ -286,7 +341,7 @@ class DynamicList extends Component {
                                             {/*program 电台*/}
                                             {json.program &&
                                             <div className="m-dis-dynamic-item-all-m">
-                                                <img src={json.program.radio.picUrl}/>
+                                                <img src={json.program.radio.picUrl} alt=""/>
                                                 {/*<span className="m-play" onClick={()=>this.getCurrenturl(json.video.videoId)}><i className={currentIndex == index ? "icon-bf-zt":"icon-bf-bf"}/></span>*/}
                                                 <div>
                                                     <p>{json.program.radio.desc}</p>
@@ -337,4 +392,10 @@ class DynamicList extends Component {
     }
 }
 
-export default DynamicList;
+const mapStateToProps = (state)=>{
+    return {
+        userId:state.users.userMsg.id
+    }
+}
+export default connect(mapStateToProps)(DynamicList);
+

@@ -65,7 +65,7 @@ class MyLists extends Component {
   //获取歌曲MP3地址
   getCurrenturl = (item)=>{
     let live = this.props.liveList.filter(itemL => {
-      return itemL.id == item.id;
+      return itemL.id === item.id;
     }).length > 0 ? true:false;
     request(`song/url?id=${item.id}`).then(data=>{
       if(data.data.code === 200){
@@ -81,6 +81,8 @@ class MyLists extends Component {
         });
         this.getMusicLyrics(item.id);
       }
+    }).catch(err =>{
+        Toast.fail('发生错误');
     });
   }
 
@@ -94,6 +96,8 @@ class MyLists extends Component {
         });
         this.props.history.push('/playMusic');
       }
+    }).catch(err =>{
+        Toast.fail('发生错误');
     });
   }
 
@@ -124,12 +128,12 @@ class MyLists extends Component {
           <div className="m-my-tabs m-my-tabs-list">
             <Tabs tabs={tabs}
                   initialPage={0}
-                  onChange={(tab, index) => {
+                  /*onChange={(tab, index) => {
                     console.log('onChange', index, tab);
                   }}
                   onTabClick={(tab, index) => {
                     console.log('onTabClick', index, tab);
-                  }}
+                  }}*/
             >
               <div className="m-my-tabs-search">
                 <List className="m-my-list" renderHeader={

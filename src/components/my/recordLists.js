@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { NavBar, Icon,List  } from 'antd-mobile';
+import { NavBar, Icon,List,Toast  } from 'antd-mobile';
 import { connect } from 'dva';
 import request from '../../utils/request';
 
@@ -24,6 +24,8 @@ class RecordLists extends Component {
           recordList:data.data.weekData
         });
       }
+    }).catch(err =>{
+        Toast.fail('发生错误');
     })
   }
 

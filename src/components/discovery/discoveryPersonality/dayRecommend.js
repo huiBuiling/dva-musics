@@ -1,5 +1,5 @@
 import React,{ Component } from 'react';
-import { NavBar,SearchBar,Icon } from 'antd-mobile';
+import { NavBar,SearchBar,Icon,Toast } from 'antd-mobile';
 import { withRouter } from 'dva/router';
 import request from "../../../utils/request";
 
@@ -25,6 +25,8 @@ class DayRecommend extends Component{
                   recommendList:data.data.recommend
               });
           }
+      }).catch(err =>{
+          Toast.fail('发生错误');
       });
   }
 
@@ -52,7 +54,7 @@ class DayRecommend extends Component{
                                 <p>{item.name}</p>
                                 <p>
                                     {item.artists.map((itemI,indexI) => {
-                                        return <span key={itemI.id}>{indexI == 0 ? '' : val}{itemI.name}</span>
+                                        return <span key={itemI.id}>{indexI === 0 ? '' : val}{itemI.name}</span>
                                     })}
                                     <span> - {item.album.name}</span>
                                 </p>

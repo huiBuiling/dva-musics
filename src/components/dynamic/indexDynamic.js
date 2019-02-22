@@ -18,14 +18,13 @@ class IndexDynamic extends Component {
     }
 
     render() {
-        const {  } = this.state;
         return (
             <div className="m-dis">
                 {/*top*/}
                 <NavBar
                     mode="light"
                     icon={<i style={{fontSize:23}} className="icon-dis-ly"/>}
-                    onLeftClick={() => console.log('onLeftClick')}
+                    // onLeftClick={() => console.log('onLeftClick')}
                     rightContent={<span onClick={() => {
                         this.props.history.push('playMusic')
                     }}><i className="icon-m-bfz"/></span>}

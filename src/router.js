@@ -12,22 +12,27 @@ import DayRecommend from './components/discovery/discoveryPersonality/dayRecomme
 
 function RouterConfig({history}) {
     return (
-        <Router history={history}>
-            <Switch>
-                {/*<Route path="/" exact component={IndexPage} />*/}
+        <div>
+            {/*全局audio*/}
 
-                {/*发现*/}
-                <Route path="/dayRecommend" component={DayRecommend} />
 
-                {/*音乐*/}
-                <Route path="/recordLists" component={RecordLists}/>
-                <Route path="/collectLists" component={CollectLists}/>
-                <Route path="/lists:id" component={Lists}/>
-                <Route path="/playMusic" component={PlayMusic}/>
+            <Router history={history}>
+                <Switch>
+                    {/*<Route path="/" exact component={IndexPage} />*/}
 
-                <Route component={Footer}/>
-            </Switch>
-        </Router>
+                    {/*发现*/}
+                    <Route path="/dayRecommend" component={DayRecommend} />
+
+                    {/*音乐*/}
+                    <Route path="/recordLists" component={RecordLists}/>
+                    <Route path="/collectLists" component={CollectLists}/>
+                    <Route path="/lists:id" component={Lists}/>
+                    <Route path="/playMusic" component={PlayMusic}/>
+
+                    <Route component={Footer}/>
+                </Switch>
+            </Router>
+        </div>
     );
 }
 

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Carousel } from 'antd-mobile'
+import { Carousel,Toast } from 'antd-mobile'
 import request from "../../utils/request";
 
 /**
@@ -31,11 +31,13 @@ class DiscoveryAnchorStation extends Component {
         //获取电台 - 付费精选
         request('dj/paygift?limit=10&offset=20').then(data =>{
             if(data.data.code === 200){
-                let radioList = data.data.data.length > 3 ? data.data.djRadios.slice(0,3) :data.data.djRadios
+                // let radioList = data.data.data.length > 3 ? data.data.djRadios.slice(0,3) :data.data.djRadios;
                 this.setState({
                     radioList:data.data.data.list
                 });
             }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         })
     }
 

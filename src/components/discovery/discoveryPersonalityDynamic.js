@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { Toast } from 'antd-mobile';
 import request from "../../utils/request";
 
 /**
@@ -25,6 +26,8 @@ class PersonalityDynamic extends Component {
                     dynaminList:data.data.event
                 });
             }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         })
 
         const audio = this.refs.audio;
@@ -54,6 +57,8 @@ class PersonalityDynamic extends Component {
               currentIndex:index
             },()=> audio.play());
           }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         });
       }else if(audio && this.state.currentIndex === index){
           audio.pause();
@@ -75,6 +80,8 @@ class PersonalityDynamic extends Component {
                     video.play();
                 });
             }
+        }).catch(err =>{
+            Toast.fail('发生错误');
         });
     }
 
@@ -118,7 +125,7 @@ class PersonalityDynamic extends Component {
                                                 <div className="m-dis-dynamic-item-all-m">
                                                     {/*id*/}
                                                     <img src={json.song.album.picUrl} alt=""/>
-                                                    <span className="m-play" onClick={()=>this.playAudio(index, json.song.id)}><i className={currentIndex == index ? "icon-bf-zt":"icon-bf-bf"}/></span>
+                                                    <span className="m-play" onClick={()=>this.playAudio(index, json.song.id)}><i className={currentIndex === index ? "icon-bf-zt":"icon-bf-bf"}/></span>
                                                     <div>
                                                         <p>{json.song.name}</p>
                                                         <p>
@@ -139,7 +146,7 @@ class PersonalityDynamic extends Component {
                                                         <source src={currentVideoUrl} type="video/mp4" />
                                                     </video>
                                                     <div className="m-dis-dynamic-item-all-mv-img" style={{width: `${json.video.width}`,display:currentIndex === index ? 'none':'block'}}>
-                                                        <img src={json.video.coverUrl} />
+                                                        <img src={json.video.coverUrl} alt="" />
                                                         <span className="m-play" onClick={()=>this.getVideoUrl(`video${index}`,json.video.videoId,index)}><i className={currentIndex === index ? "icon-bf-zt":"icon-bf-bf"}/></span>
                                                     </div>
                                                 </div>
@@ -148,8 +155,8 @@ class PersonalityDynamic extends Component {
                                             {/*program*/}
                                             {json.program &&
                                               <div className="m-dis-dynamic-item-all-m">
-                                                <img src={json.program.radio.picUrl} />
-                                                {/*<span className="m-play" onClick={()=>this.getCurrenturl(json.video.videoId)}><i className={currentIndex == index ? "icon-bf-zt":"icon-bf-bf"}/></span>*/}
+                                                <img src={json.program.radio.picUrl} alt=""/>
+                                                {/*<span className="m-play" onClick={()=>this.getCurrenturl(json.video.videoId)}><i className={currentIndex === index ? "icon-bf-zt":"icon-bf-bf"}/></span>*/}
                                                 <div>
                                                   <p>{json.program.radio.desc}</p>
                                                   <p><span>{json.program.radio.category}</span>{json.program.radio.name}</p>
