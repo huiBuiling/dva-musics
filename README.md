@@ -35,3 +35,5 @@
 > 新版本：获取歌曲url：song/url?id=xxxxx
 
 > 发现调取某些接口成功后可能数据稍有延迟
+
+> react-sticky ：TabBar sticky

@@ -14,7 +14,8 @@
     "es6-promise": "^4.2.5",
     "isomorphic-fetch": "^2.2.1",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "react-sticky": "^6.0.3"
   },
   "devDependencies": {
     "babel-plugin-dva-hmr": "^0.3.2",

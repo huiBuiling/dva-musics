@@ -7,7 +7,8 @@ import PlayMusic from './components/my/playMusic';         //我的 - 播放音�
 import RecordLists from './components/my/recordLists'      //我的 - 最近播放列表
 import CollectLists from './components/my/collectLists'    //我的 - 收藏列表
 
-import DayRecommend from './components/discovery/discoveryPersonality/dayRecommend'   //发现 - 每日推荐
+import DayRecommend from './components/discovery/personality/dayRecommend'   //发现 - 每日推荐
+import StationDetail from './components/discovery/station/stationDetail'   //主播电台 - 详情
 
 
 function RouterConfig({history}) {
@@ -22,6 +23,7 @@ function RouterConfig({history}) {
 
                     {/*发现*/}
                     <Route path="/dayRecommend" component={DayRecommend} />
+                    <Route path="/stationDetail" component={StationDetail} />
 
                     {/*音乐*/}
                     <Route path="/recordLists" component={RecordLists}/>
