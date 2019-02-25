@@ -37,3 +37,5 @@
 > 发现调取某些接口成功后可能数据稍有延迟
 
 > react-sticky ：TabBar sticky
+  https://www.npmjs.com/package/react-sticky
+  

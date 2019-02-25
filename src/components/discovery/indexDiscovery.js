@@ -14,30 +14,23 @@ class IndexDiscovery extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            tabIndex:1,                //tab index
             showRadioDetail:false,     //电台显示
             radioDetail:{},            //电台详情
         }
     }
 
-    componentDidMount() {
-        // simulate img loading
-        setTimeout(() => {
-            this.setState({
-                data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
-            });
-        }, 100);
-    }
+    componentDidMount() {}
 
     getRadioDetail = (id)=>{
         //获取diantai - 详情 rid: 电台的id
-        request(`dj/detail?rid=${id}`).then(data =>{
-            if(data.data.code === 200){
-                console.log(data.data.djRadio);
+        request(`dj/detail?rid=${id}`).then(res =>{
+          console.log(res.data.djRadio);
+            if(res.data.code === 200){
                 this.setState({
-                    radioDetail:data.data.djRadio,
+                    radioDetail:res.data.djRadio,
                     showRadioDetail:true
                 });
-                // this.props.history.push('/stationDetail');
             }
         }).catch(err =>{
             Toast.fail('发生错误');
@@ -45,8 +38,15 @@ class IndexDiscovery extends Component {
 
     }
 
+    //关闭详情
+    closeRadioDetail = ()=>{
+        this.setState({
+            showRadioDetail:false
+        });
+    }
+
     render() {
-        const { showRadioDetail,radioDetail } = this.state;
+        const { showRadioDetail,radioDetail,tabIndex } = this.state;
         const tabs = [
             {title: '个性推荐'},
             {title: '主播电台'},
@@ -54,30 +54,33 @@ class IndexDiscovery extends Component {
         return (
             <div className="m-dis">
                 {
-                    showRadioDetail && <StationDetail radioDetail={radioDetail}/>
+                    showRadioDetail && <StationDetail closeRadioDetail={this.closeRadioDetail} radioDetail={radioDetail}/>
                 }
-                <div style={{display: showRadioDetail ? 'none':'block'}}>
+                <div style={{display: showRadioDetail ? 'none':'block',width:'100%',height:'100%'}}>
                     {/*top*/}
                     <NavBar
                         mode="light"
                         icon={<i style={{fontSize:23}} className="icon-dis-ly"/>}
-                        // onLeftClick={() => console.log('onLeftClick')}
                         rightContent={<span onClick={() => {
                             this.props.history.push('playMusic')
                         }}><i className="icon-m-bfz"/></span>}
                     ><SearchBar placeholder="Search" maxLength={8}/></NavBar>
 
                     <div className="m-dis-t">
-                        <Tabs tabs={tabs}
-                              initialPage={1}
-                              // onChange={(tab, index) => {}}
-                              // onTabClick={(tab, index) => {}}
+                        <Tabs className="m-dis-t-tabs"
+                              tabs={tabs}
+                              initialPage={tabIndex}
+                              onChange={(tab, index) => {this.setState({tabIndex:index})}}
                         >
                             {/*个性推荐*/}
-                            <DiscoveryPersonality />
+                            {
+                              tabIndex === 0 && <DiscoveryPersonality/>
+                            }
 
                             {/*主播电台*/}
-                            <DiscoveryAnchorStation getRadioDetail={this.getRadioDetail}/>
+                            {
+                              tabIndex === 1 && <DiscoveryAnchorStation getRadioDetail={this.getRadioDetail}/>
+                            }
                         </Tabs>
                     </div>
                 </div>

@@ -25,7 +25,6 @@ class DiscoveryPersonality extends Component {
     }
 
     componentDidMount() {
-
         //获取轮播banner
         request('banner').then(data =>{
             if(data.data.code === 200){

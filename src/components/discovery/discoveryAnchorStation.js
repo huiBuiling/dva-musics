@@ -17,36 +17,49 @@ class DiscoveryAnchorStation extends Component {
 
             carouselList:[],     //banner列表
             radioList:[],        //付费精选电台列表
-            showDetail:false,     //电台显示
-            // radioDetail:{},      //电台详情
+            showDetail:false,    //电台显示
+            // radioDetail:{},   //电台详情
+            liveRaio: [],        //已关注的电台
+            liveRaioCount: 0,    //已关注的电台数
         }
     }
 
     componentDidMount() {
         //获取轮播banner
-        request('banner').then(data =>{
-            if(data.data.code === 200){
+        request('banner').then(res =>{
+            if(res.data.code === 200){
                 this.setState({
-                    carouselList:data.data.banners
+                    carouselList:res.data.banners
                 });
             }
         })
 
-        //获取电台 - 付费精选
-        request('dj/paygift?limit=10&offset=20').then(data =>{
-            if(data.data.code === 200){
-                // let radioList = data.data.data.length > 3 ? data.data.djRadios.slice(0,3) :data.data.djRadios;
+        //获取电台 - 付费精选dj/paygift?limit=10&offset=20
+        /*request('dj/recommend').then(res =>{
+            console.log(res.data.result)
+            if(res.data.code === 200){
                 this.setState({
-                    radioList:data.data.data.list
+                    radioList:res.data.result
                 });
             }
         }).catch(err =>{
             Toast.fail('发生错误');
-        })
+        })*/
+
+        //已关注的 dj/sublist
+        /*request('dj/sublist').then(res =>{
+            if(res.data.code === 200) {
+                this.setState({
+                    liveRaio: res.data.djRadios,
+                    liveRaioCount: res.data.count
+                })
+            }
+        })*/
+
     }
 
     render() {
-        const { radioList,carouselList,showDetail,radioDetail } = this.state;
+        const { radioList,carouselList } = this.state;
 
         return (
             <div className="m-dis-tab m-dis-radio">
@@ -94,7 +107,7 @@ class DiscoveryAnchorStation extends Component {
                         </div>
                         <div>
                             <div><span><i className="icon-radio-xb2"/></span></div>
-                            <p><span>小冰电台</span></p>
+                            <p><span>关注电台</span></p>
                         </div>
                     </div>
 
