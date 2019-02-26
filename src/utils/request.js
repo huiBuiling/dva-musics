@@ -21,9 +21,15 @@ function checkStatus(response) {
  * @param  {object} [options] The options we want to pass to "fetch"
  * @return {object}           An object containing either "data" or "err"
  * options fetch 带cookie跨域访问 {credentials: "include"}
+ *
+ * err : react 使用fetch跨域报No 'Access-Control-Allow-Origin'
+ *      'Access-Control-Allow-Origin': '*',
  */
 export default function request(url, options) {
-  return fetch(`http://localhost:3636/${url}`, {credentials: "include"})
+  return fetch(`http://localhost:3636/${url}`, {
+    'Access-Control-Allow-Origin': '*',
+    credentials: "include"
+  })
     .then(checkStatus)
     .then(parseJSON)
     .then(data => ({ data }))

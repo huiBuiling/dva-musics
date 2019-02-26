@@ -160,7 +160,7 @@ class DiscoveryPersonality extends Component {
                 {/*列表*/}
                 <div className="m-dis-re-list">
                     <h3>推荐歌单 ></h3>
-                    <ul>
+                    <ul style={{maxHeight:150}}>
                         {recommendList.map((item,index) =>{
                             return <li key={index}>
                                 <div>

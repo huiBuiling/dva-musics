@@ -35,7 +35,7 @@ class DiscoveryAnchorStation extends Component {
         })
 
         //获取电台 - 付费精选dj/paygift?limit=10&offset=20
-        /*request('dj/recommend').then(res =>{
+        request('personalized/djprogram').then(res =>{
             console.log(res.data.result)
             if(res.data.code === 200){
                 this.setState({
@@ -44,7 +44,7 @@ class DiscoveryAnchorStation extends Component {
             }
         }).catch(err =>{
             Toast.fail('发生错误');
-        })*/
+        })
 
         //已关注的 dj/sublist
         /*request('dj/sublist').then(res =>{
@@ -91,7 +91,7 @@ class DiscoveryAnchorStation extends Component {
                         ))}
                     </Carousel>
 
-                    {/*图标操作*/}
+                    {/*图标操作 创作|翻唱：2001*/}
                     <div className="m-dis-icon">
                         <div>
                             <div><span><i className="icon-radio-fl"/></span></div>
@@ -103,7 +103,7 @@ class DiscoveryAnchorStation extends Component {
                         </div>
                         <div>
                             <div><span><i className="icon-radio-dt"/></span></div>
-                            <p><span>DI.FM</span></p>
+                            <p><span>创作|翻唱</span></p>
                         </div>
                         <div>
                             <div><span><i className="icon-radio-xb2"/></span></div>
@@ -113,15 +113,16 @@ class DiscoveryAnchorStation extends Component {
 
                     {/*列表*/}
                     <div className="m-dis-ra-list">
-                        <h3>今日优选</h3>
+                        <h3>个性推荐</h3>
                         <ul>
                             {radioList.map((item,index) =>{
-                                return <li key={index} onClick={()=>this.props.getRadioDetail(item.id)}>
+                                return <li key={index} onClick={()=>this.props.getRadioDetail(item.program.radio.id,item.program.subscribed)}>
                                             <img src={item.picUrl} alt=""/>
                                             <div>
                                                 <p className="title">{item.name}</p>
-                                                <p>节目：{item.programCount}</p>
-                                                <p>{item.rcmdText}</p>
+                                                {/*{item.program.radio.name}*/}
+                                                <p>节目：{item.program.radio.programCount}</p>
+                                                <p>类型：{item.program.radio.category}</p>
                                             </div>
                                         </li>
                             })}
