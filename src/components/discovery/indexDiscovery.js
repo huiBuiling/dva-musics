@@ -61,7 +61,6 @@ class IndexDiscovery extends Component {
         }).catch(err =>{
             Toast.fail('发生错误');
         });
-
     }
 
     //关闭详情
@@ -113,7 +112,10 @@ class IndexDiscovery extends Component {
 
                             {/*主播电台*/}
                             {
-                              tabIndex === 1 && <DiscoveryAnchorStation getRadioDetail={this.getRadioDetail}/>
+                              tabIndex === 1 &&
+                              <DiscoveryAnchorStation
+                                  getRadioDetail={this.getRadioDetail}
+                              />
                             }
                         </Tabs>
                     </div>
