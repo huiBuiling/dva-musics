@@ -204,7 +204,6 @@ class DynamicDetail extends Component {
                         {json.song &&
                             <div className="m-dis-dynamic-item-all-m" onClick={this.playAudio}>
                                 {/*id*/}
-                                <audio src={dyDetailUrl} ref='audio' preload="true" />
                                 <img src={json.song.album.picUrl} alt=""/>
                                 <span className="m-play">
                                     <i className={isPlay ? "icon-bf-zt":"icon-bf-bf"}/>

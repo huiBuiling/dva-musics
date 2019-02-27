@@ -15,7 +15,11 @@ function RouterConfig({history}) {
     return (
         <div>
             {/*全局audio*/}
-
+            <audio
+                // controls
+                preload="true"
+                id="audio"
+            />
 
             <Router history={history}>
                 <Switch>

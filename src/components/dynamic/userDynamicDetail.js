@@ -5,7 +5,7 @@ import request from "../../utils/request";
 /**
  * @author hui
  * @date 2019/2/18
- * @Description: 朋友圈 - 列表 - 用户详情 - 动态
+ * @Description: 朋友圈 - 列表 - 用户详情 - 动态(未使用)
  */
 class UserDynamicDetail extends Component {
     constructor(props) {

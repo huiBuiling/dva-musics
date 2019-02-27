@@ -30,7 +30,7 @@ class PersonalityDynamic extends Component {
             Toast.fail('发生错误');
         })
 
-        const audio = document.getElementById('fx-audio');
+        const audio = document.getElementById('audio');
         audio.addEventListener('ended', this.isEnd, false);
     }
 
@@ -44,7 +44,7 @@ class PersonalityDynamic extends Component {
 
     //播放|暂停音乐
     playAudio = (index,id)=>{
-      const audio = document.getElementById('fx-audio');
+      const audio = document.getElementById('audio');
       //开始播放
       if(audio && this.state.currentIndex !== index){
         audio.volume = 0.5;

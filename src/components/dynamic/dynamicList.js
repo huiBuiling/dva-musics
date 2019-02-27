@@ -15,7 +15,7 @@ class DynamicList extends Component {
         this.state = {
             dynaminList:[],           //动态列表
             currentIndex:-1,          //當前歌曲
-            currentUrl:null,          //当前音乐地址
+            // currentUrl:null,          //当前音乐地址
             currentVideoUrl:null,     //当前视频地址
             showDetail:false,         //显示对应详情
             dyDetailUrl:null,         //详情地址
@@ -27,7 +27,7 @@ class DynamicList extends Component {
         this.getAllDynamic();
         this.getUserAtten(this.props.userId);
 
-        const audio = this.refs.audio;
+        const audio = document.getElementById('audio');
         audio.addEventListener('ended', this.isEnd, false);
     }
 
@@ -99,7 +99,7 @@ class DynamicList extends Component {
 
     //播放|暂停音乐
     playAudio = (index,id)=>{
-      const audio = this.refs.audio;
+      const audio = document.getElementById('audio');
       //开始播放
       if(audio && this.state.currentIndex !== index){
         audio.volume = 0.5;
@@ -108,9 +108,12 @@ class DynamicList extends Component {
         request(`song/url?id=${id}`).then(data=>{
           if(data.data.code === 200){
             this.setState({
-              currentUrl:data.data.data[0].url,
+              // currentUrl:data.data.data[0].url,
               currentIndex:index
-            },()=> audio.play());
+            },()=> {
+                audio.src = data.data.data[0].url;
+                audio.play()
+            });
           }
         }).catch(err => {
             Toast.fail('歌曲资源获取失败！！！')
@@ -191,22 +194,38 @@ class DynamicList extends Component {
 
     //跳转详情
     getDynamicDetail = (id, item, type)=>{
+        const audio = document.getElementById('audio');
+        let { currentIndex } = this.state;
+
         let urls = type === 1 ? `song/url?id=${id}` : `video/url?id=${id}`;
         if((type === 1 || type === 2) && id !== null){
             request(urls).then(data => {
                 if (data.data.code === 200) {
+                    if(type === 1){
+                        audio.src = data.data.data[0].url;
+                    }else{
+                        audio.pause();
+                        console.log('此时应暂停');
+                        currentIndex = -1;
+                    }
                     this.setState({
-                        dyDetailUrl:type === 1 ? data.data.data[0].url : data.data.urls[0].url,
+                        dyDetailUrl:data.data.urls[0].url,
                         dyDetail:item,
-                        showDetail:true
+                        showDetail:true,
+                        currentIndex
                     });
                 }
             }).catch(err => {
-                console.log(err);
+                if(type !== 1){
+                    audio.pause();
+                    console.log('此时应暂停');
+                    currentIndex = -1;
+                }
                 this.setState({
                     dyDetailUrl:type === 1 ? 0 : 1,
                     dyDetail:item,
-                    showDetail:true
+                    showDetail:true,
+                    currentIndex
                 });
             });
         }else{
@@ -226,7 +245,7 @@ class DynamicList extends Component {
 
     render() {
         const { dynaminList,follows,
-            currentIndex,currentUrl,currentVideoUrl,
+            currentIndex,currentVideoUrl,
             showDetail,dyDetail,dyDetailUrl } = this.state;
 
         return (
@@ -264,12 +283,6 @@ class DynamicList extends Component {
                         }
                     </div>
 
-                    <audio
-                        // controls   //显示原始样式
-                        src={currentUrl}
-                        ref='audio'
-                        preload="true"
-                    />
                     {
                         dynaminList.map((item, index) => {
                             const json = JSON.parse(item.json);

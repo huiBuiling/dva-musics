@@ -20,6 +20,13 @@ class IndexDynamic extends Component {
     render() {
         return (
             <div className="m-dis">
+                {/*<audio
+                    // controls
+                    ref='audio'
+                    preload="true"
+                    id="dy-audio"
+                />*/}
+
                 {/*top*/}
                 <NavBar
                     mode="light"

@@ -77,12 +77,12 @@ class IndexDiscovery extends Component {
         ];
         return (
             <div className="m-dis">
-                <audio
+                {/*<audio
                     // controls
                     ref='audio'
                     preload="true"
                     id="fx-audio"
-                />
+                />*/}
 
                 {
                     showRadioDetail &&

@@ -104,7 +104,7 @@ class StationDetail extends Component {
     getCurrent = (index)=>{
         let { currentIndex,radioProgramDetail } = this.state;
         const current = radioProgramDetail[index].url;
-        const audio = document.getElementById('fx-audio');
+        const audio = document.getElementById('audio');
         audio.src = current;
         if(currentIndex === index){
             audio.pause();
