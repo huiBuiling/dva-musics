@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Button, Tabs, NavBar, Icon, Badge,Toast} from 'antd-mobile';
-import {StickyContainer, Sticky} from 'react-sticky';
 import request from "../../../utils/request";
 
 /**
@@ -58,19 +57,18 @@ class StationDetail extends Component {
     time = (msd)=> {
         let time = parseFloat(msd) / 1000;
         let hour= 0 , second = 0,minute = 0;
-        if (time != null && time != "") {
+        if (time !== null && time !== "") {
             if (time > 60 && time < 60 * 60) {
-                minute = parseInt(time / 60.0);
-                second = parseInt((parseFloat(time / 60.0) - parseInt(time / 60.0)) * 60);
+                minute = parseInt(time / 60.0,10);
+                second = parseInt((parseFloat(time / 60.0,10) - parseInt(time / 60.0,10)) * 60,10);
             }
             else if (time >= 60 * 60 && time < 60 * 60 * 24) {
-                hour = parseInt(time / 3600.0);
-                minute = parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)
-                second = parseInt((parseFloat((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60) -
-                    parseInt((parseFloat(time / 3600.0) - parseInt(time / 3600.0)) * 60)) * 60);
+                hour = parseInt(time / 3600.0,10);
+                minute = parseInt((parseFloat(time / 3600.0,10) - parseInt(time / 3600.0,10)) * 60,10)
+                second = parseInt((parseFloat((parseFloat(time / 3600.0,10) - parseInt(time / 3600.0,10)) * 60,10) - parseInt((parseFloat(time / 3600.0,10) - parseInt(time / 3600.0,10)) * 60,10)) * 60,10);
             }
             else {
-                second = parseInt(time);
+                second = parseInt(time,10);
             }
         }
         if (hour < 10 && hour !== 0) {

@@ -90,38 +90,38 @@ class DynamicList extends Component {
     }
 
     //判断歌曲是否播放完畢
-    isEnd = ()=>{
-      console.log('播放完毕');
-      this.setState({
-          currentIndex:-1
-      });
+    isEnd = () => {
+        console.log('播放完毕');
+        this.setState({
+            currentIndex: -1
+        });
     }
 
     //播放|暂停音乐
-    playAudio = (index,id)=>{
-      const audio = document.getElementById('audio');
-      //开始播放
-      if(audio && this.state.currentIndex !== index){
-        audio.volume = 0.5;
+    playAudio = (index, id, name, imgUrl) => {
+        const audio = document.getElementById('audio');
+        //开始播放
+        if (audio && this.state.currentIndex !== index) {
+            audio.volume = 0.5;
 
-        //获取歌曲MP3地址
-        request(`song/url?id=${id}`).then(data=>{
-          if(data.data.code === 200){
-            this.setState({
-              // currentUrl:data.data.data[0].url,
-              currentIndex:index
-            },()=> {
-                audio.src = data.data.data[0].url;
-                audio.play()
+            //获取歌曲MP3地址
+            request(`song/url?id=${id}`).then(data => {
+                if (data.data.code === 200) {
+                    this.props.getCurrent(id, name, imgUrl, data.data.data[0].url);
+                    this.setState({
+                        currentIndex: index
+                    }, () => {
+                        audio.src = data.data.data[0].url;
+                        audio.play()
+                    });
+                }
+            }).catch(err => {
+                Toast.fail('歌曲资源获取失败！！！')
             });
-          }
-        }).catch(err => {
-            Toast.fail('歌曲资源获取失败！！！')
-        });
-      }else if(audio && this.state.currentIndex === index){
-          audio.pause();
-          this.setState({currentIndex:-1});
-      }
+        } else if (audio && this.state.currentIndex === index) {
+            audio.pause();
+            this.setState({currentIndex: -1});
+        }
     }
 
     //获取视频MP4地址
@@ -154,23 +154,23 @@ class DynamicList extends Component {
     }
 
     //关注
-    setAtten = (id, followed)=>{
-      const follow = followed ? 2 : 1;
-      request(`follow?id=${id}&t=${follow}`).then(data => {
-        /*if (data.data.code === 201) {
-          alert('已添加关注');
-        }
-        if (data.data.code === 200) {
-          alert('已添加关注');
-        }*/
-        if (!followed) {
-          alert('已添加关注');
-        }else{
-          alert('已取消关注');
-        }
-      }).catch(err =>{
-          Toast.fail('发生错误');
-      });
+    setAtten = (id, followed) => {
+        const follow = followed ? 2 : 1;
+        request(`follow?id=${id}&t=${follow}`).then(data => {
+            /*if (data.data.code === 201) {
+              alert('已添加关注');
+            }
+            if (data.data.code === 200) {
+              alert('已添加关注');
+            }*/
+            if (!followed) {
+                alert('已添加关注');
+            } else {
+                alert('已取消关注');
+            }
+        }).catch(err => {
+            Toast.fail('发生错误');
+        });
     }
 
     /**
@@ -316,7 +316,7 @@ class DynamicList extends Component {
 
                                             {/*song 歌曲*/}
                                             {json.song &&
-                                            <div className="m-dis-dynamic-item-all-m" onClick={() => this.playAudio(index, json.song.id)}>
+                                            <div className="m-dis-dynamic-item-all-m" onClick={() => this.playAudio(index, json.song.id, json.song.name, json.song.album.picUrl)}>
                                                 {/*id*/}
                                                 <img src={json.song.album.picUrl} alt=""/>
                                                 <span className="m-play"><i className={currentIndex === index ? "icon-bf-zt" : "icon-bf-bf"}/></span>

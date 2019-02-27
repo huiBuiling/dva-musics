@@ -13,7 +13,7 @@ import StationDetail from './components/discovery/station/stationDetail'   //主
 
 function RouterConfig({history}) {
     return (
-        <div>
+        <div style={{width:'100%',height:'100%'}}>
             {/*全局audio*/}
             <audio
                 // controls
