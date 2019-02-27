@@ -34,7 +34,6 @@ class DiscoveryAnchorStation extends Component {
 
         //获取电台 - 付费精选dj/paygift?limit=10&offset=20
         request('personalized/djprogram').then(res =>{
-            console.log(res.data.result)
             if(res.data.code === 200){
                 this.setState({
                     radioList:res.data.result
@@ -49,7 +48,6 @@ class DiscoveryAnchorStation extends Component {
     setMyRadio = ()=>{
         request('dj/sublist').then(res =>{
             if(res.data.code === 200) {
-                console.log(res.data.djRadios);
                 this.setState({
                     liveRaioList: res.data.djRadios
                 })
@@ -120,7 +118,7 @@ class DiscoveryAnchorStation extends Component {
                                         <img src={item.picUrl} alt=""/>
                                         <div>
                                             <p className="title">{item.name}</p>
-                                            <p>{item.rcmdtext}</p>
+                                            <p>{item.lastProgramName}</p>
                                             <p>类型：{item.category}</p>
                                         </div>
                                     </li>

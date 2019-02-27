@@ -13,7 +13,7 @@ class PersonalityDynamic extends Component {
         this.state = {
             dynaminList:[],           //动态列表
             currentIndex:-1,          //當前歌曲
-            currentUrl:null,          //当前音乐地址
+            // currentUrl:null,          //当前音乐地址
             currentVideoUrl:null,     //当前视频地址
         }
     }
@@ -30,7 +30,7 @@ class PersonalityDynamic extends Component {
             Toast.fail('发生错误');
         })
 
-        const audio = this.refs.audio;
+        const audio = document.getElementById('audio');
         audio.addEventListener('ended', this.isEnd, false);
     }
 
@@ -44,7 +44,7 @@ class PersonalityDynamic extends Component {
 
     //播放|暂停音乐
     playAudio = (index,id)=>{
-      const audio = this.refs.audio;
+      const audio = document.getElementById('audio');
       //开始播放
       if(audio && this.state.currentIndex !== index){
         audio.volume = 0.5;
@@ -53,9 +53,11 @@ class PersonalityDynamic extends Component {
         request(`song/url?id=${id}`).then(data=>{
           if(data.data.code === 200){
             this.setState({
-              currentUrl:data.data.data[0].url,
               currentIndex:index
-            },()=> audio.play());
+            },()=> {
+                audio.src = data.data.data[0].url;
+                audio.play();
+            });
           }
         }).catch(err =>{
             Toast.fail('发生错误');
@@ -86,17 +88,17 @@ class PersonalityDynamic extends Component {
     }
 
     render() {
-        const { dynaminList,currentIndex,currentUrl,currentVideoUrl } = this.state;
+        const { dynaminList,currentIndex,currentVideoUrl } = this.state;
 
 
         return (
             <div className="m-dis-dynamic">
-                <audio
+                {/*<audio
                   // controls   //显示原始样式
                   src={currentUrl}
                   ref='audio'
                   preload="true"
-                />
+                />*/}
 
                 {/*列表*/}
                     {

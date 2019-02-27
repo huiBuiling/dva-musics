@@ -26,7 +26,6 @@ class IndexDiscovery extends Component {
     getRadioDetail = (id,isSub)=>{
         //获取diantai - 详情 rid: 电台的id
         request(`dj/detail?rid=${id}`).then(res =>{
-          console.log(res.data.djRadio);
             if(res.data.code === 200){
                 this.setState({
                     radioDetail:res.data.djRadio,
@@ -78,6 +77,13 @@ class IndexDiscovery extends Component {
         ];
         return (
             <div className="m-dis">
+                <audio
+                    // controls
+                    ref='audio'
+                    preload="true"
+                    id="audio"
+                />
+
                 {
                     showRadioDetail &&
                     <StationDetail

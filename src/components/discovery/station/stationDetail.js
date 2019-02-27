@@ -14,6 +14,7 @@ class StationDetail extends Component {
         this.state = {
             radioDetail: {},        //电台详情
             tabIndex:0,
+            currentIndex:-1,        //当前节目
         }
     }
 
@@ -23,9 +24,8 @@ class StationDetail extends Component {
     }
 
     getRadioProgramDetail = (id)=>{
-        //获取节目url530692704
+        //获取全部节目url
         request(`song/url?id=${id}`).then(res =>{
-            console.log(res.data.data);
             if(res.data.code === 200){
                 this.setState({
                     radioProgramDetail:res.data.data,
@@ -100,10 +100,26 @@ class StationDetail extends Component {
         return year+'-'+month+'-'+day;
     }
 
+    //播放及暂停
+    getCurrent = (index)=>{
+        let { currentIndex,radioProgramDetail } = this.state;
+        const current = radioProgramDetail[index].url;
+        const audio = document.getElementById('audio');
+        audio.src = current;
+        if(currentIndex === index){
+            audio.pause();
+            index = -1;
+        }else{
+            audio.play();
+        }
+        this.setState({
+            currentIndex:index
+        });
+    }
+
     render() {
         const { radioDetail, radioProgram } = this.props;
-        const { tabIndex, radioProgramDetail } = this.state;
-        console.log(radioProgram);
+        const { tabIndex,currentIndex } = this.state;
         const tabs = [
             {title: '详情'},
             {title: <Badge>节目{radioDetail.programCount}</Badge>},
@@ -184,7 +200,9 @@ class StationDetail extends Component {
                                                       <p>{item.name}</p>
                                                       <p>
                                                           <span>{this.getTime(item.createTime)}</span>
-                                                          <span><i className="icon-bf-bf"/>{item.listenerCount}</span>
+                                                          <span onClick={()=>this.getCurrent(index)}>
+                                                              <i className={currentIndex === index ? "icon-bf-zt" : "icon-bf-bf"} />{item.listenerCount}
+                                                          </span>
                                                           <span><i className="icon-d-time"/>{this.time(item.duration)}</span>
                                                       </p>
                                                   </div>
