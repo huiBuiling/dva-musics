@@ -81,7 +81,7 @@ class IndexDiscovery extends Component {
                     // controls
                     ref='audio'
                     preload="true"
-                    id="audio"
+                    id="fx-audio"
                 />
 
                 {
