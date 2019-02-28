@@ -12,23 +12,28 @@ export default {
     liveIDList:[]
   },
   reducers: {
-    'userMsg'(state, data) {
+    'userMsg'(state, action) {
       return {
         ...state,
-        users:data.data
+        users:action.data
       };
     },
-    'userLiveIDList'(state, data){
+    'userLiveIDList'(state, action){
       return{
         ...state,
-        liveList:data.data
+        liveList:action.data
       }
     }
   },
   effects: {
     //用户基础信息
-    *getUserMsg({ data}, { put }) {
-      yield put({
+    *getUserMsg({ data}, { put,select }) {
+        //获取当前state中的数据 users
+        const num = yield select(state => state.users)
+        //or yield select(({users}) =>users) | yield select(_ =>_.users)
+
+
+        yield put({
         type: 'userMsg',
         users:data
       });
