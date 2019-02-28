@@ -58,9 +58,6 @@ class MyLists extends Component {
 
     //获取歌曲MP3地址
     getCurrenturl = (item) => {
-        /*let live = this.props.liveList.filter(itemL => {
-            return itemL.id === item.id;
-        }).length > 0 ? true : false;*/
         let live = this.props.liveList.filter(itemL =>itemL.id === item.id).length > 0 ? true : false;
         request(`song/url?id=${item.id}`).then(data => {
             if (data.data.code === 200) {
@@ -71,7 +68,8 @@ class MyLists extends Component {
                         id: item.id,
                         name: item.name,
                         imgUrl: item.al.picUrl,
-                        live: live
+                        live: live,
+                        isPlay:true
                     }
                 });
                 this.props.history.push('/playMusic');

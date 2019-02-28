@@ -36,46 +36,65 @@ class PlayMusic extends Component {
             this.props.history.push('/myMusic');
         } else {
             const { playMusicCurrent } = this.props.playMusic;
-            /*this.setState({
-                currentMusic: this.getCurrent(null),
-            });*/
             this.getMusicLyrics(playMusicCurrent.id);
+
+            const audio = document.getElementById('audio');
+            /**
+             * 1. 判断是否列表点击
+                    是 -> 当前音乐已在播放
+                            是 -> 判断audio url
+                            否 -> 播放即可
+                    否 -> 音乐是否播放中
+             **/
+            if(playMusicCurrent.isPlay){
+                // 列表点击进入
+                if(audio.src == playMusicCurrent.url){
+                    // 当前音乐已在播放
+                    this.setState({animationPuse:false}, ()=>{
+                        this.time(1, true);
+                    });
+                }else{
+                    this.playAudio(playMusicCurrent.url);
+                }
+            }else{
+                //判断是否在播放
+                if(audio.currentTime > 0){
+                    this.setState({animationPuse:false}, ()=>{
+                        this.time(1, true);
+                    });
+                }
+            }
+
+            //时长改变
+            audio.addEventListener('durationchange', ()=>{this.time(1, true);});
+
+            //监听进度
+            audio.addEventListener('timeupdate', ()=>{this.time(2, true)});
+
+            //监听播放结束，列表循环
+            audio.addEventListener('ended', this.isEnd, false);
         }
-        const audio = document.getElementById('audio');
-
-        //监听播放结束
-        audio.addEventListener('ended', this.isEnd, false);
-
-        //监听onTimeUpdate
-        // audio.addEventListener('timeupdate', ()=>{this.time(2, true)});
-
-        //监听onCanPlay canplay
-        /*audio.addEventListener('canplaythrough', ()=>{
-            console.log('canplay');
-            this.time(1, true)
-        });*/
     }
 
     componentWillUnmount(){
         //移除 audio 的事件监听
         const audio = document.getElementById('audio');
-
+        audio.removeEventListener('durationchange', ()=>{this.time(1, true);});
+        audio.removeEventListener('timeupdate', ()=>{this.time(2, true)});
         audio.removeEventListener('ended', this.isEnd, false);
 
-        // audio.removeEventListener('timeupdate', ()=>{this.time(2, true)});
-
-       /* audio.removeEventListener('canplaythrough', ()=>{
-            console.log('canplay');
-            this.time(1, true)
-        });*/
+        this.setState = (state,callback)=>{
+            return;
+        };
     }
 
     //判断歌曲是否播放完畢
     isEnd = () => {
         console.log('播放完毕');
-        if (this.props.playMusic.playMusicList.length > 0) {
+        this.setState({animationPuse:false});
+        /*if (this.props.playMusic.playMusicList.length > 0) {
             this.checkMusic(true, null);
-        }
+        }*/
     }
 
     //获取歌词
@@ -100,15 +119,9 @@ class PlayMusic extends Component {
         const audio = document.getElementById('audio');
         if (audio) {
             //时长转换
-            let time = 0, minute = 0, second = 0;
-            if (flag === 1) {
-                time = audio.duration;
-            } else if (flag === 2) {
-                time = audio.currentTime;
-            }
-
-            minute = parseInt(time / 60);
-            second = Math.round(time % 60);
+            let time = flag === 1 ? audio.duration : audio.currentTime;
+            let minute = parseInt(time / 60);
+            let second = Math.round(time % 60);
 
             if (minute < 10) {
                 minute = "0" + minute;
@@ -131,7 +144,7 @@ class PlayMusic extends Component {
                     });
                 }
             }
-            return currentTime;
+            // return currentTime;
         }
     }
 
@@ -143,16 +156,18 @@ class PlayMusic extends Component {
             console.log('开始播放');
             audio.volume = (volume / 100);
             audio.src = url;
-            audio.play();
+            audio.load();
 
-            const currentTime = this.time(2, false);  //获取播放进度
-            const allTime = this.time(1, false);  //获取总时长
+
+            // const currentTime = this.time(2, false);  //获取播放进度
+            // const allTime = this.time(1, false);  //获取总时长
 
             this.setState({
                 animationPuse: !animationPuse,
-                allTime, currentTime
+                // allTime, currentTime
             });
 
+            audio.play();
         } else if (audio && !animationPuse) {
             console.log('停止播放');
             audio.pause();
