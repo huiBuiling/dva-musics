@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { withRouter } from 'dva/router';
 import {Button, Tabs, NavBar, Icon, Badge,Toast} from 'antd-mobile';
 import request from "../../../utils/request";
 
@@ -7,6 +8,7 @@ import request from "../../../utils/request";
  * @date 2019/2/14
  * @Description: 发现 - 主播电台 - 详情
  */
+@withRouter
 class StationDetail extends Component {
     constructor(props) {
         super(props);
@@ -101,9 +103,14 @@ class StationDetail extends Component {
     //播放及暂停
     getCurrent = (index)=>{
         let { currentIndex,radioProgramDetail } = this.state;
-        const current = radioProgramDetail[index].url;
+        let { radioProgram } = this.props;
+
+        const url = radioProgramDetail[index].url;
+        const {id, name, imgUrl} = radioProgram[index];
+        this.props.getCurrent(id, name, imgUrl, url,false);
+
         const audio = document.getElementById('audio');
-        audio.src = current;
+        audio.src = url;
         if(currentIndex === index){
             audio.pause();
             index = -1;
@@ -131,7 +138,7 @@ class StationDetail extends Component {
                         icon={<Icon type="left"/>}
                         onLeftClick={this.props.closeRadioDetail}
                         rightContent={<span onClick={() => {
-                            this.props.history.push('playMusic')
+                            this.props.history.push('/playMusic')
                         }}><i className="icon-m-bfz"/></span>}
                     >电台</NavBar>
 

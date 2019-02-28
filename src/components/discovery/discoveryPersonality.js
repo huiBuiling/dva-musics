@@ -212,7 +212,7 @@ class DiscoveryPersonality extends Component {
                 </div>
 
                 {/*动态*/}
-                <PersonalityDynamic />
+                <PersonalityDynamic  getCurrent={this.props.getCurrent} />
             </div>
         )
     }

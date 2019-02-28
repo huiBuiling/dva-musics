@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { connect } from 'dva';
 import { NavBar, SearchBar, Tabs,Toast } from 'antd-mobile'
 import DiscoveryPersonality from './discoveryPersonality';
 import DiscoveryAnchorStation from './discoveryAnchorStation';
@@ -42,10 +43,12 @@ class IndexDiscovery extends Component {
                 let radioProgramId = [];
                 res.data.programs.map(item =>{
                     radioProgram.push({
+                        id:item.mainSong.id,
                         name:item.name,
                         listenerCount:item.listenerCount,
                         createTime:item.createTime,
-                        duration:item.duration
+                        duration:item.duration,
+                        imgUrl:item.coverUrl
                     });
                     radioProgramId.push(item.mainSong.id);
                 })
@@ -69,6 +72,26 @@ class IndexDiscovery extends Component {
         });
     }
 
+    //保存当前歌曲字段(播放才保存）
+    getCurrent = (id, name, imgUrl, url,flag) => {
+        let live = false;
+        if(flag){
+            live = this.props.liveList.filter(itemL =>itemL.id === id).length > 0 ? true : false;
+        }
+
+        this.props.dispatch({
+            type: 'playMusic/getPlayMusicCurrent',
+            data: {
+                url: url,
+                id: id,
+                name: name,
+                imgUrl: imgUrl,
+                live,
+                isPlay:true
+            }
+        });
+    }
+
     render() {
         const { showRadioDetail,radioDetail,radioProgram,radioProgramId,tabIndex,isSub,radioId } = this.state;
         const tabs = [
@@ -77,13 +100,6 @@ class IndexDiscovery extends Component {
         ];
         return (
             <div className="m-dis">
-                {/*<audio
-                    // controls
-                    ref='audio'
-                    preload="true"
-                    id="fx-audio"
-                />*/}
-
                 {
                     showRadioDetail &&
                     <StationDetail
@@ -93,6 +109,7 @@ class IndexDiscovery extends Component {
                         radioProgramId={radioProgramId}
                         isSub={isSub}
                         radioId={radioId}
+                        getCurrent={this.getCurrent}
                     />
                 }
                 <div style={{display: showRadioDetail ? 'none':'block',width:'100%',height:'100%'}}>
@@ -113,7 +130,7 @@ class IndexDiscovery extends Component {
                         >
                             {/*个性推荐*/}
                             {
-                              tabIndex === 0 && <DiscoveryPersonality/>
+                              tabIndex === 0 && <DiscoveryPersonality getCurrent={this.getCurrent}/>
                             }
 
                             {/*主播电台*/}
@@ -131,4 +148,10 @@ class IndexDiscovery extends Component {
     }
 }
 
-export default IndexDiscovery;
+const mapStateToProps = (state, dispatch) => {
+    return {
+        playMusicList: state.playMusic.playMusicList,
+        liveList: state.users.liveList
+    }
+}
+export default connect(mapStateToProps)(IndexDiscovery);
