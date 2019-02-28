@@ -1,13 +1,19 @@
 /**
  * @author hui
  * @date 2019/1/24
- * @Description: playMusicList歌曲列表 | playMusicCurrent当前歌曲id and url | musicLyrics当前歌曲歌词
+ * @Description:
+ * @param:
+ *  playMusicList歌曲列表
+ *  playMusicCurrent当前歌曲id,name,imgUrl,url
+ *  musicLyrics当前歌曲歌词
 */
 export default {
   namespace: 'playMusic',
   state: {
     playMusicList:[],
-    playMusicCurrent:null,
+    playMusicCurrent:{
+      id:null
+    },
     musicLyrics:[]
   },
   reducers: {

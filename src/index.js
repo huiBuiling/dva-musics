@@ -26,8 +26,8 @@ const app = dva({
 // 3. Model
 // app.model(require('./models/example').default);
 // app.model(require('./models/products').default);
-app.model(require('./reducer/playMusic').default);
-app.model(require('./reducer/user').default);
+app.model(require('./models/playMusic').default);
+app.model(require('./models/user').default);
 
 // 4. Router
 app.router(require('./router').default);
