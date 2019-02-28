@@ -15,8 +15,7 @@ class IndexDynamic extends Component {
         }
     }
 
-    componentDidMount() {
-    }
+    componentDidMount() {}
 
     //保存当前歌曲字段
     getCurrent = (id, name, imgUrl, url) => {
@@ -29,7 +28,8 @@ class IndexDynamic extends Component {
                 id: id,
                 name: name,
                 imgUrl: imgUrl,
-                live: live
+                live: live,
+                isPlay:true
             }
         });
     }
@@ -37,13 +37,6 @@ class IndexDynamic extends Component {
     render() {
         return (
             <div className="m-dis">
-                {/*<audio
-                    // controls
-                    ref='audio'
-                    preload="true"
-                    id="dy-audio"
-                />*/}
-
                 {/*top*/}
                 <NavBar
                     mode="light"

@@ -31,6 +31,24 @@ class DynamicList extends Component {
         audio.addEventListener('ended', this.isEnd, false);
     }
 
+    componentWillUnmount(){
+        //移除 audio 的事件监听
+        const audio = document.getElementById('audio');
+        audio.removeEventListener('ended', this.isEnd, false);
+
+        this.setState = (state,callback)=>{
+            return;
+        };
+    }
+
+    //判断歌曲是否播放完畢
+    isEnd = () => {
+        console.log('播放完毕');
+        this.setState({
+            currentIndex: -1
+        });
+    }
+
     //获取用户详情
     getUserDetail = ()=>{
         request('user/detail?uid=108952364').then(data =>{
@@ -89,16 +107,9 @@ class DynamicList extends Component {
         })
     }
 
-    //判断歌曲是否播放完畢
-    isEnd = () => {
-        console.log('播放完毕');
-        this.setState({
-            currentIndex: -1
-        });
-    }
-
     //播放|暂停音乐
     playAudio = (index, id, name, imgUrl) => {
+        debugger
         const audio = document.getElementById('audio');
         //开始播放
         if (audio && this.state.currentIndex !== index) {
@@ -112,7 +123,7 @@ class DynamicList extends Component {
                         currentIndex: index
                     }, () => {
                         audio.src = data.data.data[0].url;
-                        audio.play()
+                        audio.play();
                     });
                 }
             }).catch(err => {
@@ -257,6 +268,7 @@ class DynamicList extends Component {
                             getTime={this.getTime}
                             showDynamicList={this.showDynamicList}
                             dyDetailUrl={dyDetailUrl}
+                            getCurrent={this.props.getCurrent}
                         />
                     </div>
                 }

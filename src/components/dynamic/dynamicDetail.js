@@ -17,7 +17,7 @@ class DynamicDetail extends Component {
             itemId:null,              //id
             itemType:-1,              //type
             val:'',                   //输入值
-            liked:[],              //喜欢
+            liked:[],                 //喜欢
         }
     }
 
@@ -29,10 +29,38 @@ class DynamicDetail extends Component {
             this.setState({
                 urlDetail:`${msg}资源获取失败！！！`
             });
+        }else{
+            const audio = document.getElementById('audio');
+            // 当前音乐已在播放 -> 是 -> 持续播放,设置播放状态
+            if(audio.currentTime > 0 && audio.src == dyDetailUrl) {
+                // 是 -> 持续播放,设置播放状态
+                this.setState({
+                    isPlay:true
+                });
+            }
+
+            //监听播放结束，列表循环
+            audio.addEventListener('ended', this.isEnd, false);
         }
 
         //获取评论
         this.getDetail();
+    }
+
+    componentWillUnmount(){
+        //移除 audio 的事件监听
+        const audio = document.getElementById('audio');
+        audio.removeEventListener('ended', this.isEnd, false);
+
+        this.setState = (state,callback)=>{
+            return;
+        };
+    }
+
+    //判断歌曲是否播放完畢
+    isEnd = () => {
+        console.log('播放完毕');
+        this.setState({isPlay:false});
     }
 
     /**
@@ -145,12 +173,14 @@ class DynamicDetail extends Component {
     }
 
     //播放歌曲
-    playAudio = ()=>{
+    playAudio = (id, name, imgUrl)=>{
         const { urlDetail, isPlay} = this.state;
+        const { dyDetailUrl } = this.props;
         if(urlDetail === null){
             Toast.fail(urlDetail);
         }else{
-            const audio = this.refs.audio;
+            const audio = document.getElementById('audio');
+            this.props.getCurrent(id, name, imgUrl, dyDetailUrl);
             if(!isPlay){
                 audio.play();
             }else{
@@ -202,7 +232,7 @@ class DynamicDetail extends Component {
 
                         {/*song 歌曲*/}
                         {json.song &&
-                            <div className="m-dis-dynamic-item-all-m" onClick={this.playAudio}>
+                            <div className="m-dis-dynamic-item-all-m" onClick={()=>this.playAudio(json.song.id,json.song.name,json.song.album.picUrl)}>
                                 {/*id*/}
                                 <img src={json.song.album.picUrl} alt=""/>
                                 <span className="m-play">
