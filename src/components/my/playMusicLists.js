@@ -42,7 +42,7 @@ class PlayMusicLists extends Component {
                                     }}>
                                         <span><img src={currentMusic === index ? cricle : cricleUn} alt=""/>{item.name}</span>
                                         <span className="singer"> - </span>
-                                        <span className="singer">{item.ar[0].name}</span>
+                                        {/*<span className="singer">{item.ar[0].name}</span>*/}
                                     </div>
                                     <span onClick={() => {
                                         this.setState({

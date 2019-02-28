@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { connect } from 'dva';
 import { withRouter } from 'dva/router';
 import {Button, Tabs, NavBar, Icon, Badge,Toast} from 'antd-mobile';
 import request from "../../../utils/request";
@@ -14,7 +15,7 @@ class StationDetail extends Component {
         super(props);
         this.state = {
             radioDetail: {},        //电台详情
-            tabIndex:0,
+            tabIndex:1,
             currentIndex:-1,        //当前节目
         }
     }
@@ -122,6 +123,31 @@ class StationDetail extends Component {
         });
     }
 
+    //播放全部
+    playAll = ()=>{
+        //获取节目全部数据
+        const data = this.props.radioProgram;
+        data.map((item,index) =>{
+            item.url = this.state.radioProgramDetail[index].url;
+        })
+
+        console.log(data);
+        this.props.dispatch({
+            type:'playMusic/getPlayMusicList',
+            data:data
+        });
+
+        //开始播放
+        const audio = document.getElementById('audio');
+        const cur = data[0];
+        audio.src = cur.url;
+        this.props.getCurrent(cur.id, cur.name, cur.imgUrl, cur.url,false);
+        audio.play();
+        this.setState({
+            currentIndex:0
+        });
+    }
+
     render() {
         const { radioDetail, radioProgram } = this.props;
         const { tabIndex,currentIndex } = this.state;
@@ -162,6 +188,7 @@ class StationDetail extends Component {
                           initialPage={tabIndex}
                           onChange={(tab, index) => {this.setState({tabIndex:index})}}
                     >
+                        {/*详情*/}
                         <div className="m-detail-con-tab">
                             <h3>主播</h3>
                                 <div className='m-detail-con-zb'>
@@ -196,24 +223,30 @@ class StationDetail extends Component {
                                     }
                                 </div>
                         </div>
+
+                        {/*节目*/}
                         <div className="m-detail-con-tab m-detail-program">
-                              {
-                                  radioProgram.map((item,index)=>{
-                                      return <div key={index} className="m-detail-program-item">
-                                                  <p>{index + 1}</p>
-                                                  <div>
-                                                      <p>{item.name}</p>
-                                                      <p>
-                                                          <span>{this.getTime(item.createTime)}</span>
-                                                          <span onClick={()=>this.getCurrent(index)}>
-                                                              <i className={currentIndex === index ? "icon-bf-zt" : "icon-bf-bf"} />{item.listenerCount}
+                            <div className="m-detail-program-top">
+                                <span className="m-detail-program-num">共 10 期</span>
+                                <span style={{float:'right'}} onClick={this.playAll}><i className="icon-s-all-bg"/> 播放全部</span>
+                            </div>
+                            {
+                                radioProgram.map((item, index) => {
+                                    return <div key={index} className="m-detail-program-item">
+                                        <p>{index + 1}</p>
+                                        <div>
+                                            <p>{item.name}</p>
+                                            <p>
+                                                <span>{this.getTime(item.createTime)}</span>
+                                                <span onClick={() => this.getCurrent(index)}>
+                                                              <i className={currentIndex === index ? "icon-bf-zt" : "icon-bf-bf"}/>{item.listenerCount}
                                                           </span>
-                                                          <span><i className="icon-d-time"/>{this.time(item.duration)}</span>
-                                                      </p>
-                                                  </div>
-                                              </div>
-                                  })
-                              }
+                                                <span><i className="icon-d-time"/>{this.time(item.duration)}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                })
+                            }
                         </div>
                     </Tabs>
                 </div>
@@ -221,5 +254,9 @@ class StationDetail extends Component {
         )
     }
 }
-
-export default StationDetail;
+const mapStateToProps = (state, dispatch)=>{
+    return {
+        playMusicList: state.playMusic.playMusicList,
+    }
+}
+export default connect(mapStateToProps)(StationDetail);

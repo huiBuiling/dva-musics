@@ -395,19 +395,19 @@ class PlayMusic extends Component {
                                                               style={{fontSize: 38}}/></span>
                             <span onClick={() => this.checkMusic(true, null)}><i className="icon-bf-r"/></span>
                             <span onClick={() => this.setState({playMusicLists: true})}><i
-                                className="icon-bf-list"/></span>
+                                className="icon-dis-gd"/></span>
                         </div>
                     </div>
 
                     {/*PlayMusicLists*/}
-                    {/*{playMusicLists &&
+                    {playMusicLists &&
                         <PlayMusicLists
                             close={() => this.setState({playMusicLists: false})}
                             playMusicList={playMusicList}
                             checkMusic={this.checkMusic}
                             currentMusic={currentMusic}
                         />
-                    }*/}
+                    }
 
                 </div>
             </div>

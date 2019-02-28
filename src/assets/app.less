@@ -1,4 +1,4 @@
-@import '//at.alicdn.com/t/font_1014906_81lrasvkcpj.css';
+@import '//at.alicdn.com/t/font_1014906_5en5sul8ka4.css';
 [class^=icon-] {
   font-family: "iconfont" !important;
   font-size: 20px;
@@ -1285,6 +1285,7 @@
   .m-detail{
     width: 100%;
     height: 100%;
+    background: rgba(0,0,0,.3);
     //overflow-y: auto;
     .m-detail-t{
       position: relative;
@@ -1490,6 +1491,24 @@
 
       .m-detail-program{
         padding: 0 10px;
+        .m-detail-program-top{
+          width: 100%;
+          background: @borderColor;
+          height: 28px;
+          line-height: 28px;
+          padding: 0 10px;
+          span{
+            color: @fontColor;
+            font-size: @fontSize2;
+            i{
+              margin-right: 1px;
+              font-size: @fontSize;
+            }
+          }
+          .m-detail-program-num{
+            color: @comFontColor;
+          }
+        }
         .m-detail-program-item{
           height: 60px;
           border-bottom: 1px solid @borderColor;
