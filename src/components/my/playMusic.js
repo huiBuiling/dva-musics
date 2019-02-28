@@ -32,10 +32,11 @@ class PlayMusic extends Component {
 
     componentDidMount() {
         //刷新后至 -> myMusic
-        if (this.props.playMusic.playMusicList.length === 0) {
+        const { playMusicCurrent } = this.props.playMusic;
+        // if (this.props.playMusic.playMusicList.length === 0) {
+        if(playMusicCurrent.id === null){
             this.props.history.push('/myMusic');
         } else {
-            const { playMusicCurrent } = this.props.playMusic;
             this.getMusicLyrics(playMusicCurrent.id);
 
             const audio = document.getElementById('audio');
@@ -91,7 +92,7 @@ class PlayMusic extends Component {
     //判断歌曲是否播放完畢
     isEnd = () => {
         console.log('播放完毕');
-        this.setState({animationPuse:false});
+        this.setState({animationPuse:true});
         /*if (this.props.playMusic.playMusicList.length > 0) {
             this.checkMusic(true, null);
         }*/
