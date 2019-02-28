@@ -17,21 +17,21 @@ export default {
     musicLyrics:[]
   },
   reducers: {
-    'playMusicList'(state, data) {
+    'playMusicList'(state, action) {
       return {
-        playMusicList:data.playMusicList,
+        playMusicList:action.playMusicList,
       };
     },
-    'playMusicCurrent'(state,data){
+    'playMusicCurrent'(state,action){
       return{
         ...state,
-        playMusicCurrent:data.data
+        playMusicCurrent:action.data
       }
     },
-    'musicLyrics'(state,data){
+    'musicLyrics'(state,action){
       return {
         ...state,
-        musicLyrics:data.data
+        musicLyrics:action.data
       }
     }
   },
