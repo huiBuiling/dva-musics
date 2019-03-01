@@ -32,7 +32,7 @@ class DiscoveryAnchorStation extends Component {
             }
         })
 
-        //获取电台 - 付费精选dj/paygift?limit=10&offset=20
+        //获取电台推荐
         request('personalized/djprogram').then(res =>{
             if(res.data.code === 200){
                 this.setState({

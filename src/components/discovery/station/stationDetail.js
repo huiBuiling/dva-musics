@@ -103,12 +103,19 @@ class StationDetail extends Component {
 
     //播放及暂停
     getCurrent = (index)=>{
+        const { radioProgram, radioDetail, isSub } = this.props;
         let { currentIndex,radioProgramDetail } = this.state;
-        let { radioProgram } = this.props;
 
         const url = radioProgramDetail[index].url;
         const {id, name, imgUrl} = radioProgram[index];
-        this.props.getCurrent(id, name, imgUrl, url,false);
+
+        const station = {
+            avatarUrl : radioDetail.dj.avatarUrl,
+            nickname: radioDetail.dj.nickname,
+            subCount:radioDetail.subCount,
+            isSub
+        }
+        this.props.getCurrent({id, name, imgUrl, url},station,false);
 
         const audio = document.getElementById('audio');
         audio.src = url;
@@ -126,22 +133,27 @@ class StationDetail extends Component {
     //播放全部
     playAll = ()=>{
         //获取节目全部数据
-        const data = this.props.radioProgram;
-        data.map((item,index) =>{
+        const { radioProgram, radioDetail, isSub } = this.props;
+        const station = {
+            avatarUrl : radioDetail.dj.avatarUrl,
+            nickname: radioDetail.dj.nickname,
+            subCount:radioDetail.subCount,
+            isSub
+        }
+        console.log(station);
+        radioProgram.map((item,index) =>{
             item.url = this.state.radioProgramDetail[index].url;
         })
-
-        console.log(data);
         this.props.dispatch({
             type:'playMusic/getPlayMusicList',
-            data:data
+            data:radioProgram
         });
 
         //开始播放
         const audio = document.getElementById('audio');
-        const cur = data[0];
+        const cur = radioProgram[0];
         audio.src = cur.url;
-        this.props.getCurrent(cur.id, cur.name, cur.imgUrl, cur.url,false);
+        this.props.getCurrent(cur,station,false);
         audio.play();
         this.setState({
             currentIndex:0

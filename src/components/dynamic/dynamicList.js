@@ -109,7 +109,6 @@ class DynamicList extends Component {
 
     //播放|暂停音乐
     playAudio = (index, id, name, imgUrl) => {
-        debugger
         const audio = document.getElementById('audio');
         //开始播放
         if (audio && this.state.currentIndex !== index) {
@@ -118,7 +117,10 @@ class DynamicList extends Component {
             //获取歌曲MP3地址
             request(`song/url?id=${id}`).then(data => {
                 if (data.data.code === 200) {
-                    this.props.getCurrent(id, name, imgUrl, data.data.data[0].url);
+                    this.props.getCurrent({
+                        id, name, imgUrl,
+                        url:data.data.data[0].url
+                    });
                     this.setState({
                         currentIndex: index
                     }, () => {

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {NavBar, Icon, Slider, Toast} from 'antd-mobile';
+import {NavBar, Icon, Slider, Toast,Button} from 'antd-mobile';
 import {connect} from 'dva';
 import classnames from 'classnames';
 import PlayMusicLists from './playMusicLists';
@@ -28,6 +28,8 @@ class PlayMusic extends Component {
             currentMusic: 0,        //当前播放歌曲对应index
             showLyrics: false,       //显示歌词
         }
+
+        this.isEnd = this.isEnd.bind(this);
     }
 
     componentDidMount() {
@@ -37,8 +39,6 @@ class PlayMusic extends Component {
         if(playMusicCurrent.id === null){
             this.props.history.push('/myMusic');
         } else {
-            this.getMusicLyrics(playMusicCurrent.id);
-
             const audio = document.getElementById('audio');
             /**
              * 1. 判断是否列表点击
@@ -46,6 +46,11 @@ class PlayMusic extends Component {
                             是 -> 判断audio url
                             否 -> 播放即可
                     否 -> 音乐是否播放中
+             * 2. 判断是否在播放
+                    是 -> 判断是否在播放当前音乐
+                            是 -> 播放即可
+             * 3. 播放完毕,且未列表循环 -> playMusicCurrent.isPlay = false
+                    条件(ended) -> !(playMusicList.length > 1)
              **/
             if(playMusicCurrent.isPlay){
                 // 列表点击进入
@@ -89,13 +94,21 @@ class PlayMusic extends Component {
         };
     }
 
-    //判断歌曲是否播放完畢
+    //歌曲播放完畢
     isEnd = () => {
         console.log('播放完毕');
         this.setState({animationPuse:true});
-        /*if (this.props.playMusic.playMusicList.length > 0) {
+        const { playMusicList, playMusicCurrent } = this.props.playMusic;
+        if (playMusicList.length > 1) {
             this.checkMusic(true, null);
-        }*/
+        }else{
+            const data = {...playMusicCurrent,isPlay:false};
+            console.log(data)
+            this.props.dispatch({
+                type:'playMusic/getPlayMusicCurrent',
+                data:data
+            })
+        }
     }
 
     //获取歌词
@@ -153,25 +166,16 @@ class PlayMusic extends Component {
     playAudio = (url) => {
         const {animationPuse, volume} = this.state;
         const audio = document.getElementById('audio');
-        if (audio && animationPuse) {
-            console.log('开始播放');
-            audio.volume = (volume / 100);
-            audio.src = url;
-            audio.load();
+        if (audio) {
+            if (animationPuse) {
+                audio.volume = (volume / 100);
+                audio.src = url;
+                audio.load();
 
-
-            // const currentTime = this.time(2, false);  //获取播放进度
-            // const allTime = this.time(1, false);  //获取总时长
-
-            this.setState({
-                animationPuse: !animationPuse,
-                // allTime, currentTime
-            });
-
-            audio.play();
-        } else if (audio && !animationPuse) {
-            console.log('停止播放');
-            audio.pause();
+                audio.play();
+            } else {
+                audio.pause();
+            }
             this.setState({animationPuse: !animationPuse});
         }
     }
@@ -213,7 +217,7 @@ class PlayMusic extends Component {
 
     //点击切换 | 上一首 | 下一首
     checkMusic = (flag, id) => {
-        const {playMusicList} = this.props.playMusic;
+        const { playMusicList } = this.props.playMusic;
         let current = this.getCurrent(id);
 
         //判断是否可以进行操作
@@ -225,10 +229,23 @@ class PlayMusic extends Component {
                 //上一首
                 current = current - 1;
             }
-            this.getCurrenturl(playMusicList[current]);
-            this.setState({
-                currentMusic: current
-            });
+            let currentData = playMusicList[current];
+            if(current.url !== null){
+                this.props.dispatch({
+                    type: 'playMusic/getPlayMusicCurrent',
+                    data: currentData
+                });
+                this.setState({
+                    currentMusic: current,
+                    animationPuse: true
+                }, () => this.playAudio(currentData.url));
+            }else{
+                this.getCurrenturl(currentData);
+                this.setState({
+                    currentMusic: current
+                });
+            }
+
         } else {
             this.setState({
                 animationPuse: false
@@ -304,7 +321,7 @@ class PlayMusic extends Component {
                         }}><i className="icon-skin"/></span>}
                     >
                         <div>
-                            <p>{current.name}</p>
+                            <marquee behavior="scroll"><p>{current.name}</p></marquee>
                         </div>
                     </NavBar>
 
@@ -321,10 +338,26 @@ class PlayMusic extends Component {
                         />
                     </div>
 
+                    {playMusicCurrent.id !== null && playMusicCurrent.station !== null && playMusicCurrent.station !== undefined &&
+                        <div className="m-my-station">
+                            <img src={playMusicCurrent.station.avatarUrl} alt=""/>
+                            <div>
+                                <p className="m-my-station-name">{playMusicCurrent.station.nickname}</p>
+                                <p>{playMusicCurrent.station.subCount}人订阅</p>
+                            </div>
+                            <Button onClick={this.subscribe}>
+                                {
+                                    playMusicCurrent.station.isSub ? '已订阅' :
+                                        <span><i className="icon-live"/>订阅</span>
+                                }
+                            </Button>
+                        </div>
+                    }
+
                     {/*animate*/}
                     {showLyrics ?
                         <div className="m-my-play-con m-my-play-con2"
-                             onClick={() => this.setState({showLyrics: false})}>
+                             onClick={() => this.setState({showLyrics: false,playMusicLists:false})}>
                             {
                                 musicLyrics.map((item, index) => {
                                     const time = item !== "" && item.split("[")[1].split("]")[0].substring(0, 5);
@@ -336,7 +369,7 @@ class PlayMusic extends Component {
                             }
                         </div>
                         :
-                        <div className="m-my-play-con" onClick={() => this.setState({showLyrics: true})}>
+                        <div className="m-my-play-con" onClick={() => this.setState({showLyrics: true,playMusicLists:false})}>
                             <div className={classnames({"m-my-play-con-w": true, "animation-puse": animationPuse})}>
                                 <div className="m-my-play-con-w-b">
                                     <div className="m-my-play-con-w-q"></div>
@@ -361,8 +394,15 @@ class PlayMusic extends Component {
                     {/*bot*/}
                     <div className="m-my-play-bot">
                         <div className="m-my-play-bot-t">
-                            <span onClick={this.setLike}><i
-                                className={current.live ? "icon-bf-live" : "icon-bf-unlive"}/></span>
+                            {playMusicCurrent.id !== null && playMusicCurrent.station !== null && playMusicCurrent.station !== undefined ?
+                                <span className="m-my-play-num"><i className="icon-d-yh-zan3"/>
+                                    <em>{playMusicList.filter(item => item.id === playMusicCurrent.id)[0].likedCount}</em>
+                                </span>
+                                :
+                                <span onClick={this.setLike}>
+                                    <i className={current.live ? "icon-bf-live" : "icon-bf-unlive"}/>
+                                </span>
+                            }
                             <span><i className="icon-bf-xz"/></span>
                             <span><i className="icon-bf-xx"/></span>
                             <span><i className="icon-bf-more"/></span>
@@ -403,9 +443,9 @@ class PlayMusic extends Component {
                     {playMusicLists &&
                         <PlayMusicLists
                             close={() => this.setState({playMusicLists: false})}
-                            playMusicList={playMusicList}
+                            dataList={playMusicList}
                             checkMusic={this.checkMusic}
-                            currentMusic={currentMusic}
+                            current={playMusicCurrent}
                         />
                     }
 

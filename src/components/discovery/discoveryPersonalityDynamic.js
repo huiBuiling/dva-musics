@@ -61,7 +61,10 @@ class PersonalityDynamic extends Component {
             //获取歌曲MP3地址
             request(`song/url?id=${id}`).then(res => {
                 if (res.data.code === 200) {
-                    this.props.getCurrent(id, name, imgUrl, res.data.data[0].url,true);
+                    this.props.getCurrent({
+                        id, name, imgUrl,
+                        data:res.data.data[0].url
+                    } ,null,true);
 
                     this.setState({
                         currentIndex: index

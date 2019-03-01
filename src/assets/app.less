@@ -126,6 +126,7 @@
     z-index: 99;
     .am-navbar-title{
       color: @color;
+      flex: 3;
       &>div{
         text-align: center;
       }
@@ -364,6 +365,56 @@
         }
       }
 
+      .m-my-station{
+        width: calc(~'100% - 20px');
+        height: 40px;
+        padding: 10px;
+        position: absolute;
+        top: 45px;
+        left: 0;
+        background: rgba(0, 0, 0, .2);
+        img{
+          float: left;
+          width: 40px;
+          height: 40px;
+          .border-radius(3px);
+          margin-right: 10px;
+        }
+        &>div{
+          color: @color;
+          width: calc(~'100% - 130px');
+          float: left;
+          p{
+            font-size: @fontSize2;
+            line-height: 20px;
+            height: 20px;
+            &.m-my-station-name{
+              font-size: @fontSize6;
+              font-weight: bold;
+              margin-bottom: 2px;
+            }
+          }
+        }
+        .am-button{
+          width: 80px;
+          height: 28px;
+          line-height: 28px;
+          background: rgba(177, 36, 29,.5);
+          color: @color;
+          border: none;
+          font-size: 14px;
+          float: right;
+          margin-top: 5px;
+          i{
+            font-size: 14px;
+            margin-right: 5px;
+          }
+          &:before{
+            border: none;
+          }
+        }
+      }
+
       .m-my-play-con{
         position: relative;
         width: 100%;
@@ -491,6 +542,16 @@
             }
             i.icon-bf-live{
               color: @themColor;
+            }
+          }
+          .m-my-play-num{
+            position: relative;
+            em{
+              position: absolute;
+              top: -5px;
+              left: 55px;
+              font-size: @fontSize2;
+              font-style: inherit;
             }
           }
         }

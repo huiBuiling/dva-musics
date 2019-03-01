@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import cricle from '../../assets/images/cricle.png';
 import cricleUn from '../../assets/images/uncricle.png';
+import playMusic from "./playMusic";
 
 /**
  * @author hui
@@ -11,15 +12,18 @@ class PlayMusicLists extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            percent: 50,
-            dataList: props.playMusicList,
-            // isActive:0,
+            percent: 50
         }
     }
 
     render() {
-        const {dataList} = this.state;
-        const {currentMusic} = this.props;
+        const { dataList,current } = this.props;
+        let currentMusic = 0;
+        dataList.filter((item,index) => {
+            if(item.id === current.id){
+                currentMusic = index;
+            }
+        });
         return (
             <div className="m-my-play-list">
                 <div className="m-my-play-list-t">

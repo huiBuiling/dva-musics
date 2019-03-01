@@ -18,16 +18,13 @@ class IndexDynamic extends Component {
     componentDidMount() {}
 
     //保存当前歌曲字段
-    getCurrent = (id, name, imgUrl, url) => {
-        let live = this.props.liveList.filter(itemL =>itemL.id === id).length > 0 ? true : false;
+    getCurrent = (data) => {
+        let live = this.props.liveList.filter(itemL =>itemL.id === data.id).length > 0 ? true : false;
 
         this.props.dispatch({
             type: 'playMusic/getPlayMusicCurrent',
             data: {
-                url: url,
-                id: id,
-                name: name,
-                imgUrl: imgUrl,
+                ...data,
                 live: live,
                 isPlay:true
             }

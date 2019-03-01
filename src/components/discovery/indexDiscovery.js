@@ -48,7 +48,8 @@ class IndexDiscovery extends Component {
                         listenerCount:item.listenerCount,
                         createTime:item.createTime,
                         duration:item.duration,
-                        imgUrl:item.coverUrl
+                        imgUrl:item.coverUrl,
+                        likedCount:item.likedCount
                     });
                     radioProgramId.push(item.mainSong.id);
                 })
@@ -73,20 +74,17 @@ class IndexDiscovery extends Component {
     }
 
     //保存当前歌曲字段(播放才保存）
-    getCurrent = (id, name, imgUrl, url,flag) => {
+    getCurrent = (data, station, flag) => {
         let live = false;
         if(flag){
-            live = this.props.liveList.filter(itemL =>itemL.id === id).length > 0 ? true : false;
+            live = this.props.liveList.filter(itemL =>itemL.id === data.id).length > 0 ? true : false;
         }
-
         this.props.dispatch({
             type: 'playMusic/getPlayMusicCurrent',
             data: {
-                url: url,
-                id: id,
-                name: name,
-                imgUrl: imgUrl,
+                ...data,
                 live,
+                station,
                 isPlay:true
             }
         });

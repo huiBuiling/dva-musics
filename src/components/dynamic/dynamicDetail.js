@@ -180,7 +180,7 @@ class DynamicDetail extends Component {
             Toast.fail(urlDetail);
         }else{
             const audio = document.getElementById('audio');
-            this.props.getCurrent(id, name, imgUrl, dyDetailUrl);
+            this.props.getCurrent({id, name, imgUrl, url:dyDetailUrl});
             if(!isPlay){
                 audio.play();
             }else{

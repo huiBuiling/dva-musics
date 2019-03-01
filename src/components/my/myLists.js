@@ -128,23 +128,21 @@ class MyLists extends Component {
                                         onChange={this.searchMusic}
                                         onClear={() => this.setState({searchList: [], val: ""})}
                                     />}>
-                                    {
-                                        dataList.map((item, index) => {
-                                            return (
-                                                <Item multipleLine key={index}
-                                                      extra={<span className="m-my-list-r">
-                                {item.mv !== 0 && <i className="icon-list-sp"/>}
-                                                          <i className="icon-more"/></span>}
-                                                      onClick={() => {
-                                                          this.getCurrenturl(item)
-                                                      }}
-                                                >
-                                                    <span>{item.name}</span>
-                                                    <Brief>{val === "" ? item.ar[0].name : item.artists[0].name}<span></span> - <span>{item.al.name}</span></Brief>
-                                                </Item>
-                                            )
-                                        })
-                                    }
+                                    {dataList.length > 0 && dataList.map((item, index) => {
+                                        return (
+                                            <Item multipleLine key={index}
+                                                  extra={<span className="m-my-list-r">
+                                                  {item.mv !== 0 && <i className="icon-list-sp"/>}
+                                                  <i className="icon-more"/></span>}
+                                                  onClick={() => {
+                                                      this.getCurrenturl(item)
+                                                  }}
+                                            >
+                                                <span>{item.name}</span>
+                                                <Brief>{val === "" ? item.ar[0].name : item.artists[0].name}<span></span> - <span>{item.al.name}</span></Brief>
+                                            </Item>
+                                        )
+                                    })}
                                 </List>
                             </div>
                             <div className="m-my-tabs-search">
