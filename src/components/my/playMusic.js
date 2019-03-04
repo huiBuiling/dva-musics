@@ -230,7 +230,8 @@ class PlayMusic extends Component {
                 current = current - 1;
             }
             let currentData = playMusicList[current];
-            if(current.url !== null){
+            //已有url直接播放
+            if(currentData.url !== null && currentData.url !== undefined ){
                 this.props.dispatch({
                     type: 'playMusic/getPlayMusicCurrent',
                     data: currentData
@@ -240,6 +241,7 @@ class PlayMusic extends Component {
                     animationPuse: true
                 }, () => this.playAudio(currentData.url));
             }else{
+                //获取url
                 this.getCurrenturl(currentData);
                 this.setState({
                     currentMusic: current
