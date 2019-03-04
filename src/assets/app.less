@@ -52,8 +52,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
+  /*! autoprefixer: off */
+  -webkit-box-orient:vertical;
+  /*! autoprefixer: on */
   -webkit-line-clamp: @num;
-  -webkit-box-orient: vertical;
 }
 
 //动画
@@ -112,7 +114,7 @@
 .music{
   width: 100%;
   height: 100%;
-  max-width: @maxW;
+  //max-width: @maxW;
   margin: 0 auto;
 
   //nav
@@ -169,7 +171,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
-    max-width: @maxW;
+    //max-width: @maxW;
     margin: 0 auto;
     //con
     .m-my-all {
@@ -205,7 +207,7 @@
           .am-tabs-content-wrap{
             width: 100%;
             height: calc(~'100% - 45px');
-            margin-top: 40px;
+            margin-top: 45px;
             //overflow-x: hidden;
             //overflow-y: scroll;
           }
@@ -297,6 +299,24 @@
             &:last-child {
               margin-left: 15px;
             }
+          }
+        }
+        .m-my-list-top{
+          width: 100%;
+          background: @borderColor;
+          height: 28px;
+          line-height: 28px;
+          padding: 0 10px;
+          span{
+            color: @fontColor;
+            font-size: @fontSize2;
+            i{
+              margin-right: 1px;
+              font-size: @fontSize;
+            }
+          }
+          .m-my-list-top-num{
+            color: @comFontColor;
           }
         }
       }
@@ -523,7 +543,7 @@
       }
 
       .m-my-play-bot{
-        position: fixed;
+        position: absolute;
         width: 100%;
         bottom: 0;
         left: 0;
@@ -607,7 +627,7 @@
 
       /*list*/
       .m-my-play-list{
-        position: fixed;
+        position: absolute;
         width: 100%;
         bottom: 0;
         left: 0;
@@ -719,7 +739,7 @@
   .m-dis{
     width: 100%;
     height: 100%;
-    max-width: @maxW;
+    //max-width: @maxW;
     margin: 0 auto;
     .m-dis-t-tabs{
       .am-tabs-tab-bar-wrap{
@@ -789,6 +809,8 @@
           //height: 170px !important;
           margin: -130px auto 0;
           min-height: 130px;
+          max-height: 260px;
+          overflow: hidden;
           .slider-frame {
             .border-radius(10px);
             height: 100% !important;
@@ -823,22 +845,30 @@
           h3{
             line-height: 35px;
             font-size: 15px;
+            clear: both;
           }
           ul {
             max-height: 190px;
             padding-inline-start: 0;
-            -moz-column-count: 3;
+            /*-moz-column-count: 3;
             -webkit-column-count: 3;
             column-count: 3;
             -moz-column-gap: 1em;
             -webkit-column-gap: 1em;
-            column-gap: 1em;
+            column-gap: 1em;*/
+            width: 100%;
             li {
               list-style: none;
               margin: 0 0 1em 0;
-              -moz-page-break-inside: avoid;
+              /*-moz-page-break-inside: avoid;
               -webkit-column-break-inside: avoid;
-              break-inside: avoid;
+              break-inside: avoid;*/
+              width: 32%;
+              //max-width: 135px;
+              float: left;
+              &:nth-child(2){
+                margin: 0 2%;
+              }
               div {
                 position: relative;
                 img {
@@ -1029,6 +1059,7 @@
         width: calc(~'100% - 60px');
         p {
           line-height: 20px;
+          .text-overflow2(3);
           &.msg{
             font-size: @fontSize2;
             color: @fontColor;
@@ -1094,15 +1125,18 @@
           ul{
             @vals: 100% / 3;
             li{
+              position: relative;
               width: calc(~'@{vals} - 4px');
-              height: calc(~'@{vals} - 4px');
-              //max-width: 105px;
-              //max-height: 105px;
+              height: 0;
+              padding-bottom: calc(~'@{vals} - 4px');
               float: left;
+              background: #000;
               img {
+                position: absolute;
+                left: 0;
+                top: 0;
                 width: 100%;
                 height: 100%;
-                //.border-radius(5px);
               }
 
               &:nth-child(n + 1){
@@ -1197,7 +1231,8 @@
               }
             }
             img {
-              width: 100%;
+              //width: 100%;
+              width: auto;
               height: 100%;
               max-width: 100%;
               max-height: 100%;
@@ -1634,7 +1669,7 @@
 //big screen
 @media screen and (min-width:@maxW) {
   .music{
-    max-width: @maxW;
+    //max-width: @maxW;
     margin: 0 auto;
   }
 }
