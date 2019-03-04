@@ -152,7 +152,7 @@ class UserDynamicDetail extends Component {
                                             }
 
                                             {/*img*/}
-                                            <div className={item.pics.length > 2 ? "m-dis-dynamic-item-all-c2" : "m-dis-dynamic-item-all-c"}>
+                                            <div className={item.pics.length > 1 ? "m-dis-dynamic-item-all-c2" : "m-dis-dynamic-item-all-c"}>
                                                 <ul>
                                                     {item.pics.map((itemP, indexP) =>{
                                                         return <li key={indexP} ><img src={itemP.originUrl} alt="" /></li>

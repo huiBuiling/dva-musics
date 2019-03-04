@@ -296,7 +296,7 @@ class PlayMusic extends Component {
     render() {
         const self = this;
         let {
-            animationPuse, playMusicLists, currentMusic, skin,
+            animationPuse, playMusicLists, skin,
             showLyrics, toggleVolume, volume,
             allTime, percentAllTime, currentTime, percentCurrentTime,
         } = this.state;
@@ -443,7 +443,7 @@ class PlayMusic extends Component {
                     {playMusicLists &&
                         <PlayMusicLists
                             close={() => this.setState({playMusicLists: false})}
-                            dataList={playMusicList}
+                            // dataList={playMusicList}
                             checkMusic={this.checkMusic}
                             current={playMusicCurrent}
                         />

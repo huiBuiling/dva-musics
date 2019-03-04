@@ -34,14 +34,11 @@ class MyLists extends Component {
         }
     }
 
-    onChange = (value) => {
-        this.setState({value});
-    };
-    clear = () => {
-        this.setState({value: ''});
-    };
-    handleClick = () => {
-        this.manualFocusInst.focus();
+    componentDidMount() {
+        //刷新后至 -> myMusic
+        if (this.props.songSheetList.length === 0) {
+            this.props.history.push('/myMusic');
+        }
     }
 
     //搜索音樂
@@ -57,7 +54,7 @@ class MyLists extends Component {
     }
 
     //获取歌曲MP3地址
-    getCurrenturl = (item) => {
+    getCurrentUrl = (item) => {
         let live = this.props.liveList.filter(itemL =>itemL.id === item.id).length > 0 ? true : false;
         request(`song/url?id=${item.id}`).then(data => {
             if (data.data.code === 200) {
@@ -79,18 +76,22 @@ class MyLists extends Component {
         });
     }
 
-    componentDidMount() {
-        //刷新后至 -> myMusic
-        if (this.props.playMusicList.length === 0) {
-            this.props.history.push('/myMusic');
-        }
+    //播放全部
+    playAll = ()=>{
+        const { songSheetList } = this.props;
+        this.props.dispatch({
+            type:'playMusic/getPlayMusicList',
+            data:songSheetList
+        });
+
+        this.getCurrentUrl(songSheetList[0])
     }
 
     render() {
         const Item = List.Item;
         const Brief = Item.Brief;
         const {searchList, val} = this.state;
-        const dataList = val === "" ? this.props.playMusicList : searchList;
+        const dataList = val === "" ? this.props.songSheetList : searchList;
         const tabs = [
             {title: <Badge text={dataList.length}>歌曲</Badge>},
             {title: <Badge dot>歌手</Badge>},
@@ -128,6 +129,10 @@ class MyLists extends Component {
                                         onChange={this.searchMusic}
                                         onClear={() => this.setState({searchList: [], val: ""})}
                                     />}>
+                                    <div className="m-my-list-top">
+                                        <span className="m-my-list-top-num">共 {dataList.length} 首</span>
+                                        <span style={{float:'right'}} onClick={this.playAll}><i className="icon-s-all-bg"/> 播放全部</span>
+                                    </div>
                                     {dataList.length > 0 && dataList.map((item, index) => {
                                         return (
                                             <Item multipleLine key={index}
@@ -135,7 +140,7 @@ class MyLists extends Component {
                                                   {item.mv !== 0 && <i className="icon-list-sp"/>}
                                                   <i className="icon-more"/></span>}
                                                   onClick={() => {
-                                                      this.getCurrenturl(item)
+                                                      this.getCurrentUrl(item)
                                                   }}
                                             >
                                                 <span>{item.name}</span>
@@ -155,7 +160,7 @@ class MyLists extends Component {
                                                       extra={<span className="m-my-list-r"><i className="icon-list-sp"/><i
                                                           className="icon-more"/></span>}
                                                       onClick={() => {
-                                                          this.getCurrenturl(item)
+                                                          this.getCurrentUrl(item)
                                                       }}
                                                 >
                                                     <span>{item.name}</span>
@@ -193,7 +198,7 @@ class MyLists extends Component {
 
 const mapStateToProps = (state, dispatch) => {
     return {
-        playMusicList: state.playMusic.playMusicList,
+        songSheetList: state.playMusic.songSheetList,
         liveList: state.users.liveList
     }
 }

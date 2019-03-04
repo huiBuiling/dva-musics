@@ -75,10 +75,11 @@ class IndexMy extends Component {
         request(`playlist/detail?id=${id}`).then(data => {
             if (data.data.code === 200) {
                 this.props.dispatch({
-                    type: 'playMusic/getPlayMusicList',
+                    type: 'playMusic/getSongSheetList',
                     data: data.data.playlist.tracks
                 });
-                this.props.history.push(`/lists:${id}`)
+                // this.props.history.push(`/lists:${id}`)
+                this.props.history.push(`/lists`)
             }
         }).catch(err => {
             Toast.fail('发生错误');

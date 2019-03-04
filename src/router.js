@@ -32,7 +32,7 @@ function RouterConfig({history}) {
                     {/*音乐*/}
                     <Route path="/recordLists" component={RecordLists}/>
                     <Route path="/collectLists" component={CollectLists}/>
-                    <Route path="/lists:id" component={Lists}/>
+                    <Route path="/lists" component={Lists}/>
                     <Route path="/playMusic" component={PlayMusic}/>
 
                     <Route component={Footer}/>

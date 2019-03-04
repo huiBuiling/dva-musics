@@ -28,11 +28,6 @@ export default {
   effects: {
     //用户基础信息
     *getUserMsg({ data}, { put,select }) {
-        //获取当前state中的数据 users
-        const num = yield select(state => state.users)
-        //or yield select(({users}) =>users) | yield select(_ =>_.users)
-
-
         yield put({
         type: 'userMsg',
         users:data

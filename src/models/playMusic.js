@@ -3,21 +3,35 @@
  * @date 2019/1/24
  * @Description:
  * @param:
- *  playMusicList歌曲列表
- *  playMusicCurrent当前歌曲id,name,imgUrl,url
- *  musicLyrics当前歌曲歌词
+ *  songSheetList       歌单对应歌曲列表
+ *  playMusicList       歌曲列表
+ *  playMusicCurrent    当前歌曲id,name,imgUrl,url
+ *  musicLyrics         当前歌曲歌词
  */
 export default {
     namespace: 'playMusic',
     state: {
+        songSheetList:[],
         playMusicList: [],
         playMusicCurrent: {
             id: null
         },
-        musicLyrics: []
+        musicLyrics: [],
     },
     reducers: {
+        'songSheetList'(state, action) {
+            return {
+                ...state,
+                songSheetList: action.songSheetList,
+            };
+        },
         'playMusicList'(state, action) {
+            return {
+                ...state,
+                playMusicList: action.playMusicList,
+            };
+        },
+        'delPlayMusicList'(state, action) {
             return {
                 ...state,
                 playMusicList: action.playMusicList,
@@ -41,13 +55,37 @@ export default {
         }
     },
     effects: { //这里是做异步处理的
+        //歌单对应歌曲列表
+        * getSongSheetList({data}, {call, put}) {
+            yield put({
+                type: 'songSheetList',   //这个就是调用reducers中的方法进行跟新当前命名空间state的数据
+                songSheetList: data
+            });
+        },
+
         //音樂列表
         * getPlayMusicList({data}, {call, put}) {
             yield put({
-                type: 'playMusicList',   //这个就是调用reducers中的方法进行跟新当前命名空间state的数据
+                type: 'playMusicList',
                 playMusicList: data
             });
         },
+
+        //删除音乐列表某首歌曲
+        * delsPlayMusicList({ id, flag }, {select, put}) {
+            let data = [];
+            if(!flag){
+                //获取当前state中的数据 playMusicList
+                const playMusicList = yield select(state => state.playMusic.playMusicList);
+                data = playMusicList.filter(item => item.id !== id);
+            }
+
+            yield put({
+                type: 'delPlayMusicList',
+                playMusicList: data
+            });
+        },
+
         //當前播放音樂：id,url
         * getPlayMusicCurrent({data}, {put}) {
             yield put({
