@@ -22,7 +22,17 @@ class IndexDiscovery extends Component {
         }
     }
 
-    componentDidMount() {}
+    componentDidUpdate() {
+        //如果从音乐播放列表返回
+        if(this.props.playMusicCurrent.station !== null && this.props.playMusicCurrent.station !== undefined){
+            const { curRadio } = this.props;
+            this.setState({
+                showRadioDetail:true
+            },()=>{
+                this.getRadioDetail(curRadio.id, curRadio.flag);
+            });
+        }
+    }
 
     getRadioDetail = (id,isSub)=>{
         //获取diantai - 详情 rid: 电台的id
@@ -64,6 +74,11 @@ class IndexDiscovery extends Component {
         }).catch(err =>{
             Toast.fail('发生错误');
         });
+
+        this.props.dispatch({
+            type:'stations/getCurRadio',
+            data:{id,flag:isSub}
+        })
     }
 
     //关闭详情
@@ -149,7 +164,9 @@ class IndexDiscovery extends Component {
 const mapStateToProps = (state, dispatch) => {
     return {
         playMusicList: state.playMusic.playMusicList,
-        liveList: state.users.liveList
+        liveList: state.users.liveList,
+        playMusicCurrent: state.playMusic.playMusicCurrent,
+        curRadio: state.stations.curRadio
     }
 }
 export default connect(mapStateToProps)(IndexDiscovery);

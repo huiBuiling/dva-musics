@@ -150,23 +150,28 @@ class StationDetail extends Component {
         });
 
         //开始播放
-        const audio = document.getElementById('audio');
         const cur = radioProgram[0];
-        audio.src = cur.url;
         this.props.getCurrent(cur,station,false);
-        audio.play();
         this.setState({
             currentIndex:0
         });
+
+        this.props.history.push('/playMusic');
     }
 
     render() {
-        const { radioDetail, radioProgram } = this.props;
-        const { tabIndex,currentIndex } = this.state;
+        const { radioDetail, radioProgram, playMusicCurrent } = this.props;
+        let { tabIndex,currentIndex } = this.state;
         const tabs = [
             {title: '详情'},
             {title: <Badge>节目{radioDetail.programCount}</Badge>},
         ];
+
+        radioProgram.filter((item,index) =>{
+            if(item.id === playMusicCurrent.id){
+                currentIndex = index;
+            }
+        })
 
         return (
             <div className="m-detail">
@@ -269,6 +274,7 @@ class StationDetail extends Component {
 const mapStateToProps = (state, dispatch)=>{
     return {
         playMusicList: state.playMusic.playMusicList,
+        playMusicCurrent: state.playMusic.playMusicCurrent
     }
 }
 export default connect(mapStateToProps)(StationDetail);
