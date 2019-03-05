@@ -22,15 +22,11 @@ class IndexDiscovery extends Component {
         }
     }
 
-    componentDidUpdate() {
+    componentDidMount () {
         //如果从音乐播放列表返回
         if(this.props.playMusicCurrent.station !== null && this.props.playMusicCurrent.station !== undefined){
             const { curRadio } = this.props;
-            this.setState({
-                showRadioDetail:true
-            },()=>{
-                this.getRadioDetail(curRadio.id, curRadio.flag);
-            });
+            this.getRadioDetail(curRadio.id, curRadio.flag);
         }
     }
 
