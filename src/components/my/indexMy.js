@@ -27,7 +27,7 @@ class IndexMy extends Component {
             console.log('Load complete !!!');
         });
         //获取歌单
-        request(`user/playlist?uid=${this.props.users.userMsg.id}`).then(data => {
+        request(`user/playlist?uid=${this.props.users.userDetail.id}`).then(data => {
             if (data.data.code === 200) {
                 let createPlaylist = data.data.playlist.filter(item => {
                     return item.creator.province === 140000

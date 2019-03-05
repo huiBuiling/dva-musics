@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import {TabBar} from 'antd-mobile';
 import {Route} from 'dva/router';
 import IndexMy from '../components/my/indexMy';
-import IndexDiscovery from '../components/discovery/indexDiscovery'
-import IndexDynamic from '../components/dynamic/indexDynamic'
+import IndexDiscovery from '../components/discovery/indexDiscovery';
+import IndexDynamic from '../components/dynamic/indexDynamic';
+import IndexAdmin from '../components/admin/admin';
 
 /**
  * @author hui
@@ -52,7 +53,7 @@ class Footer extends Component {
                     tabName: '帐号',
                     seed: 'menu-z',
                     content: 'my',
-                    component: IndexDiscovery,
+                    component: IndexAdmin,
                     path: '/admin'
                 }
             ]

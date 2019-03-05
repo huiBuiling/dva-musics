@@ -78,7 +78,7 @@ class RecordLists extends Component {
 const mapStateToProps = (state, dispatch) => {
     return {
         playMusicList: state.playMusic.playMusicList,
-        userId: state.users.userMsg.id
+        userId: state.users.userDetail.id
     }
 }
 export default connect(mapStateToProps)(RecordLists);

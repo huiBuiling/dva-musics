@@ -421,7 +421,7 @@ class DynamicList extends Component {
 
 const mapStateToProps = (state)=>{
     return {
-        userId:state.users.userMsg.id
+        userId:state.users.userDetail.id
     }
 }
 export default connect(mapStateToProps)(DynamicList);

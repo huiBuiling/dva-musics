@@ -140,7 +140,7 @@ class StationDetail extends Component {
             subCount:radioDetail.subCount,
             isSub
         }
-        console.log(station);
+        // console.log(station);
         radioProgram.map((item,index) =>{
             item.url = this.state.radioProgramDetail[index].url;
         })
