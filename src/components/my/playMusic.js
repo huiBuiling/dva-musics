@@ -397,8 +397,10 @@ class PlayMusic extends Component {
                     <div className="m-my-play-bot">
                         <div className="m-my-play-bot-t">
                             {playMusicCurrent.id !== null && playMusicCurrent.station !== null && playMusicCurrent.station !== undefined ?
-                                <span className="m-my-play-num"><i className="icon-d-yh-zan3"/>
-                                    <em>{playMusicList.filter(item => item.id === playMusicCurrent.id)[0].likedCount}</em>
+                                <span className="m-my-play-num">
+                                    <i className="icon-d-yh-zan3">
+                                        <em>{playMusicList.filter(item => item.id === playMusicCurrent.id)[0].likedCount}</em>
+                                    </i>
                                 </span>
                                 :
                                 <span onClick={this.setLike}>
