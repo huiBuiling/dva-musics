@@ -1,6 +1,7 @@
 ## 音乐播放器（dva -- antd-mobile）
 
 - 非常感谢提供的音乐接口（仅供学习使用，如有侵权请联系）
+- https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi
 
 > 已实现功能：
 
