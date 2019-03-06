@@ -221,7 +221,7 @@ class PlayMusic extends Component {
         let current = this.getCurrent(id);
 
         //判断是否可以进行操作
-        if (current < playMusicList.length && current > -1) {
+        if (playMusicList.length > 1 && current > -1) {
             //下一首
             if (flag) {
                 current = current + 1;
@@ -249,9 +249,14 @@ class PlayMusic extends Component {
             }
 
         } else {
+            //没有下一首
+            Toast.info('当前列表只有一首歌曲！');
+            const audio = document.getElementById('audio');
+            audio.pause();
+            audio.src = null;
             this.setState({
-                animationPuse: false
-            })
+                animationPuse: true
+            });
         }
     }
 
