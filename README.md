@@ -63,7 +63,14 @@
 - emmmmmm，还有很多功能未做，由于部分原因，先暂停一段时间，哈哈哈哈哈
 
 > 效果图
+- 发现
 ![image](https://github.com/huiBuiling/dva-musics/blob/master/resultImg/%E5%8F%91%E7%8E%B0.png)
+
+- 音乐及账户
 ![image](https://github.com/huiBuiling/dva-musics/blob/master/resultImg/%E9%9F%B3%E4%B9%90.png)
+
+- 动态
 ![image](https://github.com/huiBuiling/dva-musics/blob/master/resultImg/%E5%8A%A8%E6%80%81.png)
+
+
 ![image](https://github.com/huiBuiling/dva-musics/blob/master/resultImg/%E5%B8%90%E5%8F%B7.png)
