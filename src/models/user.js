@@ -1,13 +1,13 @@
 /**
  * @author hui
  * @date 2019/2/13
- * @Description: userDetail用户基础信息 | liveIDList 用户喜欢的音乐id列表
+ * @Description: userDetail用户基础信息(id:网易云id) | liveIDList 用户喜欢的音乐id列表
  */
 export default {
     namespace: 'users',
     state: {
         userDetail: {
-            id: 262606203
+            id: 1111111
         },
         liveIDList: []
     },
