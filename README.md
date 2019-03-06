@@ -30,8 +30,6 @@
         - 因为自己使用了接口，可以登录，顾点击未登录直接获取数据
         - 好像未做功能
 
-- emmmmmm，还有很多功能未做，由于部分原因，先暂停一段时间，哈哈哈哈哈
-
 > 动画
   ```
   npm install animate.css --save
@@ -62,3 +60,4 @@
 > react-sticky ：TabBar sticky
   https://www.npmjs.com/package/react-sticky
 
+- emmmmmm，还有很多功能未做，由于部分原因，先暂停一段时间，哈哈哈哈哈
