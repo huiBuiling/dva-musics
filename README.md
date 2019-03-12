@@ -1,6 +1,14 @@
 ## 音乐播放器（dva -- antd-mobile）
 
-- 非常感谢提供的音乐接口（仅供学习使用，如有侵权请联系）
+- 非常感谢提供的音乐接口（仅供学习使用，如有侵权请联系）https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi
+> 下载运行：
+    1. git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git
+    2. set port=3636 && node app.js
+
+> 启动：npm start
+
+> 访问：http://localhost:8000/#/admin (建议启动手机模式查看，同时登录才可以查看哦）
+
 
 > 已实现功能：
 
@@ -26,9 +34,9 @@
         - 详情：查看评论，发表评论，评论点赞（由于接口未提供动态评论，此时获取的是对应资源的评论）
 
     4. 账户
-        - 额，懒，未做登录
-        - 因为自己使用了接口，可以登录，顾点击未登录直接获取数据
-        - 好像未做功能
+        - 登录
+        - 基础信息
+        - 登录
 
 > 动画
   ```
@@ -47,7 +55,7 @@
     import feach from 'isomorphic-fetch';
   ```
 
->访问：http://localhost:8000/#/discover
+c
 
 > MP3文件计算公式：编码率(kbps)×歌曲全长(秒)/8=文件大小(kB)
 

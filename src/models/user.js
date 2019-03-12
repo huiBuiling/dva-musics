@@ -7,7 +7,7 @@ export default {
     namespace: 'users',
     state: {
         userDetail: {
-            id: 1111111
+            id: 448109360
         },
         liveIDList: []
     },

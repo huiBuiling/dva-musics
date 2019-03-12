@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import {NavBar, Badge, List,Toast} from 'antd-mobile';
 import admin from '../../assets/images/admin.png';
 import request from "../../utils/request";
+import Login from './login';
 
 /**
  * @author hui
@@ -22,32 +23,25 @@ class Admin extends Component {
                 followeds:0,
             },
             point:false,      //签到
+            isLogin:false,     //显示登录
         }
     }
 
     componentDidMount() {}
 
     //获取用户详情
-    getUserDetail = () => {
-        request(`user/detail?uid=${this.props.userDetail.id}`).then(res => {
-            if (res.data.code === 200) {
-                const detail = {
-                    name:res.data.profile.nickname,
-                    gender:res.data.profile.gender,
-                    level:res.data.level,
-                    eventCount:res.data.profile.eventCount,
-                    follows:res.data.profile.follows,
-                    followeds:res.data.profile.followeds,
-                };
-                this.setState({
-                    detail
-                });
-                this.props.dispatch({
-                    type:'users/getUserDetail',
-                    data:detail
-                })
-            }
-        })
+    getUserDetail = (data) => {
+        this.setState({
+            detail:data,
+            isLogin:false
+        });
+    }
+
+    //登录
+    login = ()=>{
+        this.setState({
+            isLogin:true
+        });
     }
 
     /**
@@ -73,7 +67,7 @@ class Admin extends Component {
     }
 
     render() {
-        const { detail } = this.state;
+        const { detail,isLogin } = this.state;
         return (
             <div className="m-admin">
                 <NavBar
@@ -82,6 +76,8 @@ class Admin extends Component {
                         this.props.history.push('playMusic')
                     }}><i className="icon-m-bfz"/></span>}
                 >帐号</NavBar>
+
+                {isLogin && <Login getUserDetail={this.getUserDetail}/>}
 
                 {/*top*/}
                 <div className="m-admin-top">
@@ -109,7 +105,7 @@ class Admin extends Component {
                         <div className="m-admin-top-msg">
                             <img src={admin} alt=""/>
                             <div className="m-admin-login">
-                                <span onClick={this.getUserDetail}>请登录</span>
+                                <span onClick={this.login}>请登录</span>
                             </div>
                         </div>
                     }
@@ -192,9 +188,10 @@ class Admin extends Component {
         )
     }
 }
-const mapStateToProps = (state,dispatch)=>{
+/*const mapStateToProps = (state,dispatch)=>{
     return {
         userDetail:state.users.userDetail
     }
-}
-export default connect(mapStateToProps)(Admin);
+}*/
+// export default connect(mapStateToProps)(Admin);
+export default Admin;
