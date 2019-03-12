@@ -1,13 +1,13 @@
 ## 音乐播放器（dva -- antd-mobile）
 
 - 非常感谢提供的音乐接口（仅供学习使用，如有侵权请联系）https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi
-> 下载运行：
+- 下载运行：
     1. git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git
     2. set port=3636 && node app.js
 
-> 启动：npm start
+- 启动：npm start
 
-> 访问：http://localhost:8000/#/admin (建议启动手机模式查看，同时登录才可以查看哦）
+- 访问：http://localhost:8000/#/admin (建议启动手机模式查看，同时登录才可以查看哦）
 
 
 > 已实现功能：
