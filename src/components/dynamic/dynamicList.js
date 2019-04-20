@@ -41,6 +41,19 @@ class DynamicList extends Component {
         };
     }
 
+    //保存当前歌曲字段
+    getCurrent = (data) => {
+        // let live = this.props.liveList.filter(itemL =>itemL.id === data.id).length > 0 ? true : false;
+        this.props.dispatch({
+            type: 'playMusic/getPlayMusicCurrent',
+            data: {
+                ...data,
+                live: false,
+                isPlay:true
+            }
+        });
+    }
+
     //判断歌曲是否播放完畢
     isEnd = () => {
         console.log('播放完毕');
@@ -117,7 +130,7 @@ class DynamicList extends Component {
             //获取歌曲MP3地址
             request(`song/url?id=${id}`).then(data => {
                 if (data.data.code === 200) {
-                    this.props.getCurrent({
+                    this.getCurrent({
                         id, name, imgUrl,
                         url:data.data.data[0].url
                     });
@@ -222,7 +235,7 @@ class DynamicList extends Component {
                         currentIndex = -1;
                     }
                     this.setState({
-                        dyDetailUrl:data.data.urls[0].url,
+                        dyDetailUrl:type === 1 ? data.data.data[0].url : data.data.urls[0].url,
                         dyDetail:item,
                         showDetail:true,
                         currentIndex
@@ -270,7 +283,8 @@ class DynamicList extends Component {
                             getTime={this.getTime}
                             showDynamicList={this.showDynamicList}
                             dyDetailUrl={dyDetailUrl}
-                            getCurrent={this.props.getCurrent}
+                            getCurrent={this.getCurrent}
+                            isPlay={currentIndex}
                         />
                     </div>
                 }
@@ -421,7 +435,9 @@ class DynamicList extends Component {
 
 const mapStateToProps = (state)=>{
     return {
-        userId:state.users.userDetail.id
+        userId:state.users.userDetail.id,
+        playMusicList: state.playMusic.playMusicList,
+        liveList: state.users.liveList
     }
 }
 export default connect(mapStateToProps)(DynamicList);

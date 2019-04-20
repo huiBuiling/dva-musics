@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { NavBar, SearchBar } from 'antd-mobile';
-import { connect } from 'dva';
 import DynamicList from './dynamicList';
 
 /**
@@ -17,20 +16,6 @@ class IndexDynamic extends Component {
 
     componentDidMount() {}
 
-    //保存当前歌曲字段
-    getCurrent = (data) => {
-        let live = this.props.liveList.filter(itemL =>itemL.id === data.id).length > 0 ? true : false;
-
-        this.props.dispatch({
-            type: 'playMusic/getPlayMusicCurrent',
-            data: {
-                ...data,
-                live: live,
-                isPlay:true
-            }
-        });
-    }
-
     render() {
         return (
             <div className="m-dis">
@@ -45,17 +30,11 @@ class IndexDynamic extends Component {
                 ><SearchBar placeholder="Search" maxLength={8}/></NavBar>
 
                 <div className="m-dis-t">
-                    <DynamicList getCurrent={this.getCurrent}/>
+                    <DynamicList />
                 </div>
             </div>
         )
     }
 }
 
-const mapStateToProps = (state, dispatch) => {
-    return {
-        playMusicList: state.playMusic.playMusicList,
-        liveList: state.users.liveList
-    }
-}
-export default connect(mapStateToProps)(IndexDynamic);
+export default IndexDynamic;

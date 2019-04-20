@@ -22,7 +22,7 @@ class DynamicDetail extends Component {
     }
 
     componentDidMount() {
-        const { dyDetailUrl } = this.props;
+        const { dyDetailUrl,isPlay } = this.props;
         if(dyDetailUrl === 0 || dyDetailUrl === 1){
             let msg = dyDetailUrl === 0 ? '歌曲':'视频';
             Toast.fail(`${msg}资源获取失败！！！`);
@@ -32,11 +32,15 @@ class DynamicDetail extends Component {
         }else{
             const audio = document.getElementById('audio');
             // 当前音乐已在播放 -> 是 -> 持续播放,设置播放状态
-            if(audio.currentTime > 0 && audio.src == dyDetailUrl) {
+            if(isPlay !== -1 && audio.src == dyDetailUrl) {
                 // 是 -> 持续播放,设置播放状态
                 this.setState({
                     isPlay:true
+                },()=>{
+                    audio.load();   //重新加载src指定的资源
+                    audio.play();
                 });
+                console.log('继续播放');
             }
 
             //监听播放结束，列表循环
@@ -174,18 +178,20 @@ class DynamicDetail extends Component {
 
     //播放歌曲
     playAudio = (id, name, imgUrl)=>{
-        const { urlDetail, isPlay} = this.state;
+        const { isPlay} = this.state;
         const { dyDetailUrl } = this.props;
-        if(urlDetail === null){
-            Toast.fail(urlDetail);
-        }else{
+
+        if(dyDetailUrl !== undefined) {
             const audio = document.getElementById('audio');
-            this.props.getCurrent({id, name, imgUrl, url:dyDetailUrl});
-            if(!isPlay){
+            this.props.getCurrent({id, name, imgUrl, url: dyDetailUrl});
+            if (!isPlay) {
                 audio.play();
-            }else{
+            } else {
                 audio.pause();
             }
+            this.setState({
+                isPlay : !isPlay
+            })
         }
     }
 

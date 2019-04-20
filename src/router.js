@@ -23,7 +23,7 @@ function RouterConfig({history}) {
 
             <Router history={history}>
                 <Switch>
-                    {/*<Route path="/" exact component={IndexPage} />*/}
+                    <Route path="/" component={Footer} />
 
                     {/*发现*/}
                     <Route path="/dayRecommend" component={DayRecommend} />
@@ -35,7 +35,7 @@ function RouterConfig({history}) {
                     <Route path="/lists" component={Lists}/>
                     <Route path="/playMusic" component={PlayMusic}/>
 
-                    <Route component={Footer}/>
+                    {/*<Route component={Footer}/>*/}
                 </Switch>
             </Router>
         </div>
