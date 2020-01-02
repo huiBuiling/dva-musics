@@ -9,6 +9,20 @@
 
 - 访问：http://localhost:8000/#/admin (建议启动手机模式查看，同时登录才可以查看哦）
 
+- 近期运行若发现报错解决如下
+    1. warning：Please use `require("history").createHashHistory` instead of ......
+
+        ```
+            解决：node_modules/dva/lib/index.js:
+                 改为：var _createHashHistory = _interopRequireDefault(require("history").createHashHistory);
+        ```
+
+    2. Cannot find module "@babel/runtime/helpers/esm/extends"，已调整，不需要再更改
+
+    ```
+        package.json:
+            "roadhog": "^2.0.0" -> "roadhog": "^2.5.0-beta.4",
+    ```
 
 > 已实现功能：
 
