@@ -3,7 +3,8 @@
 - 非常感谢提供的音乐接口（仅供学习使用，如有侵权请联系）https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=neteasecloudmusicapi
 - 下载运行：
     1. git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git
-    2. set port=3636 && node app.js
+    2. 安装包
+    3. set port=3636 && node app.js
 
 - 启动：npm start
 
