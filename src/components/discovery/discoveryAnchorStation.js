@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
 import { Carousel,Toast } from 'antd-mobile';
 import { withRouter } from 'dva/router';
-import request from "../../utils/request";
+import { api } from '../../utils/api';
 
 /**
  * @author hui
  * @date 2019/2/14
  * @Description: 发现 - 主播电台
  */
-@withRouter
 class DiscoveryAnchorStation extends Component {
     constructor(props) {
         super(props);
@@ -24,19 +23,19 @@ class DiscoveryAnchorStation extends Component {
 
     componentDidMount() {
         //获取轮播banner
-        request('banner').then(res =>{
-            if(res.data.code === 200){
+        api.discovery_banner().then(res =>{
+            if(res.code === 200){
                 this.setState({
-                    carouselList:res.data.banners
+                    carouselList:res.banners
                 });
             }
         })
 
         //获取电台推荐
-        request('personalized/djprogram').then(res =>{
-            if(res.data.code === 200){
+        api.djprogram_personalized().then(res =>{
+            if(res.code === 200){
                 this.setState({
-                    radioList:res.data.result
+                    radioList:res.result
                 });
             }
         }).catch(err =>{
@@ -46,11 +45,16 @@ class DiscoveryAnchorStation extends Component {
 
     //已关注的电台
     setMyRadio = ()=>{
-        request('dj/sublist').then(res =>{
-            if(res.data.code === 200) {
-                this.setState({
-                    liveRaioList: res.data.djRadios
-                })
+        api.djprogram_sublist().then(res =>{
+            if(res.code === 200) {
+                if(res.djRadios.length > 0) {
+                    this.setState({
+                        liveRaioList: res.djRadios
+                    })
+                } else {
+                    Toast.info('您还未关注任何电台！')
+                }
+                
             }
         })
     }
@@ -148,4 +152,4 @@ class DiscoveryAnchorStation extends Component {
     }
 }
 
-export default DiscoveryAnchorStation;
+export default withRouter(DiscoveryAnchorStation);

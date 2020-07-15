@@ -4,18 +4,20 @@
 - 下载运行：
     1. git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git
     2. 安装包
-    3. set port=3636 && node app.js
+    3. node app.js
 
-- 启动：npm start
+- 启动：npm start | yarn start
 
-- 访问：http://localhost:8000/#/admin (建议启动手机模式查看，同时登录才可以查看哦）
+- 访问：http://localhost:8000 (建议启动手机模式查看，同时登录才可以查看哦）
 
 - 近期运行若发现报错解决如下
-    1. warning：Please use `require("history").createHashHistory` instead of ......
+    1. warning：Please use `require("history").createHashHistory` instead of `require("history/createHashHistory")`.
 
         ```
             解决：node_modules/dva/lib/index.js:
-                 改为：var _createHashHistory = _interopRequireDefault(require("history").createHashHistory);
+                 var _createHashHistory = _interopRequireDefault(require("history/createHashHistory"));
+                 改为：
+                 var _createHashHistory = _interopRequireDefault(require("history").createHashHistory);
         ```
 
     2. Cannot find module "@babel/runtime/helpers/esm/extends"，已调整，不需要再更改
@@ -86,3 +88,4 @@
 > 效果图
 
 ![image](https://github.com/huiBuiling/dva-musics/blob/master/resultImg/%E5%B8%90%E5%8F%B7.png)
+

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Toast } from 'antd-mobile';
-import request from "../../utils/request";
+import { api } from "../../utils/api";
 
 /**
  * @author hui
@@ -20,10 +20,10 @@ class PersonalityDynamic extends Component {
 
     componentDidMount() {
         //获取动态
-        request('event').then(data =>{
-            if(data.data.code === 200){
+        api.dynamic_list().then(res =>{
+            if(res.code === 200){
                 this.setState({
-                    dynaminList:data.data.event
+                    dynaminList: res.event
                 });
             }
         }).catch(err =>{
@@ -59,7 +59,7 @@ class PersonalityDynamic extends Component {
         if (audio && this.state.currentIndex !== index) {
             audio.volume = 0.5;
             //获取歌曲MP3地址
-            request(`song/url?id=${id}`).then(res => {
+            api.song_url(id).then(res => {
                 if (res.data.code === 200) {
                     this.props.getCurrent({
                         id, name, imgUrl,
@@ -86,10 +86,10 @@ class PersonalityDynamic extends Component {
     getVideoUrl = (v, id, index)=>{
         const video = document.getElementById(v);
 
-        request(`video/url?id=${id}`).then(data => {
-            if (data.data.code === 200) {
+        api.video_url(id).then(res => {
+            if (res.code === 200) {
                 this.setState({
-                    currentVideoUrl:data.data.urls[0].url,
+                    currentVideoUrl: res.urls[0].url,
                     currentIndex:index
                 },()=>{
                     video.load();   ////重新加载src指定的资源

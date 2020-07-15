@@ -1,39 +1,49 @@
 import fetch from 'dva/fetch';
+import { Toast } from 'antd-mobile';
+import { getUrlFix } from './storage';
 
-function parseJSON(response) {
-    return response.json();
+const get = (url, msg = '数据获取成功！') => {
+    return new Promise((resolve, reject) => {
+        fetch(`${getUrlFix}/${url}`,{
+            credentials: "include",  // 跨域处理
+        })
+            .then(res => res.json())
+            .then(data => {
+                if(data.code === 200) {
+                    // Toast.success(msg);
+                    resolve(data)
+                }
+
+                if(data.code === 301) {
+                    Toast.info('您还未登录，部分功能无法体验哦！');
+                }
+            })
+            .catch(err => {
+                Toast.fail('发生错误');
+                return reject(err)
+            });
+    })
 }
 
-function checkStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-        return response;
+const post = (url, data) => {
+    data = {
+        ...data,
+        methods: 'POST',
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+        },
+        body: JSON.stringify(data),
+        credentials: "include",  // 跨域处理
     }
-
-    const error = new Error(response.statusText);
-    error.response = response;
-    throw error;
+    return new Promise((resolve, reject) => {
+        fetch(`${getUrlFix}/${url}`, data)
+            .then(res => res.json())
+            .then(data => resolve(data))
+            .catch(err => reject(err));
+    })
 }
 
-/**
- * Requests a URL, returning a promise.
- *
- * @param  {string} url       The URL we want to request
- * @param  {object} [options] The options we want to pass to "fetch"
- * @return {object}           An object containing either "data" or "err"
- * options fetch 带cookie跨域访问 {credentials: "include"}
- *
- * err : react 使用fetch跨域报No 'Access-Control-Allow-Origin'
- *      'Access-Control-Allow-Origin': '*',
- */
-export default function request(url, options) {
-    options = {
-        ...options,
-        'Access-Control-Allow-Origin': '*',
-        credentials: "include"
-    }
-    return fetch(`http://localhost:3636/${url}`, options)
-        .then(checkStatus)
-        .then(parseJSON)
-        .then(data => ({data}))
-        .catch(err => ({err}));
+export {
+    get,
+    post
 }

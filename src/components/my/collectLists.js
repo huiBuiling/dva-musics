@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Tabs, Toast, NavBar, Icon, List, SearchBar} from 'antd-mobile';
 import {connect} from 'dva';
-import request from '../../utils/request';
+import { api } from "../../utils/api";
 
 /**
  * @author hui
@@ -22,52 +22,33 @@ class CollectLists extends Component {
     }
 
     componentDidMount() {
-        //获取歌手列表
-        request('artist/sublist').then(data => {
-            if (data.data.code === 200) {
+        // 获取歌手列表
+        api.artist().then(res => {
+            if (res.code === 200) {
                 this.setState({
-                    singerList: data.data
+                    singerList: res.data
                 });
             }
         }).catch(err => {
             Toast.fail('发生错误');
         })
-
-        //mv列表
-        /* request('mv/sublist').then(data =>{
-           debugger
-           if(data.data.code === 200){
-             this.setState({
-               mvList:data.data
-             });
-           }
-         }).catch(err =>{
-                 Toast.fail('发生错误');
-             })*/
     }
 
-    //搜索歌手
-    searchSinger = (val) => {
-        request(`search?keywords=${val}`).then(data => {
-            if (data.data.code === 200) {
-                this.setState({
-                    searchSingerList: data.data.result.songs,
-                    searchSingerVal: val
-                })
-            }
-        }).catch(err => {
-            Toast.fail('发生错误');
-        })
-    };
-
-    //搜索mv
-    searchMv = (val) => {
-        request(`search?keywords=${val}`).then(data => {
-            if (data.data.code === 200) {
-                this.setState({
-                    searchMvList: data.data.result.songs,
-                    searchMvVal: val
-                })
+    // 搜索歌手
+    searchList = (val, type) => {
+        api.search_list(val, type).then(res => {
+            if (res.code === 200) {
+                if(type === 100) {
+                    this.setState({
+                        searchSingerList: res.result.songs,
+                        searchSingerVal: val
+                    })
+                } else if(type ===1004) {
+                    this.setState({
+                        searchMvList: res.result.songs,
+                        searchMvVal: val
+                    })
+                }
             }
         }).catch(err => {
             Toast.fail('发生错误');
@@ -75,8 +56,8 @@ class CollectLists extends Component {
     };
 
     render() {
-        const Item = List.Item;
-        const Brief = Item.Brief;
+        // const Item = List.Item;
+        // const Brief = Item.Brief;
         const tabs = [
             {title: '歌手'},
             {title: 'MV'}
@@ -88,7 +69,7 @@ class CollectLists extends Component {
                     <NavBar
                         mode="light"
                         icon={<Icon type="left"/>}
-                        onLeftClick={() => this.props.history.push('/myMusic')}
+                        onLeftClick={() => this.props.history.push('/music')}
                         rightContent={<span onClick={() => {
                             this.props.history.push('playMusic')
                         }}><i className="icon-m-bfz"/></span>}
@@ -102,7 +83,7 @@ class CollectLists extends Component {
                                     <SearchBar
                                         placeholder="搜索歌手"
                                         maxLength={8}
-                                        onChange={this.searchSinger}
+                                        onChange={(val) => this.searchList(val, 100)}
                                         onClear={() => this.setState({searchSingerList: [], searchSingerVal: ""})}
                                     />}>
                                     {/*{
@@ -125,7 +106,7 @@ class CollectLists extends Component {
                                     <SearchBar
                                         placeholder="搜索视频"
                                         maxLength={8}
-                                        onChange={this.searchMv}
+                                        onChange={(val) => this.searchList(val, 1004)}
                                         onClear={() => this.setState({searchMvList: [], searchMvVal: ""})}
                                     />}>
                                     {/*{

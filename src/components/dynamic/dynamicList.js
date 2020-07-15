@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { Toast } from 'antd-mobile';
 import {connect} from 'dva';
-import request from "../../utils/request";
 import DynamicDetail from './dynamicDetail';
+import { api } from '../../utils/api';
 
 /**
  * @author hui
@@ -24,8 +24,8 @@ class DynamicList extends Component {
     }
 
     componentDidMount() {
-        this.getAllDynamic();
         this.getUserAtten(this.props.userId);
+        this.getAllDynamic();
 
         const audio = document.getElementById('audio');
         audio.addEventListener('ended', this.isEnd, false);
@@ -34,6 +34,8 @@ class DynamicList extends Component {
     componentWillUnmount(){
         //移除 audio 的事件监听
         const audio = document.getElementById('audio');
+        // 结束video播放
+        audio.pause();
         audio.removeEventListener('ended', this.isEnd, false);
 
         this.setState = (state,callback)=>{
@@ -62,62 +64,30 @@ class DynamicList extends Component {
         });
     }
 
-    //获取用户详情
-    getUserDetail = ()=>{
-        request('user/detail?uid=108952364').then(data =>{
-            if(data.data.code === 200){
-                // console.log(data.data);
-            }
-        }).catch(err =>{
-            Toast.fail('发生错误');
-        })
-    }
-
     //获取用户关注列表
     getUserAtten = (userId)=>{
-        request(`user/follows?uid=${userId}`).then(data =>{
-            if(data.data.code === 200){
-                this.setState({
-                    follows:data.data.follow
-                });
-            }
-        }).catch(err =>{
-            Toast.fail('发生错误');
+        api.dynamic_follows(userId).then(res =>{
+            this.setState({
+                follows: res.follow
+            });
         })
     }
 
     //获取对应用户动态
     getUserDynamic = (id)=>{
-        Toast.loading('Loading...', 30, () => {
-            console.log('Load complete !!!');
-        });
-        request(`user/event?uid=${id}`).then(data =>{
-            if(data.data.code === 200){
-                this.setState({
-                    dynaminList:data.data.events
-                });
-                Toast.hide();
-            }
-        }).catch(err =>{
-            Toast.fail('发生错误');
+        api.dynamic_user_list(id).then(res =>{
+            this.setState({
+                dynaminList: res.events
+            });
         })
     }
 
     //获取全部动态
-    getAllDynamic = ()=>{
-        Toast.loading('Loading...', 30, () => {
-            console.log('Load complete !!!');
+    getAllDynamic = async () => {
+        const data = await api.dynamic_list();
+        this.setState({
+            dynaminList: data.event
         });
-        request('event').then(data =>{
-            if(data.data.code === 200){
-                this.setState({
-                    dynaminList:data.data.event
-                });
-                Toast.hide();
-            }
-        }).catch(err =>{
-            Toast.fail('发生错误');
-        })
     }
 
     //播放|暂停音乐
@@ -128,16 +98,16 @@ class DynamicList extends Component {
             audio.volume = 0.5;
 
             //获取歌曲MP3地址
-            request(`song/url?id=${id}`).then(data => {
-                if (data.data.code === 200) {
+            api.song_url(id).then(res => {
+                if (res.code === 200) {
                     this.getCurrent({
                         id, name, imgUrl,
-                        url:data.data.data[0].url
+                        url: res.data[0].url
                     });
                     this.setState({
                         currentIndex: index
                     }, () => {
-                        audio.src = data.data.data[0].url;
+                        audio.src = res.data[0].url;
                         audio.play();
                     });
                 }
@@ -153,10 +123,10 @@ class DynamicList extends Component {
     //获取视频MP4地址
     getVideoUrl = (v, id, index)=>{
         const video = document.getElementById(v);
-        request(`video/url?id=${id}`).then(data => {
-            if (data.data.code === 200) {
+        api.video_url(id).then(res => {
+            if (res.code === 200) {
                 this.setState({
-                    currentVideoUrl:data.data.urls[0].url,
+                    currentVideoUrl: res.urls[0].url,
                     currentIndex:index
                 },()=>{
                     video.load();   //重新加载src指定的资源
@@ -182,13 +152,7 @@ class DynamicList extends Component {
     //关注
     setAtten = (id, followed) => {
         const follow = followed ? 2 : 1;
-        request(`follow?id=${id}&t=${follow}`).then(data => {
-            /*if (data.data.code === 201) {
-              alert('已添加关注');
-            }
-            if (data.data.code === 200) {
-              alert('已添加关注');
-            }*/
+        api.user_follow(id, follow).then(res => {
             if (!followed) {
                 alert('已添加关注');
             } else {
@@ -206,8 +170,8 @@ class DynamicList extends Component {
      * 5: 视频
      * */
     setLike = (id,followed,type)=>{
-        request(`resource/like?t=${followed}&type=${type}&id=${id}`).then(data => {
-          // console.log(data.data)
+        api.dynamic_liked(id,followed,type).then(res => {
+          // console.log(res)
         }).catch(err =>{
             Toast.fail('发生错误');
         });
@@ -223,9 +187,9 @@ class DynamicList extends Component {
         const audio = document.getElementById('audio');
         let { currentIndex } = this.state;
 
-        let urls = type === 1 ? `song/url?id=${id}` : `video/url?id=${id}`;
+        const request = type === 1 ? api.song_url(id) : api.video_url(id);
         if((type === 1 || type === 2) && id !== null){
-            request(urls).then(data => {
+            request.then(data => {
                 if (data.data.code === 200) {
                     if(type === 1){
                         audio.src = data.data.data[0].url;

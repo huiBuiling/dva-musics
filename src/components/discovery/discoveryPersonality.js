@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { Carousel,Toast } from 'antd-mobile';
 import { withRouter } from 'dva/router';
-import request from "../../utils/request";
+import { api } from '../../utils/api';
 import PersonalityDynamic from './discoveryPersonalityDynamic';
 
 /**
@@ -9,48 +9,42 @@ import PersonalityDynamic from './discoveryPersonalityDynamic';
  * @date 2019/2/14
  * @Description: 发现 - 个性推荐
  */
-@withRouter
 class DiscoveryPersonality extends Component {
     constructor(props) {
         super(props);
         this.state = {
             imgHeight: 126,
 
-            carouselList:[],     //banner列表
             recommendList:[],    //每日推荐歌单列表
             radioList:[],        //主播电台列表
             mvList:[],           //mv列表
             musicList:[],        //新音乐列表
         }
+
+        this.dayRecommend = this.dayRecommend.bind(this);
     }
 
     componentDidMount() {
-        //获取轮播banner
-        request('banner').then(data =>{
-            if(data.data.code === 200){
-                this.setState({
-                    carouselList:data.data.banners
-                });
-            }
-        }).catch(err =>{
-            Toast.fail('发生错误');
-        })
+        this.initData();
+    }
 
-        //获取独家放送
-        /*request('personalized/privatecontent').then(data =>{
-            if(data.data.code === 200){
-                this.setState({
-                    carouselList:data.data.result
-                });
-            }
-        })*/
+    initData = () => {
+        //获取轮播banner
+        // api.discovery_banner().then(res =>{
+        //     if(res.code === 200){
+        //         this.setState({
+        //             carouselList: res.banners
+        //         });
+        //     }
+        // }).catch(err =>{
+        //     Toast.fail('发生错误');
+        // })
 
         //获取每日歌单推荐
-        request('recommend/resource').then(data =>{
-            if(data.data.code === 200){
-                let recommendList = data.data.recommend.length > 3 ? data.data.recommend.slice(0,3) :data.data.recommend;
+        api.personalized_recommend().then(res =>{
+            if(res.code === 200){
                 this.setState({
-                    recommendList
+                    recommendList: res.recommend.length > 3 ? res.recommend.slice(0,3) : res.recommend
                 });
             }
         }).catch(err =>{
@@ -58,11 +52,10 @@ class DiscoveryPersonality extends Component {
         })
 
         //获取推荐新音乐
-        request('personalized/newsong').then(data =>{
-            if(data.data.code === 200){
-                let musicList = data.data.result.length > 3 ? data.data.result.slice(0,3) :data.data.result
+        api.personalized_newsong().then(res =>{
+            if(res.code === 200){
                 this.setState({
-                    musicList
+                    musicList: res.result.length > 3 ? res.result.slice(0,3) : res.result
                 });
             }
         }).catch(err =>{
@@ -70,38 +63,25 @@ class DiscoveryPersonality extends Component {
         })
 
         //获取推荐电台
-        request('dj/recommend').then(data =>{
-            if(data.data.code === 200){
-                let radioList = data.data.djRadios.length > 3 ? data.data.djRadios.slice(0,3) :data.data.djRadios
+        api.discovery_recommend().then(res =>{
+            if(res.code === 200){
                 this.setState({
-                    radioList
+                    radioList: res.djRadios.length > 3 ? res.djRadios.slice(0,3) : res.djRadios
                 });
             }
         }).catch(err =>{
             Toast.fail('发生错误');
         })
-
-        //获取推荐MV
-        /*request('personalized/mv').then(data =>{
-            if(data.data.code === 200){
-                let mvList = data.data.result.length > 3 ? data.data.result.slice(0,3) :data.data.result
-                this.setState({
-                    mvList
-                });
-            }
-        }).catch(err =>{
-            Toast.fail('发生错误');
-        })*/
     }
 
     //跳转每日推荐
     dayRecommend = ()=>{
-        let self = this;
-        self.props.history.push('/dayRecommend');
+        this.props.history.push('/dayRecommend');
     }
 
     render() {
-        const { carouselList, recommendList, musicList, radioList } = this.state;
+        const { recommendList, musicList, radioList } = this.state;
+        const { carouselList } = this.props;
 
         return (
             <div className="m-dis-tab m-dis-recommend">
@@ -159,7 +139,7 @@ class DiscoveryPersonality extends Component {
 
                 {/*列表*/}
                 <div className="m-dis-re-list">
-                    <h3>推荐歌单 ></h3>
+                    {recommendList.length > 0 && <h3>推荐歌单</h3>}
                     <ul style={{maxHeight:150}}>
                         {recommendList.map((item,index) =>{
                             return <li key={index}>
@@ -172,7 +152,7 @@ class DiscoveryPersonality extends Component {
                         })}
                     </ul>
 
-                    <h3>推荐新音乐 ></h3>
+                    <h3>推荐新音乐</h3>
                     <ul>
                         {musicList.map((item,index) =>{
                             return <li key={index}>
@@ -199,7 +179,7 @@ class DiscoveryPersonality extends Component {
                         })}
                     </ul>*/}
 
-                    <h3>主播电台 ></h3>
+                    <h3>主播电台</h3>
                     <ul>
                         {radioList.map((item,index) =>{
                             return <li key={index}>
@@ -218,4 +198,4 @@ class DiscoveryPersonality extends Component {
     }
 }
 
-export default DiscoveryPersonality;
+export default withRouter(DiscoveryPersonality);

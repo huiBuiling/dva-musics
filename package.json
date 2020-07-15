@@ -12,6 +12,7 @@
     "babel-plugin-import": "^1.11.0",
     "dva": "^2.4.1",
     "es6-promise": "^4.2.5",
+    "history": "^5.0.0",
     "isomorphic-fetch": "^2.2.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",

@@ -25,7 +25,7 @@ class IndexDynamic extends Component {
                     icon={<i style={{fontSize:23}} className="icon-dis-ly"/>}
                     // onLeftClick={() => console.log('onLeftClick')}
                     rightContent={<span onClick={() => {
-                        this.props.history.push('playMusic')
+                        // this.props.history.push('playMusic')
                     }}><i className="icon-m-bfz"/></span>}
                 ><SearchBar placeholder="Search" maxLength={8}/></NavBar>
 

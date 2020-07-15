@@ -1,4 +1,6 @@
 import dva from 'dva';
+// import { browserHistory } from 'dva/router';
+import { createBrowserHistory as createHistory } from 'history';
 import es6 from 'es6-promise';
 import 'animate.css/animate.min.css';
 import './assets/index.css';
@@ -7,7 +9,9 @@ es6.polyfill();
 
 // 1. Initialize
 const app = dva({
-   initialState: {
+  // history: browserHistory,
+  history: createHistory(),
+  initialState: {
      /*lists: {
        products:[
          { name: 'dva', id: 1 },
@@ -17,7 +21,7 @@ const app = dva({
        ],
        count:4
      }*/
-   },
+  },
 });
 
 // 2. Plugins

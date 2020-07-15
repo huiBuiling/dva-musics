@@ -25,7 +25,7 @@ class PlayMusicLists extends Component {
             const audio = document.getElementById('audio');
             audio.pause();
             audio.src = null;
-            this.props.history.push(`/lists`);
+            this.props.history.push('/lists');
         }
 
         this.props.dispatch({
@@ -40,7 +40,7 @@ class PlayMusicLists extends Component {
         const audio = document.getElementById('audio');
         audio.pause();
         audio.src = null;
-        this.props.history.push(`/lists`);
+        this.props.history.push('/lists');
 
         //清空数据
         this.props.dispatch({
@@ -51,14 +51,9 @@ class PlayMusicLists extends Component {
     }
 
     render() {
-        const {current, playMusicCurrent} = this.props;
+        const {current} = this.props;
         const dataList = this.props.playMusicList;
-        let currentMusic = 0;
-        dataList.filter((item, index) => {
-            if (item.id === current.id) {
-                currentMusic = index;
-            }
-        });
+        const currentMusic = dataList.findIndex(item => item.id === current.id);
         return (
             <div className="m-my-play-list">
                 <div className="m-my-play-list-t">

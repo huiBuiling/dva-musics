@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {TabBar} from 'antd-mobile';
 import {Route} from 'dva/router';
-import IndexMy from '../components/my/indexMy';
+import IndexMusic from '../components/my/indexMy';
 import IndexDiscovery from '../components/discovery/indexDiscovery';
 import IndexDynamic from '../components/dynamic/indexDynamic';
 import IndexAdmin from '../components/admin/admin';
@@ -34,8 +34,8 @@ class Footer extends Component {
                     tabName: '音乐',
                     seed: 'menu-w',
                     content: 'music',
-                    component: IndexMy,
-                    path: '/myMusic'
+                    component: IndexMusic,
+                    path: '/music'
                 },
                 {
                     key: 'xx',
@@ -54,7 +54,7 @@ class Footer extends Component {
                     seed: 'menu-z',
                     content: 'my',
                     component: IndexAdmin,
-                    path: '/admin'
+                    path: '/'
                 }
             ]
         }
@@ -73,11 +73,11 @@ class Footer extends Component {
         let tabName = '';
         if (pathname === "/discover") {
             tabName = '发现';
-        } else if (pathname === "/myMusic") {
+        } else if (pathname === "/music") {
             tabName = '音乐';
         } else if (pathname === "/dynamic") {
             tabName = '动态';
-        } else if (pathname === "/admin") {
+        } else if (pathname === "/") {
             tabName = '帐号';
         }
 

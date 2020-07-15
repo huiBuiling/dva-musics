@@ -4,7 +4,7 @@ import { NavBar, SearchBar, Tabs,Toast } from 'antd-mobile'
 import DiscoveryPersonality from './discoveryPersonality';
 import DiscoveryAnchorStation from './discoveryAnchorStation';
 import StationDetail from './station/stationDetail';
-import request from "../../utils/request";
+import { api } from "../../utils/api";
 
 /**
  * @author hui
@@ -15,10 +15,11 @@ class IndexDiscovery extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            tabIndex:1,                //tab index
-            showRadioDetail:false,     //电台显示
-            radioDetail:{},            //电台详情
-            isSub:false,               //是否订阅电台
+            tabIndex: 0,               // tab index
+            showRadioDetail:false,     // 电台显示
+            radioDetail:{},            // 电台详情
+            isSub:false,               // 是否订阅电台
+            carouselList: [],          // 轮播图
         }
     }
 
@@ -28,14 +29,28 @@ class IndexDiscovery extends Component {
             const { curRadio } = this.props;
             this.getRadioDetail(curRadio.id, curRadio.flag);
         }
+
+        this.getBanner();
+    }
+    
+    getBanner = () => {
+        api.discovery_banner().then(res =>{
+            if(res.code === 200){
+                this.setState({
+                    carouselList: res.banners
+                });
+            }
+        }).catch(err =>{
+            Toast.fail('发生错误');
+        })
     }
 
     getRadioDetail = (id,isSub)=>{
         //获取diantai - 详情 rid: 电台的id
-        request(`dj/detail?rid=${id}`).then(res =>{
-            if(res.data.code === 200){
+        api.djprogram_detail(id).then(res =>{
+            if(res.code === 200){
                 this.setState({
-                    radioDetail:res.data.djRadio,
+                    radioDetail: res.djRadio,
                 });
             }
         }).catch(err =>{
@@ -43,11 +58,11 @@ class IndexDiscovery extends Component {
         });
 
         //获取节目
-        request(`dj/program?rid=${id}&limit=10`).then(res =>{
-            if(res.data.code === 200){
+        api.djprogram_program(id).then(res =>{
+            if(res.code === 200){
                 let radioProgram = [];
                 let radioProgramId = [];
-                res.data.programs.map(item =>{
+                res.programs.forEach(item => {
                     radioProgram.push({
                         id:item.mainSong.id,
                         name:item.name,
@@ -58,7 +73,7 @@ class IndexDiscovery extends Component {
                         likedCount:item.likedCount
                     });
                     radioProgramId.push(item.mainSong.id);
-                })
+                });
                 this.setState({
                     radioProgram,
                     radioProgramId,
@@ -102,7 +117,8 @@ class IndexDiscovery extends Component {
     }
 
     render() {
-        const { showRadioDetail,radioDetail,radioProgram,radioProgramId,tabIndex,isSub,radioId } = this.state;
+        const { showRadioDetail, radioDetail, radioProgram, 
+            radioProgramId, tabIndex, isSub, radioId, carouselList } = this.state;
         const tabs = [
             {title: '个性推荐'},
             {title: '主播电台'},
@@ -133,20 +149,25 @@ class IndexDiscovery extends Component {
 
                     <div className="m-dis-t">
                         <Tabs className="m-dis-t-tabs"
-                              tabs={tabs}
-                              initialPage={tabIndex}
-                              onChange={(tab, index) => {this.setState({tabIndex:index})}}
+                            tabs={tabs}
+                            initialPage={tabIndex}
+                            onChange={(tab, index) => {this.setState({tabIndex:index})}}
                         >
                             {/*个性推荐*/}
                             {
-                              tabIndex === 0 && <DiscoveryPersonality getCurrent={this.getCurrent}/>
+                              tabIndex === 0 && carouselList.length > 0 && 
+                              <DiscoveryPersonality 
+                                  getCurrent={this.getCurrent}
+                                  carouselList={carouselList}
+                              />
                             }
 
                             {/*主播电台*/}
                             {
-                              tabIndex === 1 &&
+                              tabIndex === 1 && carouselList.length > 0 && 
                               <DiscoveryAnchorStation
                                   getRadioDetail={this.getRadioDetail}
+                                  carouselList={carouselList}
                               />
                             }
                         </Tabs>

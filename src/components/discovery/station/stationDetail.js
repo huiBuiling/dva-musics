@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
 import { withRouter } from 'dva/router';
-import {Button, Tabs, NavBar, Icon, Badge,Toast} from 'antd-mobile';
-import request from "../../../utils/request";
+import {Button, Tabs, NavBar, Icon, Badge, Toast} from 'antd-mobile';
+import { api } from "../../../utils/api";
 
 /**
  * @author hui
  * @date 2019/2/14
  * @Description: 发现 - 主播电台 - 详情
  */
-@withRouter
 class StationDetail extends Component {
     constructor(props) {
         super(props);
@@ -18,19 +17,38 @@ class StationDetail extends Component {
             tabIndex:1,
             currentIndex:-1,        //当前节目
         }
+
+        this.audio = document.getElementById('audio');
+        this.getCurrent = this.getCurrent.bind(this);
     }
 
     componentDidMount() {
         let radioProgramId = this.props.radioProgramId;
         this.getRadioProgramDetail(radioProgramId);
+
+        let self = this;
+        this.audio.addEventListener('ended', function() {
+            console.log('歌曲播放完毕')
+            self.getCurrent(self.state.currentIndex)
+        }, false);
+    }
+
+    componentWillUnmount(){
+        //移除 audio 的事件监听
+        let self = this;
+        this.audio.removeEventListener('ended', self.getCurrent(self.state.currentIndex), false);
+
+        this.setState = (state,callback)=>{
+            return;
+        };
     }
 
     getRadioProgramDetail = (id)=>{
         //获取全部节目url
-        request(`song/url?id=${id}`).then(res =>{
-            if(res.data.code === 200){
+        api.song_url(id).then(res =>{
+            if(res.code === 200){
                 this.setState({
-                    radioProgramDetail:res.data.data,
+                    radioProgramDetail: res.data,
                 });
             }
         }).catch(err =>{
@@ -46,7 +64,7 @@ class StationDetail extends Component {
         const {isSub,radioId} = this.props;
         const t = isSub ? '0':'1';
         const msg = isSub ? '取消订阅成功':'订阅成功';
-        request(`dj/sub?rid=${radioId}&t=${t}`).then(res =>{
+        api.djprogram_sub(radioId, t).then(res =>{
             if(res.code === 200){
                 this.setState({
                     isSub:!isSub
@@ -103,50 +121,56 @@ class StationDetail extends Component {
 
     //播放及暂停
     getCurrent = (index)=>{
-        const { radioProgram, radioDetail, isSub } = this.props;
-        let { currentIndex,radioProgramDetail } = this.state;
-
-        const url = radioProgramDetail[index].url;
-        const {id, name, imgUrl} = radioProgram[index];
-
-        const station = {
-            avatarUrl : radioDetail.dj.avatarUrl,
-            nickname: radioDetail.dj.nickname,
-            subCount:radioDetail.subCount,
-            isSub
+        if(index !== -1) {
+            const { radioProgram, radioDetail, isSub } = this.props;
+            let { currentIndex,radioProgramDetail } = this.state;
+    
+            const url = radioProgramDetail[index].url;
+            this.audio.src = url;
+    
+            let propData = {};
+            let station = {};
+            if(currentIndex === index){
+                this.audio.pause();
+                index = -1;
+            }else{
+                station = {
+                    avatarUrl : radioDetail.dj.avatarUrl,
+                    nickname: radioDetail.dj.nickname,
+                    subCount:radioDetail.subCount,
+                    isSub
+                }
+                
+                const {id, name, imgUrl} = radioProgram[index];
+                propData = {id, name, imgUrl, url};
+                this.audio.play();
+            }
+    
+            this.setState({
+                currentIndex:index
+            });
+            this.props.getCurrent(propData,station,false);
         }
-        this.props.getCurrent({id, name, imgUrl, url},station,false);
-
-        const audio = document.getElementById('audio');
-        audio.src = url;
-        if(currentIndex === index){
-            audio.pause();
-            index = -1;
-        }else{
-            audio.play();
-        }
-        this.setState({
-            currentIndex:index
-        });
     }
 
     //播放全部
     playAll = ()=>{
         //获取节目全部数据
         const { radioProgram, radioDetail, isSub } = this.props;
+        const { radioProgramDetail } = this.state;
         const station = {
             avatarUrl : radioDetail.dj.avatarUrl,
             nickname: radioDetail.dj.nickname,
             subCount:radioDetail.subCount,
             isSub
         }
-        // console.log(station);
-        radioProgram.map((item,index) =>{
-            item.url = this.state.radioProgramDetail[index].url;
+        radioProgram.forEach((item, index) => {
+            item.url = radioProgramDetail[index].url;
         })
+
         this.props.dispatch({
             type:'playMusic/getPlayMusicList',
-            data:radioProgram
+            data: radioProgram
         });
 
         //开始播放
@@ -161,17 +185,16 @@ class StationDetail extends Component {
 
     render() {
         const { radioDetail, radioProgram, playMusicCurrent } = this.props;
-        let { tabIndex,currentIndex } = this.state;
+        let { tabIndex, currentIndex } = this.state;
         const tabs = [
             {title: '详情'},
             {title: <Badge>节目{radioDetail.programCount}</Badge>},
         ];
 
-        radioProgram.filter((item,index) =>{
-            if(item.id === playMusicCurrent.id){
-                currentIndex = index;
-            }
-        })
+        // 未有歌曲播放， 且存在当前歌曲
+        if (currentIndex === -1 && playMusicCurrent && playMusicCurrent.id) {
+            currentIndex = radioProgram.findIndex(item => item.id === playMusicCurrent.id);
+        }
 
         return (
             <div className="m-detail">
@@ -249,6 +272,7 @@ class StationDetail extends Component {
                             </div>
                             {
                                 radioProgram.map((item, index) => {
+                                    // console.log(currentIndex + ':' + index)
                                     return <div key={index} className="m-detail-program-item">
                                         <p>{index + 1}</p>
                                         <div>
@@ -256,8 +280,9 @@ class StationDetail extends Component {
                                             <p>
                                                 <span>{this.getTime(item.createTime)}</span>
                                                 <span onClick={() => this.getCurrent(index)}>
-                                                              <i className={currentIndex === index ? "icon-bf-zt" : "icon-bf-bf"}/>{item.listenerCount}
-                                                          </span>
+                                                    <i className={currentIndex === index ? "icon-bf-zt" : "icon-bf-bf"}/>
+                                                    {item.listenerCount}
+                                                </span>
                                                 <span><i className="icon-d-time"/>{this.time(item.duration)}</span>
                                             </p>
                                         </div>
@@ -271,10 +296,10 @@ class StationDetail extends Component {
         )
     }
 }
-const mapStateToProps = (state, dispatch)=>{
+const mapStateToProps = (state)=>{
     return {
         playMusicList: state.playMusic.playMusicList,
         playMusicCurrent: state.playMusic.playMusicCurrent
     }
 }
-export default connect(mapStateToProps)(StationDetail);
+export default withRouter(connect(mapStateToProps)(StationDetail));

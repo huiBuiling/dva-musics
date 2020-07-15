@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from 'dva';
 import {List,InputItem} from 'antd-mobile';
-import request from "../../utils/request";
+import { api } from "../../utils/api";
 
 /**
  * @author hui
@@ -12,8 +12,8 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            phone:null,
-            password:null
+            phone: null,
+            password: null,
         }
     }
 
@@ -21,38 +21,37 @@ class Login extends Component {
 
     //获取用户详情
     getUserDetail = (id) => {
-        request(`user/detail?uid=${id}`).then(res => {
-            if (res.data.code === 200) {
-                const detail = {
-                    id:id,
-                    name:res.data.profile.nickname,
-                    gender:res.data.profile.gender,
-                    level:res.data.level,
-                    eventCount:res.data.profile.eventCount,
-                    follows:res.data.profile.follows,
-                    followeds:res.data.profile.followeds,
-                };
-                this.props.getUserDetail(detail);
-                this.props.dispatch({
-                    type:'users/getUserDetail',
-                    data:detail
-                })
-            }
+        api.admin_detail(id).then(res => {
+            const detail = {
+                id,
+                name: res.profile.nickname,
+                gender: res.profile.gender,
+                level: res.level,
+                eventCount: res.profile.eventCount,
+                follows: res.profile.follows,
+                followeds: res.profile.followeds,
+            };
+            this.props.getUserDetail(detail);
+            this.props.dispatch({
+                type: 'users/getUserDetail',
+                data: detail
+            })
         })
     }
 
     //登录
     login = ()=>{
         const { phone,password } = this.state;
-        request(`login/cellphone?phone=${phone}&password=${password}`).then(res =>{
-            if(res.data.code === 200){
-                this.getUserDetail(res.data.account.id);
+        api.admin_signin({phone, password}).then(res =>{
+            if(res.code === 200){
+                this.getUserDetail(res.account.id);
             }
         })
 
     }
 
     render() {
+        const { phone, password} = this.state;
         return (
             <div className="m-login">
                 <div className="m-login-con">
@@ -60,11 +59,13 @@ class Login extends Component {
                         <InputItem
                             // type="phone"
                             placeholder="186 1234 1234"
-                            onChange={(v) => { console.log(v);this.setState({phone:v}) }}
+                            value={phone}
+                            onChange={(v) => { this.setState({phone:v}) }}
                         >手机号码</InputItem>
                         <InputItem
                             placeholder="****"
-                            onChange={(v) => { console.log(v);this.setState({password:v}) }}
+                            value={password}
+                            onChange={(v) => { this.setState({password:v}) }}
                         >
                             {/*<div style={{
                                 backgroundImage: 'url(https://zos.alipayobjects.com/rmsportal/DfkJHaJGgMghpXdqNaKF.png)',

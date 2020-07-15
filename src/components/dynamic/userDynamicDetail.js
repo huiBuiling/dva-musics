@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Toast } from 'antd-mobile';
-import request from "../../utils/request";
+import { api } from "../../utils/api";
 
 /**
  * @author hui
@@ -24,10 +24,11 @@ class UserDynamicDetail extends Component {
 
     //获取对应用户动态
     getUserDynamic = ()=>{
-        request('user/event?uid=108952364').then(data =>{
-            if(data.data.code === 200){
+        // edit uid
+        api.dynamic_user_list('108952364').then(res =>{
+            if(res.code === 200){
                 this.setState({
-                    dynaminList:data.data.events
+                    dynaminList: res.events
                 });
             }
         }).catch(err =>{
@@ -52,11 +53,7 @@ class UserDynamicDetail extends Component {
      * comment?t=0&type=1&id=5436712&commentId=1535550516319` (在广岛之恋 mv 删除评论)
      * */
     setComment = (id,followed,type)=>{
-      request(`comment?t=${followed}&type=${type}&id=${id}`).then(data => {
-        // console.log(data.data)
-      }).catch(err =>{
-          Toast.fail('发生错误');
-      });
+      
     }
 
     render() {

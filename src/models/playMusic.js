@@ -31,7 +31,7 @@ export default {
                 playMusicList: action.playMusicList,
             };
         },
-        'delPlayMusicList'(state, action) {
+        'delMusic'(state, action) {
             return {
                 ...state,
                 playMusicList: action.playMusicList,
@@ -81,12 +81,12 @@ export default {
             }
 
             yield put({
-                type: 'delPlayMusicList',
+                type: 'delMusic',
                 playMusicList: data
             });
         },
 
-        //當前播放音樂：id,url
+        //当前播放音乐： id,url
         * getPlayMusicCurrent({data}, {put}) {
             yield put({
                 type: 'playMusicCurrent',

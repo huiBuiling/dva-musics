@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Badge, Icon, List, NavBar, SearchBar, Tabs, Toast} from 'antd-mobile';
 import {connect} from 'dva';
-import request from '../../utils/request';
+import { api } from "../../utils/api";
 
 /**
  * @author hui
@@ -35,18 +35,18 @@ class MyLists extends Component {
     }
 
     componentDidMount() {
-        //刷新后至 -> myMusic
+        //刷新后至 -> music
         if (this.props.songSheetList.length === 0) {
-            this.props.history.push('/myMusic');
+            this.props.history.push('/music');
         }
     }
 
     //搜索音樂
     searchMusic = (val) => {
-        request(`search?keywords=${val}`).then(data => {
-            if (data.data.code === 200) {
+        api.search_list(val).then(res => {
+            if (res.code === 200) {
                 this.setState({
-                    searchList: data.data.result.songs,
+                    searchList: res.result.songs,
                     val
                 })
             }
@@ -56,12 +56,12 @@ class MyLists extends Component {
     //获取歌曲MP3地址
     getCurrentUrl = (item) => {
         let live = this.props.liveList.filter(itemL =>itemL.id === item.id).length > 0 ? true : false;
-        request(`song/url?id=${item.id}`).then(data => {
-            if (data.data.code === 200) {
+        api.song_url(item.id).then(res => {
+            if (res.code === 200) {
                 this.props.dispatch({
                     type: 'playMusic/getPlayMusicCurrent',
                     data: {
-                        url: data.data.data[0].url,
+                        url: res.data[0].url,
                         id: item.id,
                         name: item.name,
                         imgUrl: item.al.picUrl,
@@ -104,7 +104,7 @@ class MyLists extends Component {
                     <NavBar
                         mode="light"
                         icon={<Icon type="left"/>}
-                        onLeftClick={() => this.props.history.push('/myMusic')}
+                        onLeftClick={() => this.props.history.push('/music')}
                         rightContent={<span onClick={() => {
                             this.props.history.push('playMusic')
                         }}><i className="icon-m-bfz"/></span>}

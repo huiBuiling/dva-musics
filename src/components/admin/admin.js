@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { connect } from 'dva';
 import {NavBar, Badge, List,Toast} from 'antd-mobile';
 import admin from '../../assets/images/admin.png';
-import request from "../../utils/request";
+import { api } from "../../utils/api";
 import Login from './login';
 
 /**
@@ -22,18 +22,39 @@ class Admin extends Component {
                 follows:0,
                 followeds:0,
             },
-            point:false,      //签到
-            isLogin:false,     //显示登录
+            point: false,      //签到
+            isLogin: false,     //显示登录
         }
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+        this.getLoginStatus()
+    }
+
+    // 刷新登录状态
+    loginRefreshStatus = () => {
+        api.login_refresh().then(res => {
+            this.this.getLoginStatus();
+        })
+    }
+
+    // 获取用户登录状态
+    getLoginStatus = () => {
+        api.login_status().then(res => {
+            if(this.props.userDetail.id) {
+                this.setState({
+                    detail: this.props.userDetail
+                });
+                Toast.success('已经登录');
+            }
+        })
+    }
 
     //获取用户详情
     getUserDetail = (data) => {
         this.setState({
-            detail:data,
-            isLogin:false
+            detail: data,
+            isLogin: false
         });
     }
 
@@ -50,16 +71,15 @@ class Admin extends Component {
      * */
     setPoint = () => {
         if(!this.state.point){
-            request('daily_signin').then(res => {
-                if (res.data.code === 200) {
+            api.daily_signin().then(res => {
+                if (res.code === 200) {
                     this.setState({
                         point:true
                     });
                     Toast.success('签到成功！');
                 }
-                if (res.data.code === -2) {
-                    Toast.info(res.data.msg);
-                }
+            }).catch(err => {
+                Toast.info('发生错误');
             })
         }else{
             Toast.info('重复签到');
@@ -81,7 +101,14 @@ class Admin extends Component {
 
                 {/*top*/}
                 <div className="m-admin-top">
-                    {detail.name !== null ?
+                    {detail.name == null ?
+                        <div className="m-admin-top-msg">
+                            <img src={admin} alt=""/>
+                            <div className="m-admin-login">
+                                <span onClick={this.login}>请登录</span>
+                            </div>
+                        </div>
+                        :
                         <div className="m-admin-top-msg">
                             <img src={admin} alt=""/>
                             <div>
@@ -100,13 +127,6 @@ class Admin extends Component {
                                     marginRight: 20
                                 }}
                             />
-                        </div>
-                        :
-                        <div className="m-admin-top-msg">
-                            <img src={admin} alt=""/>
-                            <div className="m-admin-login">
-                                <span onClick={this.login}>请登录</span>
-                            </div>
                         </div>
                     }
 
@@ -188,10 +208,10 @@ class Admin extends Component {
         )
     }
 }
-/*const mapStateToProps = (state,dispatch)=>{
+const mapStateToProps = (state)=>{
     return {
         userDetail:state.users.userDetail
     }
-}*/
-// export default connect(mapStateToProps)(Admin);
-export default Admin;
+}
+export default connect(mapStateToProps)(Admin);
+// export default Admin;

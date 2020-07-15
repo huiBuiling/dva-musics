@@ -10,7 +10,6 @@ import CollectLists from './components/my/collectLists'    //我的 - 收藏列�
 import DayRecommend from './components/discovery/personality/dayRecommend'   //发现 - 每日推荐
 import StationDetail from './components/discovery/station/stationDetail'   //主播电台 - 详情
 
-
 function RouterConfig({history}) {
     return (
         <div style={{width:'100%',height:'100%'}}>
@@ -23,19 +22,13 @@ function RouterConfig({history}) {
 
             <Router history={history}>
                 <Switch>
-                    <Route path="/" component={Footer} />
-
-                    {/*发现*/}
                     <Route path="/dayRecommend" component={DayRecommend} />
                     <Route path="/stationDetail" component={StationDetail} />
-
-                    {/*音乐*/}
                     <Route path="/recordLists" component={RecordLists}/>
                     <Route path="/collectLists" component={CollectLists}/>
                     <Route path="/lists" component={Lists}/>
                     <Route path="/playMusic" component={PlayMusic}/>
-
-                    {/*<Route component={Footer}/>*/}
+                    <Route exact component={Footer} />
                 </Switch>
             </Router>
         </div>

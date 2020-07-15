@@ -1,7 +1,7 @@
 import React,{ Component } from 'react';
 import { NavBar,SearchBar,Icon,Toast } from 'antd-mobile';
 import { withRouter } from 'dva/router';
-import request from "../../../utils/request";
+import { api } from "../../../utils/api";
 import bgImg from '../../../assets/images/dayRemmend.jpg';
 
 /**
@@ -9,7 +9,6 @@ import bgImg from '../../../assets/images/dayRemmend.jpg';
  * @date 2019/2/14
  * @Description: 发现 - 个性推荐 - 每日歌曲推荐
 */
-@withRouter
 class DayRecommend extends Component{
   constructor(props) {
       super(props);
@@ -18,12 +17,12 @@ class DayRecommend extends Component{
       }
   }
 
-  componentWillMount() {
+  componentDidMount() {
       //获取每日歌曲推荐
-      request('recommend/songs').then(data =>{
-          if(data.data.code === 200){
+      api.personalized_songs().then(res =>{
+          if(res.code === 200){
               this.setState({
-                  recommendList:data.data.recommend
+                  recommendList: res.recommend
               });
           }
       }).catch(err =>{
@@ -76,4 +75,4 @@ class DayRecommend extends Component{
   }
 }
 
-export default DayRecommend;
+export default withRouter(DayRecommend);

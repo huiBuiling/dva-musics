@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { NavBar,Icon,Toast,InputItem } from 'antd-mobile';
-import request from "../../utils/request";
+import { api } from "../../utils/api";
 
 /**
  * @author hui
@@ -17,7 +17,6 @@ class DynamicDetail extends Component {
             itemId:null,              //id
             itemType:-1,              //type
             val:'',                   //输入值
-            liked:[],                 //喜欢
         }
     }
 
@@ -74,20 +73,18 @@ class DynamicDetail extends Component {
     getDetail = ()=>{
         const json = JSON.parse(this.props.dyDetail.json);
         if(json.video || json.song){
-            let url = null, itemId = null, itemType = -1;
+            let itemId = null, itemType = -1;
             if(json.video){
                 itemId = json.video.videoId;
                 itemType = 5;
-                url = `comment/video?id=${itemId}`;
             }else if(json.song){
                 itemId = json.song.id;
                 itemType = 0;
-                url = `comment/music?id=${itemId}`;
             }
-            request(url).then(data =>{
-                if(data.data.code === 200){
+            api.dynamic_comments(itemType, itemId).then(res =>{
+                if(res.code === 200){
                     this.setState({
-                        comments:data.data.comments,
+                        comments: res.comments,
                         itemId, itemType
                     });
                 }
@@ -117,8 +114,8 @@ class DynamicDetail extends Component {
         const { itemId, itemType, val } = this.state;
         if(followed === 0 && commentId !== null){
             //删除评论
-            request(`comment?t=${followed}&type=${itemType}&id=${itemId}&commentId=${commentId}`).then(data => {
-                if (data.data.code === 200) {
+            api.dynamic_comments_del(followed, itemType, itemId, commentId).then(res => {
+                if (res.code === 200) {
                     Toast.success('删除评论成功！！！');
                 }
             }).catch(err =>{
@@ -127,8 +124,8 @@ class DynamicDetail extends Component {
         }else if(followed === 1){
             //发表评论
             if (val === '') return null;
-            request(`comment?t=${followed}&type=${itemType}&id=${itemId}&content=${val}`).then(data => {
-                if (data.data.code === 200) {
+            api.dynamic_comments_send(followed, itemType, itemId, val).then(res => {
+                if (res.code === 200) {
                     this.setState({
                         val: ''
                     }, () => Toast.success('评论成功！！！'));
@@ -154,20 +151,24 @@ class DynamicDetail extends Component {
          * 5: 视频
      * comment/like?id=29178366&cid=12840183&t=1&type=0
      * */
-    likedComment = (isLike,commentId,index)=>{
-        let { itemId, itemType,liked } = this.state;
+    likedComment = (isLike, commentId, index)=>{
+        let { itemId, itemType, comments } = this.state;
         const like = isLike ? 0 : 1;
-        request(`comment/like?id=${itemId}&cid=${commentId}&t=${like}&type=${itemType}`).then(data => {
-            if (data.data.code === 200) {
+        api.dynamic_comments_liked(itemId, commentId, like, itemType).then(res => {
+            if (res.code === 200) {
                 if(like === 0){
-                    liked = liked.filter(item => item !== index);
+                    comments[index].liked = false;
+                    comments[index].likedCount --;
+                    console.log(comments[index]);
                     Toast.success('取消点赞成功！！！');
                 }else{
                     Toast.success('点赞成功！！！');
-                    liked.push(index);
+                    comments[index].likedCount ++;
+                    console.log(comments[index]);
+                    comments[index].liked = true;
                 }
                 this.setState({
-                    liked
+                    comments
                 });
 
             }
@@ -204,10 +205,11 @@ class DynamicDetail extends Component {
 
     render() {
         const { dyDetail,dyDetailUrl } = this.props;
-        const { comments,isPlay,val,liked } = this.state;
+        const { comments,isPlay,val } = this.state;
         const json = JSON.parse(dyDetail.json);
         let artists = json.song && json.song.artists.length === 1 && json.song.artists.length > 0 ? '' : '/';
 
+        console.log(dyDetail);
         return (
             <div className="m-dis-dynamic m-dis-dynamic-d">
                 {/*top*/}
@@ -303,21 +305,23 @@ class DynamicDetail extends Component {
                 <h3 className="m-dis-comments-title">评论</h3>
                 <div className="m-dis-comments">
                     {comments.map((item,index) =>{
-                        const likes = liked.filter(item => item === index).length;
-                        if(likes > 0){
-                            console.log(item.liked);
-                        }
+                        const count = item.likedCount === 0 ? '':  item.likedCount;
+                        console.log(item)
+
                         return <div className="m-dis-comments-item" key={index}>
                                     <img src={item.user.avatarUrl} alt=""/>
                                     <div className="m-dis-comments-item-r">
                                         <p>{item.user.nickname}</p>
                                         <p className="m-dis-time">{this.props.getTime(item.time)}</p>
-                                        <p className="m-dis-comments-c" onClick={()=>this.setComment(0,item.commentId)}>
+                                        <p className="m-dis-comments-c">
                                             {item.content}
                                         </p>
                                     </div>
                                     <div className="m-dis-comments-item-zan">
-                                        <span onClick={()=>this.likedComment(item.liked,item.commentId,index)}><i style={{color:(likes || item.liked)&& 'sandybrown'}} className="icon-d-yh-zan3" />{item.likedCount === 0 ? '':item.likedCount}</span>
+                                        <span onClick={()=>this.likedComment(item.liked,item.commentId,index)}>
+                                            <i style={{color: item.liked && 'sandybrown'}} className="icon-d-yh-zan3" />
+                                            {count}
+                                        </span>
                                     </div>
                                 </div>
                     })}
@@ -331,8 +335,11 @@ class DynamicDetail extends Component {
                         placeholder="请输入评论内容"
                         onChange={this.onChange}
                     />
-                    <span onClick={()=>this.setComment(1,null)}><i className="icon-d-yh-send2" /></span>
-                    <span><i className="icon-d-yh-zan3" /><span className="m-dis-count">{dyDetail.info.likedCount}</span></span>
+                    <span className="liked" onClick={()=>this.setComment(1,null)}><i className="icon-d-yh-send2" /></span>
+                    <span className={dyDetail.info.liked ? 'like liked' : 'like'}>
+                        <i className="icon-d-yh-zan3" />
+                        <span className="m-dis-count">{dyDetail.info.likedCount}</span>
+                    </span>
                 </div>
             </div>
         )

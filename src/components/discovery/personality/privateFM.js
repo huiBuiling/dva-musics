@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
 import { NavBar,SearchBar,Icon,Toast } from 'antd-mobile';
-import request from "../../../utils/request";
+import { api } from "../../utils/api";
 
 /**
  * @author hui
@@ -17,10 +17,10 @@ class privateFM extends Component{
 
   componentDidMount() {
       //获取每日歌曲推荐
-      request('recommend/songs').then(data =>{
-          if(data.data.code === 200){
+      api.personalized_songs().then(res =>{
+          if(res.code === 200){
               this.setState({
-                  recommendList:data.data.recommend
+                  recommendList: res.recommend
               });
           }
       }).catch(err =>{

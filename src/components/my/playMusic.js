@@ -3,7 +3,7 @@ import {NavBar, Icon, Slider, Toast,Button} from 'antd-mobile';
 import {connect} from 'dva';
 import classnames from 'classnames';
 import PlayMusicLists from './playMusicLists';
-import request from '../../utils/request';
+import { api } from "../../utils/api";
 
 /**
  * @author hui
@@ -14,72 +14,75 @@ class PlayMusic extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            animationPuse: true,    //动画停止
-            playMusicLists: false,  //列表展示
-            skin: 9,                //皮肤
-            allTime: '00:00',       //歌曲总时间
-            percentAllTime: 0,      //歌曲总时长
-            currentTime: '00:00',   //歌曲进度时间
-            percentCurrentTime: 0,  //歌曲进度时长
-            // percent:0,          //进度
-            volume: 10,             //音量
-            toggleVolume: false,    //显示音量
+            animationPuse: true,    // 动画停止
+            playMusicLists: false,  // 列表展示
+            skin: 2,                // 皮肤
+            allTime: '00:00',       // 歌曲总时间
+            percentAllTime: 0,      // 歌曲总时长
+            currentTime: '00:00',   // 歌曲进度时间
+            percentCurrentTime: 0,  // 歌曲进度时长
+            // percent:0,           // 进度
+            volume: 70,             // 音量
+            toggleVolume: false,    // 显示音量
             playMusicCurrent: props.playMusic.playMusicCurrent,          //当前播放歌曲信息
-            currentMusic: 0,        //当前播放歌曲对应index
-            showLyrics: false,       //显示歌词
+            currentMusic: 0,        // 当前播放歌曲对应index
+            showLyrics: false,      // 显示歌词
+            musicLyrics: [],        // 歌词
         }
 
         this.isEnd = this.isEnd.bind(this);
     }
 
     componentDidMount() {
-        //刷新后至 -> myMusic
-        const { playMusicCurrent } = this.props.playMusic;
-        // if (this.props.playMusic.playMusicList.length === 0) {
-        if(playMusicCurrent.id === null){
-            this.props.history.push('/myMusic');
-        } else {
-            const audio = document.getElementById('audio');
-            /**
-             * 1. 判断是否列表点击
-                    是 -> 当前音乐已在播放
-                            是 -> 判断audio url
-                            否 -> 播放即可
-                    否 -> 音乐是否播放中
-             * 2. 判断是否在播放
-                    是 -> 判断是否在播放当前音乐
-                            是 -> 播放即可
-             * 3. 播放完毕,且未列表循环 -> playMusicCurrent.isPlay = false
-                    条件(ended) -> !(playMusicList.length > 1)
-             **/
-            if(playMusicCurrent.isPlay){
-                // 列表点击进入
-                if(audio.src == playMusicCurrent.url){
-                    // 当前音乐已在播放
-                    this.setState({animationPuse:false}, ()=>{
-                        this.time(1, true);
-                    });
-                }else{
-                    this.playAudio(playMusicCurrent.url);
-                }
-            }else{
-                //判断是否在播放
-                if(audio.currentTime > 0){
-                    this.setState({animationPuse:false}, ()=>{
-                        this.time(1, true);
-                    });
-                }
+        //刷新后至 -> music
+        const { playMusicCurrent, playMusicList } = this.props.playMusic;
+        if(playMusicCurrent.url === null) {
+            Toast.fail('歌曲资源地址获取失败！');
+            // const timer = setTimeout(() => {
+            //     clearTimeout(timer);
+            //     this.props.history.go(-1);
+            // }, 3000)
+
+            // 获取当前歌曲列表
+            if(playMusicList.length > 0) {
+                const current = this.getCurrent(playMusicCurrent.id);
+                this.next(playMusicList, current);
             }
-
-            //时长改变
-            audio.addEventListener('durationchange', ()=>{this.time(1, true);});
-
-            //监听进度
-            audio.addEventListener('timeupdate', ()=>{this.time(2, true)});
-
-            //监听播放结束，列表循环
-            audio.addEventListener('ended', this.isEnd, false);
+        } else {
+            if(playMusicCurrent.id === null){
+                this.props.history.push('/music');
+            } else {
+                const audio = document.getElementById('audio');
+                if(playMusicCurrent.isPlay){
+                    // 列表点击进入
+                    if(audio.src == playMusicCurrent.url){
+                        // 当前音乐已在播放
+                        this.setState({animationPuse:false}, ()=>{
+                            this.time(1, true);
+                        });
+                    }else{
+                        this.playAudio(playMusicCurrent.url);
+                    }
+                }else{
+                    //判断是否在播放
+                    if(audio.currentTime > 0){
+                        this.setState({animationPuse:false}, ()=>{
+                            this.time(1, true);
+                        });
+                    }
+                }
+    
+                //时长改变
+                audio.addEventListener('durationchange', ()=>{this.time(1, true);});
+    
+                //监听进度
+                audio.addEventListener('timeupdate', ()=>{this.time(2, true)});
+    
+                //监听播放结束，列表循环
+                audio.addEventListener('ended', this.isEnd, false);
+            }
         }
+        
     }
 
     componentWillUnmount(){
@@ -110,23 +113,6 @@ class PlayMusic extends Component {
             })
         }
     }
-
-    //获取歌词
-    getMusicLyrics = (id) => {
-        request(`lyric?id=${id}`).then(data => {
-            if (data.data.code === 200) {
-                this.props.dispatch({
-                    type: 'playMusic/getMusicLyrics',
-                    data: data.data.lrc.lyric.split("\n")
-                });
-            }
-        }).catch(err => {
-            Toast.fail('发生错误');
-        });
-    }
-
-    //判断歌词是否需滚动
-    scrollLyrics = () => {}
 
     //获取总时长和播放时间
     time = (flag, isSet) => {
@@ -180,85 +166,115 @@ class PlayMusic extends Component {
         }
     }
 
-    //获取歌曲MP3地址
-    getCurrenturl = (current) => {
-        request(`song/url?id=${current.id}`).then(data => {
-            if (data.data.code === 200) {
-                this.props.dispatch({
-                    type: 'playMusic/getPlayMusicCurrent',
-                    data: {
-                        url: data.data.data[0].url,
-                        id: current.id,
-                        name: current.name,
-                        imgUrl: current.al.picUrl
-                    }
-                });
-                this.setState({
-                    animationPuse: true
-                }, () => this.playAudio(data.data.data[0].url));
-            }
-        }).catch(err => {
-            Toast.fail('发生错误');
-        });
-    }
-
-    //获取当前对应歌曲
+    //获取当前对应歌曲下标
     getCurrent = (id) => {
         const {playMusicList, playMusicCurrent} = this.props.playMusic;
         let current = playMusicCurrent;
         let currentId = id ? id : playMusicCurrent.id;
-        playMusicList.filter((item, index) => {
-            if (item.id === currentId) {
-                current = index;
-            }
-        });
+        current = playMusicList.findIndex(item => item.id === currentId)
         return current;
     }
 
-    //点击切换 | 上一首 | 下一首
+    //点击切换: 上一首 | 下一首
     checkMusic = (flag, id) => {
         const { playMusicList } = this.props.playMusic;
-        let current = this.getCurrent(id);
+        const current = this.getCurrent(id);
 
-        //判断是否可以进行操作
-        if (playMusicList.length > 1 && current > -1) {
-            //下一首
-            if (flag) {
-                current = current + 1;
-            } else if (flag === false) {
-                //上一首
-                current = current - 1;
-            }
-            let currentData = playMusicList[current];
-            //已有url直接播放
-            if(currentData.url !== null && currentData.url !== undefined ){
-                this.props.dispatch({
-                    type: 'playMusic/getPlayMusicCurrent',
-                    data: currentData
-                });
-                this.setState({
-                    currentMusic: current,
-                    animationPuse: true
-                }, () => this.playAudio(currentData.url));
-            }else{
-                //获取url
-                this.getCurrenturl(currentData);
-                this.setState({
-                    currentMusic: current
-                });
-            }
-
+        if(flag) {
+            this.next(playMusicList, current);
         } else {
-            //没有下一首
-            Toast.info('当前列表只有一首歌曲！');
-            const audio = document.getElementById('audio');
-            audio.pause();
-            audio.src = null;
-            this.setState({
-                animationPuse: true
-            });
+            this.prev(playMusicList, current);
         }
     }
+
+    // 上一首
+    prev = (playMusicList, current) => {
+        if(current <= 0) {
+            Toast.info(`当前歌曲是第一首歌曲！`);
+            this.stopMusic();
+        } else {
+            current = current - 1;
+            this.getCurrenturl(playMusicList, current, false);
+        }
+    }
+
+    // 下一首
+    next = (playMusicList, current) => {
+        if(current === (playMusicList.length - 1)) {
+            Toast.info(`当前歌曲是最后一首歌曲！`);
+            this.stopMusic();
+        } else {
+            current = current + 1;
+            this.getCurrenturl(playMusicList, current, true);
+        }
+    }
+
+    // 停止播放
+    stopMusic = () => {
+        const audio = document.getElementById('audio');
+        audio.pause();
+        audio.src = null;
+        this.setState({
+            animationPuse: true
+        });
+    }
+
+    //获取歌曲MP3地址
+    getCurrenturl = (playMusicList, current, flag = true) => {
+        const currentData = playMusicList[current];
+        //已有url直接播放
+        if(currentData.url !== null && currentData.url !== undefined ){
+            this.setCurrentMusic(currentData, current)
+        } else {
+            api.song_url(currentData.id).then(res => {
+                if(res.data[0].url !== null) {
+                    const data = {
+                        ...currentData,
+                        url: res.data[0].url,
+                    };
+                    this.setCurrentMusic(data, current)
+                } else {
+                    const { playMusicList } = this.props.playMusic;
+                    if(flag) {
+                        this.next(playMusicList, current);
+                    } else {
+                        this.prev(playMusicList, current);
+                    }
+                }
+                
+            })
+        }
+    }
+
+    setCurrentMusic = (data, current) => {
+        this.props.dispatch({
+            type: 'playMusic/getPlayMusicCurrent',
+            data: data
+        });
+        this.setState({
+            currentMusic: current,
+            animationPuse: true
+        }, () => this.playAudio(data.url));
+    }
+
+    // 设置url
+    // checkSetUrl = (playMusicList, current, flag) => {
+    //     const currentData = playMusicList[current];
+    //     //已有url直接播放
+    //     if(currentData.url !== null && currentData.url !== undefined ){
+    //         this.props.dispatch({
+    //             type: 'playMusic/getPlayMusicCurrent',
+    //             data: currentData
+    //         });
+    //         this.setState({
+    //             currentMusic: current,
+    //             animationPuse: true
+    //         }, () => this.playAudio(currentData.url));
+    //     }else{
+    //         //获取url
+    //         this.getCurrenturl(currentData.id, flag);
+    //     }
+    // }
 
     //设置音量
     setVolume = (val) => {
@@ -280,25 +296,51 @@ class PlayMusic extends Component {
 
     //喜欢
     setLike = () => {
-        // val true:like, false:unlike
-        let {id, live} = this.props.playMusic.playMusicCurrent;
+        const { playMusicCurrent } = this.props.playMusic;
+        api.song_liked(playMusicCurrent.id, playMusicCurrent.live).then(res => {
+            if (!playMusicCurrent.live) {
+                Toast.success('已添加到我的喜欢!', 1);
+            } else {
+                Toast.info('已取消喜欢', 1);
+            }
 
-        request(`like?id=${id}&like=${!live}`).then(data => {
-            // console.log(data);
-            if (data.data.code === 301) {
-                Toast.info(data.data.msg, 1);
-            }
-            if (data.data.code === 200) {
-                if (!live) {
-                    Toast.success('已添加到我的喜欢!', 1);
-                } else {
-                    Toast.info('已取消喜欢', 1);
+            this.props.dispatch({
+                type: 'playMusic/playMusicCurrent',
+                data: {
+                    ...playMusicCurrent,
+                    live: !playMusicCurrent.live
                 }
-            }
-        }).catch(err => {
-            Toast.fail('发生错误');
+            })
+
         })
     }
+
+    // 显示歌词
+    showLyricsDetail = (id) => {
+        if(this.state.showLyrics) {
+            this.setState({
+                showLyrics: true,
+                playMusicLists:false
+            })
+        } else {
+            this.getMusicLyrics(id);
+        }
+    }
+    
+    // 获取歌词
+    getMusicLyrics = (id) => {
+        api.song_lyric(id).then(res => {
+            const musicLyrics = res.lrc.lyric.split("\n");
+            this.setState({
+                musicLyrics,
+                showLyrics: true,
+                playMusicLists: false
+            })
+        })
+    }
+
+    //判断歌词是否需滚动
+    scrollLyrics = () => {}
 
     render() {
         const self = this;
@@ -306,8 +348,9 @@ class PlayMusic extends Component {
             animationPuse, playMusicLists, skin,
             showLyrics, toggleVolume, volume,
             allTime, percentAllTime, currentTime, percentCurrentTime,
+            musicLyrics
         } = this.state;
-        const {playMusicList, playMusicCurrent, musicLyrics} = this.props.playMusic;
+        const {playMusicList, playMusicCurrent} = this.props.playMusic;
 
         const current = playMusicCurrent ? playMusicCurrent : {id: 0, name: "", url: ""};
         let img = require(`../../assets/images/playerBg/bg${skin}.jpg`);
@@ -324,7 +367,7 @@ class PlayMusic extends Component {
                         icon={<Icon type="left"/>}
                         onLeftClick={() => self.props.history.go(-1)}
                         rightContent={<span onClick={() => {
-                            this.setState({skin: skin < 19 ? skin + 1 : 1})
+                            this.setState({skin: skin < 3 ? skin + 1 : 1})
                         }}><i className="icon-skin"/></span>}
                     >
                         <div>
@@ -367,7 +410,7 @@ class PlayMusic extends Component {
                              onClick={() => this.setState({showLyrics: false,playMusicLists:false})}>
                             {
                                 musicLyrics.map((item, index) => {
-                                    const time = item !== "" && item.split("[")[1].split("]")[0].substring(0, 5);
+                                    // const time = item !== "" && item.split("[")[1].split("]")[0].substring(0, 5);
                                     return <p key={index}>
                                         {/*<span>{time}</span> - */}
                                         <span>{item.split("]")[1]}</span>
@@ -376,7 +419,7 @@ class PlayMusic extends Component {
                             }
                         </div>
                         :
-                        <div className="m-my-play-con" onClick={() => this.setState({showLyrics: true,playMusicLists:false})}>
+                        <div className="m-my-play-con" onClick={() => this.showLyricsDetail(playMusicCurrent.id)}>
                             <div className={classnames({"m-my-play-con-w": true, "animation-puse": animationPuse})}>
                                 <div className="m-my-play-con-w-b">
                                     <div className="m-my-play-con-w-q"></div>
@@ -443,8 +486,12 @@ class PlayMusic extends Component {
                             <span onClick={()=>this.playAudio(current.url)}><i className={animationPuse ? "icon-bf-bf" : "icon-bf-zt"}
                                                               style={{fontSize: 38}}/></span>
                             <span onClick={() => this.checkMusic(true, null)}><i className="icon-bf-r"/></span>
-                            <span onClick={() => this.setState({playMusicLists: true})}><i
+                            <span onClick={() => {
+                                this.setState({playMusicLists: true})
+                                console.log('huihui')
+                            }}><i
                                 className="icon-dis-gd"/></span>
+                            
                         </div>
                     </div>
 

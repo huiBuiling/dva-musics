@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {NavBar, Icon, List, Toast} from 'antd-mobile';
 import {connect} from 'dva';
-import request from '../../utils/request';
+import { api } from "../../utils/api";
 
 /**
  * @author hui
@@ -18,10 +18,10 @@ class RecordLists extends Component {
     }
 
     componentDidMount() {
-        request(`user/record?uid=${this.props.userId}&type=1`).then(data => {
-            if (data.data.code === 200) {
+        api.record_list(this.props.userId).then(res => {
+            if (res.code === 200) {
                 this.setState({
-                    recordList: data.data.weekData
+                    recordList: res.weekData
                 });
             }
         }).catch(err => {
@@ -39,7 +39,7 @@ class RecordLists extends Component {
                     <NavBar
                         mode="light"
                         icon={<Icon type="left"/>}
-                        onLeftClick={() => this.props.history.push('/myMusic')}
+                        onLeftClick={() => this.props.history.push('/music')}
                         rightContent={<span onClick={() => {
                             this.props.history.push('playMusic')
                         }}><i className="icon-m-bfz"/></span>}

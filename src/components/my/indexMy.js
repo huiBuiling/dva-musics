@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {List, NavBar, Toast} from 'antd-mobile';
 import {connect} from "dva";
 import {withRouter} from 'dva/router';
-import request from '../../utils/request';
+import { api } from "../../utils/api";
 
 /**
  * @author hui
@@ -27,18 +27,18 @@ class IndexMy extends Component {
             console.log('Load complete !!!');
         });
         //获取歌单
-        request(`user/playlist?uid=${this.props.users.userDetail.id}`).then(data => {
-            if (data.data.code === 200) {
-                let createPlaylist = data.data.playlist.filter(item => {
+        api.play_list(this.props.users.userDetail.id).then(res => {
+            if (res.code === 200) {
+                let createPlaylist = res.playlist.filter(item => {
                     return item.creator.province === 140000
                 });
 
                 //获取喜欢音乐列表
-                request(`playlist/detail?id=${createPlaylist[0].id}`).then(data => {
-                    if (data.data.code === 200) {
+                api.playlist_liked(createPlaylist[0].id).then(resI => {
+                    if (resI.code === 200) {
                         this.props.dispatch({
                             type: 'users/getUserLiveIDList',
-                            data: data.data.playlist.tracks
+                            data: resI.playlist.tracks
                         });
 
                     }
@@ -48,41 +48,24 @@ class IndexMy extends Component {
 
                 this.setState({
                     createPlaylist,
-                    collectPlaylist: data.data.playlist.filter(item => {
+                    collectPlaylist: res.playlist.filter(item => {
                         return item.creator.province !== 140000
                     }),
-                    liveId: data.data.playlist[0].id
+                    liveId: res.playlist[0].id
                 });
                 Toast.hide();
             }
         })
-
-        //登录，获取用户id
-        /*request(this.state.playListUrl).then(data=>{
-          if(data.data.code === 200) {
-            this.props.dispatch({
-              type:'users/getUserMsg',
-              data:data.data.playlist.tracks
-            });
-          }
-        }).catch(err =>{
-            Toast.fail('发生错误');
-        })*/
     }
 
-    //对应歌单详情列表
+    // 对应歌单详情列表
     getPlayMusicList = (id) => {
-        request(`playlist/detail?id=${id}`).then(data => {
-            if (data.data.code === 200) {
-                this.props.dispatch({
-                    type: 'playMusic/getSongSheetList',
-                    data: data.data.playlist.tracks
-                });
-                // this.props.history.push(`/lists:${id}`)
-                this.props.history.push(`/lists`)
-            }
-        }).catch(err => {
-            Toast.fail('发生错误');
+        api.playlist_detail_list(id).then(res => {
+            this.props.dispatch({
+                type: 'playMusic/getSongSheetList',
+                data: res.playlist.tracks
+            });
+            this.props.history.push('/lists')
         })
     }
 
