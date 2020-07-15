@@ -44,10 +44,16 @@ class Login extends Component {
         const { phone,password } = this.state;
         api.admin_signin({phone, password}).then(res =>{
             if(res.code === 200){
+                this.loginRefreshStatus()
                 this.getUserDetail(res.account.id);
             }
         })
 
+    }
+
+    // 刷新登录状态
+    loginRefreshStatus = () => {
+        api.login_refresh().then(res => res);
     }
 
     render() {
@@ -64,6 +70,7 @@ class Login extends Component {
                         >手机号码</InputItem>
                         <InputItem
                             placeholder="****"
+                            type="password"
                             value={password}
                             onChange={(v) => { this.setState({password:v}) }}
                         >

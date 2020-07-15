@@ -11,7 +11,7 @@ export default {
     state: {
         userDetail: {
             ...userDetail,
-            id: userDetail && userDetail.id || '448109360'
+            id: userDetail && userDetail.id || '32953014'
         },
         liveIDList: []
     },

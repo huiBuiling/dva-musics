@@ -4,6 +4,7 @@ import {NavBar, Badge, List,Toast} from 'antd-mobile';
 import admin from '../../assets/images/admin.png';
 import { api } from "../../utils/api";
 import Login from './login';
+import {setItem} from '../../utils/storage';
 
 /**
  * @author hui
@@ -14,28 +15,24 @@ class Admin extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            detail:{           //详情
-                name:null,
-                gender:null,
-                level:null,
-                eventCount:0,
-                follows:0,
-                followeds:0,
-            },
             point: false,      //签到
-            isLogin: false,     //显示登录
+            isLogin: true,     //显示登录
         }
     }
 
     componentDidMount() {
-        this.getLoginStatus()
+        // this.getLoginStatus()
+        if(this.props.userDetail.id && this.props.userDetail.id !== '32953014') {
+            this.setState({
+                isLogin: false
+            });
+            Toast.success('已经登录');
+        }
     }
 
     // 刷新登录状态
     loginRefreshStatus = () => {
-        api.login_refresh().then(res => {
-            this.this.getLoginStatus();
-        })
+        api.login_refresh().then(res => res);
     }
 
     // 获取用户登录状态
@@ -43,7 +40,7 @@ class Admin extends Component {
         api.login_status().then(res => {
             if(this.props.userDetail.id) {
                 this.setState({
-                    detail: this.props.userDetail
+                    isLogin: false
                 });
                 Toast.success('已经登录');
             }
@@ -59,10 +56,24 @@ class Admin extends Component {
     }
 
     //登录
-    login = ()=>{
+    signin = ()=>{
         this.setState({
             isLogin:true
         });
+    }
+
+    // 退出登录
+    signout = () => {
+        api.admin_signout().then(res => {
+            Toast.success('您已退出登录');
+            this.props.dispatch({
+                type: 'users/getUserDetail',
+                data: {}
+            })
+            this.setState({
+                isLogin: true
+            });
+        })
     }
 
     /**
@@ -87,7 +98,8 @@ class Admin extends Component {
     }
 
     render() {
-        const { detail,isLogin } = this.state;
+        const { isLogin } = this.state;
+        const detail = this.props.userDetail;
         return (
             <div className="m-admin">
                 <NavBar
@@ -101,11 +113,11 @@ class Admin extends Component {
 
                 {/*top*/}
                 <div className="m-admin-top">
-                    {detail.name == null ?
+                    {isLogin ?
                         <div className="m-admin-top-msg">
                             <img src={admin} alt=""/>
                             <div className="m-admin-login">
-                                <span onClick={this.login}>请登录</span>
+                                <span onClick={this.signin}>请登录</span>
                             </div>
                         </div>
                         :
@@ -166,8 +178,6 @@ class Admin extends Component {
                         <List.Item
                             thumb={<span><i className="icon-admin-setting"/></span>}
                             arrow="horizontal"
-                            onClick={() => {
-                            }}
                         >设置</List.Item>
                         <List.Item
                             thumb={<span><i className="icon-admin-sys"/></span>}
@@ -202,6 +212,15 @@ class Admin extends Component {
                             thumb={<span><i className="icon-admin-about"/></span>}
                             arrow="horizontal"
                         >关于</List.Item>
+                        
+                    </List>
+
+                    <List>
+                        <List.Item
+                            thumb={<span><i className="icon-admin-setting"/></span>}
+                            arrow="horizontal"
+                            onClick={this.signout}
+                        >退出登录</List.Item>
                     </List>
                 </div>
             </div>
@@ -210,7 +229,7 @@ class Admin extends Component {
 }
 const mapStateToProps = (state)=>{
     return {
-        userDetail:state.users.userDetail
+        userDetail: state.users.userDetail
     }
 }
 export default connect(mapStateToProps)(Admin);

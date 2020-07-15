@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {TabBar} from 'antd-mobile';
+import {TabBar, Toast} from 'antd-mobile';
 import {Route} from 'dva/router';
 import IndexMusic from '../components/my/indexMy';
 import IndexDiscovery from '../components/discovery/indexDiscovery';
 import IndexDynamic from '../components/dynamic/indexDynamic';
 import IndexAdmin from '../components/admin/admin';
+import { getItem } from '../utils/storage';
 
 /**
  * @author hui
@@ -50,7 +51,7 @@ class Footer extends Component {
                 {
                     key: 'zh',
                     icon: 'icon-menu-zh',
-                    tabName: '帐号',
+                    tabName: '我的',
                     seed: 'menu-z',
                     content: 'my',
                     component: IndexAdmin,
@@ -78,12 +79,28 @@ class Footer extends Component {
         } else if (pathname === "/dynamic") {
             tabName = '动态';
         } else if (pathname === "/") {
-            tabName = '帐号';
+            tabName = '我的';
         }
 
         this.setState({
             selectedTab: tabName
         });
+    }
+
+    goNowPath = (item) => {
+        if(getItem.userDetail) {
+            this.props.history.push(item.path);
+            this.setState({selectedTab: item.tabName});
+        } else {
+            Toast.info('请先登录');
+            const {pathname} = this.props.location;
+            if(pathname !== "/") {
+                this.props.history.push('/');
+                this.setState({
+                    selectedTab: '我的'
+                });
+            }
+        }
     }
 
     render() {
@@ -108,8 +125,7 @@ class Footer extends Component {
                                     badge={item.dot ? item.dot : 0}
                                     // dot
                                     onPress={() => {
-                                        this.props.history.push(item.path);
-                                        this.setState({selectedTab: item.tabName});
+                                        this.goNowPath(item)
                                     }}
                                     data-seed={item.seed}
                                 >
