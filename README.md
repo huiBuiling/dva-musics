@@ -27,6 +27,10 @@
             "roadhog": "^2.0.0" -> "roadhog": "^2.5.0-beta.4",
     ```
 
+> 效果图
+![image](https://user-images.githubusercontent.com/20200628/98807400-8ceb8f00-2455-11eb-845a-b90085f5754a.png)
+
+
 > 已实现功能：
 
     1. 发现：
@@ -85,7 +89,4 @@
 
 - emmmmmm，还有很多功能未做，由于部分原因，先暂停一段时间，哈哈哈哈哈
 
-> 效果图
-
-![image](https://github.com/huiBuiling/dva-musics/blob/master/resultImg/%E5%B8%90%E5%8F%B7.png)
 
